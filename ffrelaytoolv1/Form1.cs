@@ -118,7 +118,16 @@ namespace ffrelaytoolv1
             hook.RegisterHotKey(0, Keys.F1);
             hook.RegisterHotKey(0, Keys.F2);
             hook.RegisterHotKey(0, Keys.F3);
+
+            //Programmatic stuff
+            MetaContext meta = new MetaContext(4,2,Splits,new string[]{"mog","choco","tonb"},new string[]{"FF1","FF2","FF3","FF4","FF5","FF6","FF7","FFT","FF8","9","X","12","13","15"});
             teams = new TeamControl[3];
+            teams[0] = teamControl1;
+            teamControl1.setupTeamControl(this, new TeamInfo(14, Splits.Length, "mog", "mog-runners.txt", Color.Blue, Properties.Resources.mog_box),meta);
+            teams[1] = teamControl2;
+            teamControl2.setupTeamControl(this, new TeamInfo(14, Splits.Length, "choco", "choco-runners.txt", Color.HotPink, Properties.Resources.choco_box), meta);
+            teams[2] = teamControl3;
+            teamControl3.setupTeamControl(this, new TeamInfo(14, Splits.Length, "tonb", "tonb-runners.txt", Color.Green, Properties.Resources.tonb_box), meta);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -170,6 +179,14 @@ namespace ffrelaytoolv1
             if (!MogFinished) { UpdateMogSplits(); }
             if (!ChocoFinished) { UpdateChocoSplits(); }
             if (!TonbFinished) { UpdateTonbSplits(); }
+
+            //Programmatic
+            foreach (TeamControl team in teams)
+            {
+                team.updateTimerEvent(current, MinuteCount >= 60 && !ChangedThisMin);
+            }
+            //Programmatic end
+
             //This section auto cycles
             MinuteCount++;
             if (MinuteCount >= 60) //1 Minute = 60 seconds = 240 timer ticks
@@ -191,6 +208,8 @@ namespace ffrelaytoolv1
                 ChangedThisMin = false;
                 MinuteCount = 0;
             }
+
+            
         }
 
         private void button1_Click_1(object sender, EventArgs e) //Stop click warning

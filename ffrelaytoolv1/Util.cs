@@ -37,7 +37,7 @@ namespace ffrelaytoolv1
         public static T Clamp<T>(T target, T upper, T lower) where T : IComparable{
             if (target.CompareTo(lower) < 0)
             {
-                return target;
+                return lower;
             }
             else if (target.CompareTo(upper)>0)
             {

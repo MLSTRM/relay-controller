@@ -164,6 +164,9 @@
             this.label40 = new System.Windows.Forms.Label();
             this.TonbSplit = new System.Windows.Forms.Button();
             this.CommUpdate = new System.Windows.Forms.Button();
+            this.teamControl1 = new ffrelaytoolv1.TeamControl();
+            this.teamControl2 = new ffrelaytoolv1.TeamControl();
+            this.teamControl3 = new ffrelaytoolv1.TeamControl();
             this.infomog.SuspendLayout();
             this.mogsplits.SuspendLayout();
             this.mogcategory.SuspendLayout();
@@ -1904,12 +1907,36 @@
             this.CommUpdate.UseVisualStyleBackColor = true;
             this.CommUpdate.Click += new System.EventHandler(this.CommUpdate_Click);
             // 
+            // teamControl1
+            // 
+            this.teamControl1.Location = new System.Drawing.Point(5, 573);
+            this.teamControl1.Name = "teamControl1";
+            this.teamControl1.Size = new System.Drawing.Size(426, 429);
+            this.teamControl1.TabIndex = 21;
+            // 
+            // teamControl2
+            // 
+            this.teamControl2.Location = new System.Drawing.Point(430, 573);
+            this.teamControl2.Name = "teamControl2";
+            this.teamControl2.Size = new System.Drawing.Size(426, 429);
+            this.teamControl2.TabIndex = 22;
+            // 
+            // teamControl3
+            // 
+            this.teamControl3.Location = new System.Drawing.Point(856, 573);
+            this.teamControl3.Name = "teamControl3";
+            this.teamControl3.Size = new System.Drawing.Size(426, 429);
+            this.teamControl3.TabIndex = 23;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1262, 564);
+            this.ClientSize = new System.Drawing.Size(1367, 1026);
+            this.Controls.Add(this.teamControl3);
+            this.Controls.Add(this.teamControl2);
+            this.Controls.Add(this.teamControl1);
             this.Controls.Add(this.CommUpdate);
             this.Controls.Add(this.TonbSplit);
             this.Controls.Add(this.infotonb);
@@ -2090,6 +2117,9 @@
         private System.Windows.Forms.Label TonbGameTimersR;
         private System.Windows.Forms.Label TonbGameEndL;
         private System.Windows.Forms.Label TonbGameEndR;
+        private TeamControl teamControl1;
+        private TeamControl teamControl2;
+        private TeamControl teamControl3;
     }
 }
 

@@ -52,10 +52,10 @@ namespace ffrelaytoolv1
             teamSplitNames = new Label[context.splitsToShow];
             for (int i = 0; i < context.splitsToShow; i++)
             {
-                teamSplitNames[i] = Util.createBaseLabel(3, 30 * i + 6, 256, 29, "");
-                tabPageSplits.Container.Add(teamSplitNames[i]);
+                teamSplitNames[i] = Util.createBaseLabel(3, 30 * i + 6, 256, 29, "test+"+i);
+                tabPageSplits.Controls.Add(teamSplitNames[i]);
                 teamSplitTimes[i] = Util.createBaseLabel(265, 30 * i + 6, 117, 29, "00:00:00");
-                tabPageSplits.Container.Add(teamSplitTimes[i]);
+                tabPageSplits.Controls.Add(teamSplitTimes[i]);
             }
             vsLabelNames = new Label[context.numberOfTeams - 1];
             vsLabelTimes = new Label[context.numberOfTeams - 1];
@@ -64,38 +64,39 @@ namespace ffrelaytoolv1
             {
                 if (context.teamNames[i].Equals(info.teamName)) { adjustedIndex++; }
                 vsLabelNames[i] = Util.createBaseLabel(3, 156 + 30 * i, 230, 29, "Vs Team " + context.teamNames[adjustedIndex]);
-                tabPageSplits.Container.Add(vsLabelNames[i]);
+                tabPageSplits.Controls.Add(vsLabelNames[i]);
                 vsLabelTimes[i] = Util.createBaseLabel(242, 156 + 30 * i, 140, 29, "00:00:00");
-                tabPageSplits.Container.Add(vsLabelTimes[i]);
+                tabPageSplits.Controls.Add(vsLabelTimes[i]);
             }
 
             //Construct runner/category/commentary tab
             categoryLabels = new Label[3];
             for (int i = 0; i < 3; i++)
             {
-                categoryLabels[i] = Util.createBaseLabel(3, 3 + 30 * i, 391, 35, "", ContentAlignment.MiddleCenter);
-                tabPageCategories.Container.Add(categoryLabels[i]);
+                categoryLabels[i] = Util.createBaseLabel(3, 3 + 30 * i, 391, 35, "test+"+i, ContentAlignment.MiddleCenter);
+                tabPageCategories.Controls.Add(categoryLabels[i]);
             }
             commentaryLabel = Util.createBaseLabel(3, 96, 391, 68, "Commentators: ", ContentAlignment.MiddleCenter);
-            tabPageCategories.Container.Add(commentaryLabel);
+            tabPageCategories.Controls.Add(commentaryLabel);
 
             //Construct game times tab
             int gamesOnEach = context.numberOfGames / 2;
-            gameEndsL = Util.createBaseLabel(76, 11, 109, 147, "00:00:00", ContentAlignment.MiddleCenter);
-            tabPageTimes.Container.Add(gameEndsL);
-            gameEndsR = Util.createBaseLabel(204, 11, 109, 147, "00:00:00", ContentAlignment.MiddleCenter);
-            tabPageTimes.Container.Add(gameEndsR);
+            gameEndsL = Util.createBaseLabel(76, 11, 117, 175, "00:00:00", ContentAlignment.MiddleCenter);
+            tabPageTimes.Controls.Add(gameEndsL);
+            gameEndsR = Util.createBaseLabel(200, 11, 117, 175, "00:00:00", ContentAlignment.MiddleCenter);
+            tabPageTimes.Controls.Add(gameEndsR);
             string titlesL = "";
             string titlesR = "";
             for (int i = 0; i < gamesOnEach; i++)
             {
-                titlesL += context.games[i] + " : ";
-                titlesR += " : " + context.games[i + gamesOnEach];
+                titlesL += context.games[i] + " : \n";
+                titlesR += " : " + context.games[i + gamesOnEach]+"\n";
             }
-            gameShortL = Util.createBaseLabel(3, 9, 90, 142, titlesL, ContentAlignment.MiddleRight);
-            tabPageTimes.Container.Add(gameEndsL);
-            gameShortR = Util.createBaseLabel(295, 9, 90, 142, titlesR, ContentAlignment.MiddleLeft);
-            tabPageTimes.Container.Add(gameEndsR);
+            gameShortL = Util.createBaseLabel(3, 9, 90, 175, titlesL, ContentAlignment.MiddleRight);
+            tabPageTimes.Controls.Add(gameShortL);
+            gameShortR = Util.createBaseLabel(295, 9, 90, 175, titlesR, ContentAlignment.MiddleLeft);
+            tabPageTimes.Controls.Add(gameShortR);
+            updateSplits(new VersusWrapper[]{});
         }
 
         private void TeamSplitButton_Click(object sender, EventArgs e)
@@ -122,7 +123,7 @@ namespace ffrelaytoolv1
         {
 
             int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset - 1), context.splitFocusOffset);
-            for (int offsetSplit = 0; i < context.splitsToShow; i++)
+            for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
             {
                 teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
                 teamSplitTimes[offsetSplit].Text = teamInfo.teamSplits[i - (context.splitFocusOffset - offsetSplit)];
@@ -178,10 +179,12 @@ namespace ffrelaytoolv1
             if (teamInfo.teamGame == 0)
             {
                 gameEndsL.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
+                gameEndsR.Text = "00:00:00";
                 //teamGameEndL.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
-                for (int linesToFill = 0; i < context.numberOfGames / 2; i++)
+                for (int linesToFill = 1; linesToFill < context.numberOfGames / 2; linesToFill++)
                 {
                     gameEndsL.Text += "\n00:00:00";
+                    gameEndsR.Text += "\n00:00:00";
                     //teamGameEndL.Text += "\n00:00:00";
                 }
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
