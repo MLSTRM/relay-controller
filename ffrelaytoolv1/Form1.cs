@@ -234,7 +234,7 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        private void cycleIcon(string teamName, int teamIcon, Label teamIconLabel, Label teamInfoCat1, 
+        private void cycleIcon(string teamName, ref int teamIcon, Label teamIconLabel, Label teamInfoCat1, 
             Label teamInfoCat2, Label teamInfoCat3, Label teamCommentary, string[] runners, string[] commentators)
         {
             teamIcon++;
@@ -261,7 +261,7 @@ namespace ffrelaytoolv1
         }
         void CycleBlueIcon()
         {
-            cycleIcon("mog", mogIcon, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
+            cycleIcon("mog", ref mogIcon, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
         }
 
         private void hpbutton_Click(object sender, EventArgs e)
@@ -270,7 +270,7 @@ namespace ffrelaytoolv1
         }
         void CyclePurpleIcon()
         {
-            cycleIcon("choco", chocoIcon, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
+            cycleIcon("choco", ref chocoIcon, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
         }
 
         private void tonbIconButton_Click(object sender, EventArgs e)
@@ -279,51 +279,54 @@ namespace ffrelaytoolv1
         }
         void CycleGreenIcon()
         {            
-            cycleIcon("tonb", tonbIcon, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
+            cycleIcon("tonb", ref tonbIcon, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
         }
 
-        private void MogSplit_Click(object sender, EventArgs e)
+        private void splitClick(ref bool waiting, ref int splitNum, ref bool finished, ref string teamFinish, 
+            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, ref string[] splits, 
+            Action cycleIcons, Timer cooldown, Action updateTeamSplits, EventHandler cooldownDone)
         {
             //Activate Cooldown
-            if (!MogWaiting)
+            if (!waiting)
             {
-                if (MogSplitNum >= Splits.Length - 1)
+                if (splitNum >= splits.Length - 1)
                 {
-                    if (!MogFinished)
+                    if (!finished)
                     {
-                        MogFinish = MogSplits[MogSplitNum];
-                        MogGameEnd[MogGame] = MogFinish;
-                        MogSplitTime4.Text = MogFinish;
-                        MogFinished = true;
+                        teamFinish = teamSplits[splitNum];
+                        gameEnds[teamGame] = teamFinish;
+                        teamSplit4.Text = teamFinish;
+                        finished = true;
                     }
                     return;
                 }
                 //Handle the splits. Showing 3 at a time, need to cycle games on end splits (Contains "Final Fantasy")
                 //This year we need to catch LR and MQ. If we do "Lightning Returns: Final Fantasy XIII" it's too damn long, so we'll cut at LR
                 //Catch that we're ending a game before we move onto the next one
-                if (Splits[MogSplitNum].Contains(gameSep))
+                if (splits[splitNum].Contains(gameSep))
                 {
-                    //Assign the per-game timer to be our current split time, which is stored in MogSplits[MogSplitNum]
-                    MogGameEnd[MogGame] = MogSplits[MogSplitNum];
+                    //Assign the per-game timer to be our current split time, which is stored in teamSplits[splitNum]
+                    gameEnds[teamGame] = teamSplits[splitNum];
                     //Move the current game along for tracking
-                    MogGame++;
-                    //Move onto the next game using the hand
-                    CycleBlueIcon();
-                    //Anything else needs to be done?
+                    teamGame++;
+                    //Move onto the next game using the hand / icons
+                    cycleIcons();
                 }
-                MogSplitNum++;
-                UpdateMogSplits();
-                //UpdateMogIcons();
-                //Start Cooldown timer
-                MogCooldown.Enabled = true;
-                MogCooldown.Interval = 5000; //Change back to 5000
-                //MogCooldown.Interval = 5;
-                MogCooldown.Start();
-                MogCooldown.Tick += new EventHandler(MogCooldownDone);
-                MogWaiting = true;
+                splitNum++;
+                updateTeamSplits();
+                cooldown.Enabled = true;
+                cooldown.Interval = 5000;
+                cooldown.Start();
+                cooldown.Tick += new EventHandler(cooldownDone);
+                waiting = true;
                 WriteSplitFiles();
             }
-            
+        }
+
+        private void MogSplit_Click(object sender, EventArgs e)
+        {
+            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish,ref MogSplits,ref MogGameEnd, ref MogGame, 
+                MogSplitTime4, ref Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);          
         }
         void MogCooldownDone(Object myObject, EventArgs myEventArgs)
         { MogWaiting = false; MogCooldown.Stop(); }
@@ -466,44 +469,8 @@ namespace ffrelaytoolv1
 
         private void ChocoSplit_Click(object sender, EventArgs e)
         {
-            if (!ChocoWaiting)
-            {
-                if (ChocoSplitNum >= Splits.Length - 1)
-                {
-                    if (!ChocoFinished)
-                    {
-                        ChocoFinish = ChocoSplits[ChocoSplitNum];
-                        ChocoGameEnd[ChocoGame] = ChocoFinish;
-                        ChocoSplitTime4.Text = ChocoFinish;
-                        ChocoFinished = true;
-                    }
-                    return;
-                }
-                //Handle the splits. Showing 3 at a time, need to cycle games on end splits (Contains "Final Fantasy")
-                //Catch that we're ending a game before we move onto the next one
-                if (Splits[ChocoSplitNum].Contains(gameSep))
-                {
-                    //Assign the per-game timer to be our current split time, which is stored in ChocoSplits[ChocoSplitNum]
-                    ChocoGameEnd[ChocoGame] = ChocoSplits[ChocoSplitNum];
-                    //Move the current game along for tracking
-                    ChocoGame++;
-                    //Move onto the next game using the hand
-                    CyclePurpleIcon();
-                    //Anything else needs to be done?
-                }
-                ChocoSplitNum++;
-                UpdateChocoSplits();
-                //UpdateChocoIcons();
-                //Start Cooldown timer
-                ChocoCooldown.Enabled = true;
-                ChocoCooldown.Interval = 5000; //Change back to 5000
-                //ChocoCooldown.Interval = 5;
-                ChocoCooldown.Start();
-                ChocoCooldown.Tick += new EventHandler(ChocoCooldownDone);
-                ChocoWaiting = true;
-                WriteSplitFiles();
-            }
-            
+            splitClick(ref ChocoWaiting, ref ChocoSplitNum, ref ChocoFinished, ref ChocoFinish, ref ChocoSplits, ref ChocoGameEnd, ref ChocoGame,
+                ChocoSplitTime4, ref Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);            
         }
         void ChocoCooldownDone(Object myObject, EventArgs myEventArgs)
         { ChocoWaiting = false; ChocoCooldown.Stop(); }
@@ -636,44 +603,9 @@ namespace ffrelaytoolv1
         }
 
         private void TonbSplit_Click(object sender, EventArgs e)
-        {            
-            if (!TonbWaiting)
-            {
-                if (TonbSplitNum >= Splits.Length - 1)
-                {
-                    if (!TonbFinished)
-                    {
-                        TonbFinish = TonbSplits[TonbSplitNum];
-                        TonbGameEnd[TonbGame] = TonbFinish;
-                        TonbSplitTime4.Text = TonbFinish;
-                        TonbFinished = true;
-                    }
-                    return;
-                }
-                //Handle the splits. Showing 3 at a time, need to cycle games on end splits (Contains "Final Fantasy")
-                //Catch that we're ending a game before we move onto the next one
-                if (Splits[TonbSplitNum].Contains(gameSep))
-                {
-                    //Assign the per-game timer to be our current split time, which is stored in TonbSplits[TonbSplitNum]
-                    TonbGameEnd[TonbGame] = TonbSplits[TonbSplitNum];
-                    //Move the current game along for tracking
-                    TonbGame++;
-                    //Move onto the next game using the hand
-                    CycleGreenIcon();
-                    //Anything else needs to be done?
-                }
-                TonbSplitNum++;
-                UpdateTonbSplits();
-                //UpdateTonbIcons();
-                //Start Cooldown timer
-                TonbCooldown.Enabled = true;
-                TonbCooldown.Interval = 5000; //Change back to 5000
-                TonbCooldown.Start();
-                TonbCooldown.Tick += new EventHandler(TonbCooldownDone);
-                TonbWaiting = true;
-                WriteSplitFiles();
-            }
-
+        {
+            splitClick(ref TonbWaiting, ref TonbSplitNum, ref TonbFinished, ref TonbFinish, ref TonbSplits, ref TonbGameEnd, ref TonbGame,
+                TonbSplitTime4, ref Splits, CycleGreenIcon, TonbCooldown, UpdateTonbSplits, TonbCooldownDone);
         }
         void TonbCooldownDone(Object myObject, EventArgs myEventArgs)
         { TonbWaiting = false; TonbCooldown.Stop(); }
