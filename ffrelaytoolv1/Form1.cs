@@ -121,7 +121,7 @@ namespace ffrelaytoolv1
             UpdateMogSplits();
             UpdateChocoSplits();
             UpdateTonbSplits();
-            chocoIcon = mogIcon = tonbIcon = 17;
+            //chocoIcon = mogIcon = tonbIcon = 17;
             CyclePurpleIcon();
             CycleBlueIcon();
             CycleGreenIcon();
@@ -226,10 +226,10 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        private void cycleIcon(string teamName, ref int teamIcon, Label teamIconLabel, Label teamInfoCat1,
+        private void cycleIcon(string teamName, int teamIcon, Label teamIconLabel, Label teamInfoCat1,
             Label teamInfoCat2, Label teamInfoCat3, Label teamCommentary, string[] runners, string[] commentators)
         {
-            teamIcon++;
+            //teamIcon++;
             if (File.Exists("icon_" + teamIcon + ".png"))
             {
                 File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
@@ -253,7 +253,7 @@ namespace ffrelaytoolv1
         }
         void CycleBlueIcon()
         {
-            cycleIcon("mog", ref mogIcon, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
+            cycleIcon("mog", MogGame+1, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
         }
 
         private void hpbutton_Click(object sender, EventArgs e)
@@ -262,7 +262,7 @@ namespace ffrelaytoolv1
         }
         void CyclePurpleIcon()
         {
-            cycleIcon("choco", ref chocoIcon, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
+            cycleIcon("choco", ChocoGame+1, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
         }
 
         private void tonbIconButton_Click(object sender, EventArgs e)
@@ -271,11 +271,11 @@ namespace ffrelaytoolv1
         }
         void CycleGreenIcon()
         {
-            cycleIcon("tonb", ref tonbIcon, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
+            cycleIcon("tonb", TonbGame+1, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
         }
 
         private void splitClick(ref bool waiting, ref int splitNum, ref bool finished, ref string teamFinish,
-            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, ref string[] splits,
+            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, string[] splits,
             Action cycleIcons, Timer cooldown, Action updateTeamSplits, EventHandler cooldownDone)
         {
             //Activate Cooldown
@@ -318,7 +318,7 @@ namespace ffrelaytoolv1
         private void MogSplit_Click(object sender, EventArgs e)
         {
             splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
-                MogSplitTime4, ref Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
+                MogSplitTime4, Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
         }
         void MogCooldownDone(Object myObject, EventArgs myEventArgs)
         { MogWaiting = false; MogCooldown.Stop(); }
@@ -416,7 +416,7 @@ namespace ffrelaytoolv1
             }
             string lefttimes = MogGameEnd[0] + "\n";
             string righttimes = "";
-            for (int j = i; j < numberOfGames; j++)
+            for (int j = 1; j < numberOfGames; j++)
             {
                 string current = "00:00:00";
                 //If we're past the selected game, then subtract the previous one to get the segment time over split time
@@ -452,7 +452,7 @@ namespace ffrelaytoolv1
         private void ChocoSplit_Click(object sender, EventArgs e)
         {
             splitClick(ref ChocoWaiting, ref ChocoSplitNum, ref ChocoFinished, ref ChocoFinish, ref ChocoSplits, ref ChocoGameEnd, ref ChocoGame,
-                ChocoSplitTime4, ref Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);
+                ChocoSplitTime4, Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);
         }
         void ChocoCooldownDone(Object myObject, EventArgs myEventArgs)
         { ChocoWaiting = false; ChocoCooldown.Stop(); }
@@ -468,7 +468,7 @@ namespace ffrelaytoolv1
         private void TonbSplit_Click(object sender, EventArgs e)
         {
             splitClick(ref TonbWaiting, ref TonbSplitNum, ref TonbFinished, ref TonbFinish, ref TonbSplits, ref TonbGameEnd, ref TonbGame,
-                TonbSplitTime4, ref Splits, CycleGreenIcon, TonbCooldown, UpdateTonbSplits, TonbCooldownDone);
+                TonbSplitTime4, Splits, CycleGreenIcon, TonbCooldown, UpdateTonbSplits, TonbCooldownDone);
         }
         void TonbCooldownDone(Object myObject, EventArgs myEventArgs)
         { TonbWaiting = false; TonbCooldown.Stop(); }
@@ -517,9 +517,9 @@ namespace ffrelaytoolv1
             {
                 TonbRunners = File.ReadAllLines("tonb-runners.txt");
             }
-            MogCommentary.Text = "Commentary: " + Commentators[mogIcon - 1];
-            ChocoCommentary.Text = "Commentary: " + Commentators[chocoIcon - 1];
-            TonbCommentary.Text = "Commentary: " + Commentators[tonbIcon - 1];
+            MogCommentary.Text = "Commentary: " + Commentators[MogGame - 1];
+            ChocoCommentary.Text = "Commentary: " + Commentators[ChocoGame - 1];
+            TonbCommentary.Text = "Commentary: " + Commentators[TonbGame - 1];
             ReadSplitFiles();
         }
 
