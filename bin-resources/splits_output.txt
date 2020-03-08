@@ -1,0 +1,86 @@
+Time   | Mog   | Choco 
+Ifrit|00:00:00|00:00:00
+Bahamut|00:00:06|00:00:00
+Machine Trio|00:00:00|00:00:00
+Bahamut Fury|00:00:00|00:00:00
+Angeal Penance|00:00:00|00:00:00
+Guard Scorpion|00:00:00|00:00:00
+Nibelheim|00:00:00|00:00:00
+Sephiroth|00:00:00|00:00:00
+Hollander|00:00:00|00:00:00
+!Crisis Core: FF7|00:00:00|00:00:00
+Golbin Wall 1|00:00:00|00:00:00
+Daemon's Court|00:00:00|00:00:00
+Holy Element|00:00:00|00:00:00
+Mt. Vellenge|00:00:00|00:00:00
+!Crystal Chronicles|00:00:00|00:00:00
+Flame Dragon|00:00:00|00:00:00
+Ormi Logos Leblanc|00:00:00|00:00:00
+Dark Ixion|00:00:00|00:00:00
+Dark Magus Sisters|00:00:00|00:00:00
+!Final Fantasy X-2|00:00:00|00:00:00
+Giant Goblin|00:00:00|00:00:00
+Mega Red Dragon|00:00:00|00:00:00
+Vivi|00:00:00|00:00:00
+Vampire Prime|00:00:00|00:00:00
+Brandelis|00:00:00|00:00:00
+King of Bahamut|00:00:00|00:00:00
+!World of FF|00:00:00|00:00:00
+Sergeant|00:00:00|00:00:00
+Red Soul|00:00:00|00:00:00
+Lamia Queen|00:00:00|00:00:00
+Round Worm|00:00:00|00:00:00
+Emperor I|00:00:00|00:00:00
+!Final Fantasy II|00:00:00|00:00:00
+Fire Crystal|00:00:00|00:00:00
+Earth Crystal|00:00:00|00:00:00
+Water Crystal|00:00:00|00:00:00
+!FFF: Chocobo Tales|00:00:00|00:00:00
+Kuja / Jecht|00:00:00|00:00:00
+The Emperor|00:00:00|00:00:00
+!Dissidia|00:00:00|00:00:00
+Noel Kreiss|00:00:00|00:00:00
+Snow Villiers|00:00:00|00:00:00
+Parandus|00:00:00|00:00:00
+!Lightning Returns|00:00:00|00:00:00
+Plant Brain|00:00:00|00:00:00
+Black Waltz 3|00:00:00|00:00:00
+Gizamaluke|00:00:00|00:00:00
+Ralvurahva|00:00:00|00:00:00
+Ralvuimago|00:00:00|00:00:00
+Hilgigars|00:00:00|00:00:00
+Amarant|00:00:00|00:00:00
+Card Tournament|00:00:00|00:00:00
+Ark|00:00:00|00:00:00
+Red Dragons|00:00:00|00:00:00
+Earth Guardian|00:00:00|00:00:00
+Kuja|00:00:00|00:00:00
+Tiamat|00:00:00|00:00:00
+!Final Fantasy IX|00:00:00|00:00:00
+Major Odilon|00:00:00|00:00:00
+Vajra|00:00:00|00:00:00
+Gilgamesh|00:00:00|00:00:00
+!FF Type-0 HD|00:00:00|00:00:00
+Lich|00:00:00|00:00:00
+Marilith|00:00:00|00:00:00
+Tiamat|00:00:00|00:00:00
+!Final Fantasy I|00:00:00|00:00:00
+Aloeidai|00:00:00|00:00:00
+Caius Ballad|00:00:00|00:00:00
+Proto fal'Cie Adam|00:00:00|00:00:00
+!Final Fantasy 13-2|00:00:00|00:00:00
+Black Widow|00:00:00|00:00:00
+Arch Azul|00:00:00|00:00:00
+!Dirge of Cerberus|00:00:00|00:00:00
+Thextera|00:00:00|00:00:00
+Mimic Queen|00:00:00|00:00:00
+Judge Ghis|00:00:00|00:00:00
+Vossler|00:00:00|00:00:00
+Tiamat|00:00:00|00:00:00
+Judge Bergan|00:00:00|00:00:00
+Mandragoras|00:00:00|00:00:00
+Cid 1|00:00:00|00:00:00
+Shemhazai|00:00:00|00:00:00
+Pandaemonium|00:00:00|00:00:00
+Hashmal|00:00:00|00:00:00
+!Final Fantasy XII|00:00:00|00:00:00
