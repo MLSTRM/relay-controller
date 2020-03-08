@@ -336,21 +336,9 @@ namespace ffrelaytoolv1
             return s.Replace(gameSep,"");
         }
 
-        class splitsAndNum
-        {
-            public int splitNum;
-            public string[] splits;
-            public Label vsLabel;
-            public splitsAndNum(int num, string[] splits, Label label){
-                this.splitNum = num;
-                this.splits = splits;
-                this.vsLabel = label;
-            }
-        }
-
         void updateSplits(int splitNum, string[] Splits, int teamGame, int numberOfGames, 
             Label teamSplitName1, Label teamSplitName2, Label teamSplitName3, Label teamSplitName4,
-            Label teamSplitTime1, Label teamSplitTime2, Label teamSplitTime3, Label teamSplitTime4, string[] teamSplits, splitsAndNum[] otherTeams,
+            Label teamSplitTime1, Label teamSplitTime2, Label teamSplitTime3, Label teamSplitTime4, string[] teamSplits, VersusWrapper[] otherTeams,
             ref string[] teamGameEndArchive, string[] teamGameEnds, Label teamGameTimerL, Label teamGameEndL, Label teamTimer, Label teamGameTimerR)
         {
             int i = splitNum;
@@ -448,8 +436,8 @@ namespace ffrelaytoolv1
         void UpdateMogSplits()
         {
             updateSplits(MogSplitNum, Splits, MogGame, 14, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
-                MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits, 
-                new splitsAndNum[] { new splitsAndNum(ChocoSplitNum, ChocoSplits, MogSplitVs1), new splitsAndNum(TonbSplitNum, TonbSplits, MogSplitVs2) }, 
+                MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits,
+                new VersusWrapper[] { new VersusWrapper(ChocoSplitNum, ChocoSplits, MogSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, MogSplitVs2) }, 
                 ref MogGameEndArchive, MogGameEnd, MogGameTimersL, MogGameEndL, MogTimer, MogGameTimersR);
         }
 
@@ -465,7 +453,7 @@ namespace ffrelaytoolv1
         {
             updateSplits(ChocoSplitNum, Splits, ChocoGame, 14, ChocoSplitName1, ChocoSplitName2, ChocoSplitName3, ChocoSplitName4,
                 ChocoSplitTime1, ChocoSplitTime2, ChocoSplitTime3, ChocoSplitTime4, ChocoSplits,
-                new splitsAndNum[] { new splitsAndNum(MogSplitNum, MogSplits, ChocoSplitVs1), new splitsAndNum(TonbSplitNum, TonbSplits, ChocoSplitVs2) },
+                new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, ChocoSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, ChocoSplitVs2) },
                 ref ChocoGameEndArchive, ChocoGameEnd, ChocoGameTimersL, ChocoGameEndL, ChocoTimer, ChocoGameTimersR);
         }
 
@@ -481,216 +469,27 @@ namespace ffrelaytoolv1
         {
             updateSplits(TonbSplitNum, Splits, TonbGame, 14, TonbSplitName1, TonbSplitName2, TonbSplitName3, TonbSplitName4,
                 TonbSplitTime1, TonbSplitTime2, TonbSplitTime3, TonbSplitTime4, TonbSplits,
-                new splitsAndNum[] { new splitsAndNum(MogSplitNum, MogSplits, TonbSplitVs1), new splitsAndNum(ChocoSplitNum, ChocoSplits, TonbSplitVs2) },
+                new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, TonbSplitVs1), new VersusWrapper(ChocoSplitNum, ChocoSplits, TonbSplitVs2) },
                 ref TonbGameEndArchive, TonbGameEnd, TonbGameTimersL, TonbGameEndL, TonbTimer, TonbGameTimersR);
         }
 
         private void MogTab_Clicked(object sender, TabControlEventArgs e)
         {
             MogTab = e.TabPageIndex;
-            //UpdateMogIcons();
             ChangedThisMin = true;
         }
-
-        /*void UpdateMogIcons()
-        {
-            //Mainly used to move hands around
-            switch (MogTab)
-            {
-                case 0:
-                    //Splits, 1,3,5,7
-                    if (MogSplitNum == 0)
-                    { File.Copy("Linfo_l1.png", "Linfo.png", true); break; }
-                    if (MogSplitNum == 1)
-                    { File.Copy("Linfo_l3.png", "Linfo.png", true); break; }
-                    else if (MogSplitNum == Splits.Length - 1)
-                    { File.Copy("Linfo_l7.png", "Linfo.png", true); break; }
-                    else
-                    { File.Copy("Linfo_l5.png", "Linfo.png", true); }
-                    break;
-                case 2:
-                case 5:
-                case 3:
-                case 6:
-                    if (MogGame == 16)
-                    { File.Copy("Linfo_l8.png", "Linfo.png", true); break; }
-                    if ((MogGame >= 8 && MogGame != 16 && (MogTab == 2 || MogTab == 5)) || (MogGame < 8 && (MogTab == 3 || MogTab == 6)))
-                    {
-                        File.Copy("Linfo_l0.png", "Linfo.png", true); break; //Top if on "wrong" page
-                    }
-                    switch (MogGame % 8) //2,4,5,6 each side, 8 at bottom, same side
-                    {
-                        case 0:
-                            File.Copy("Linfo_l2.png", "Linfo.png", true);
-                            break;
-                        case 1:
-                            File.Copy("Linfo_l4.png", "Linfo.png", true);
-                            break;
-                        case 2:
-                            File.Copy("Linfo_l5.png", "Linfo.png", true);
-                            break;
-                        case 3:
-                            File.Copy("Linfo_l6.png", "Linfo.png", true);
-                            break;
-                        case 4:
-                            File.Copy("Linfo_r2.png", "Linfo.png", true);
-                            break;
-                        case 5:
-                            File.Copy("Linfo_r4.png", "Linfo.png", true);
-                            break;
-                        case 6:
-                            File.Copy("Linfo_r5.png", "Linfo.png", true);
-                            break;
-                        case 7:
-                            File.Copy("Linfo_r6.png", "Linfo.png", true);
-                            break;
-                    }
-                    break;
-                default:
-                    //Game Information/Commentators, use 1
-                    File.Copy("Linfo_l1.png", "Linfo.png", true);
-                    break;
-            }
-        }
-        */
 
         private void ChocoTab_Clicked(object sender, TabControlEventArgs e)
         {
             ChocoTab = e.TabPageIndex;
-            //UpdateChocoIcons();
             ChangedThisMin = true;
         }
-
-        /*void UpdateChocoIcons()
-        {
-            //Mainly used to move hands around
-            switch (ChocoTab)
-            {
-                case 0:
-                    //Splits, 1,3,5,7
-                    if (ChocoSplitNum == 0)
-                    { File.Copy("Rinfo_r1.png", "Rinfo.png", true); break; }
-                    if (ChocoSplitNum == 1)
-                    { File.Copy("Rinfo_r3.png", "Rinfo.png", true); break; }
-                    else if (ChocoSplitNum == Splits.Length - 1)
-                    { File.Copy("RInfo_r7.png", "Rinfo.png", true); break; }
-                    else
-                    { File.Copy("RInfo_r5.png", "Rinfo.png", true); }
-                    break;
-                case 2:
-                case 5:
-                case 3:
-                case 6:
-                    if (ChocoGame == 16)
-                    { File.Copy("Rinfo_r8.png", "RInfo.png", true); break; }
-                    if ((ChocoGame >= 8 && ChocoGame != 16 && (ChocoTab == 2 || ChocoTab == 5)) || (ChocoGame < 8 && (ChocoTab == 3 || ChocoTab == 6)))
-                    {
-                        File.Copy("Rinfo_r0.png", "RInfo.png", true); break; //Top if on "wrong" page
-                    }
-                    switch (ChocoGame % 8) //2,4,5,6 each side, 8 at bottom, same side
-                    {
-                        case 0:
-                            File.Copy("Rinfo_l2.png", "RInfo.png", true);
-                            break;
-                        case 1:
-                            File.Copy("Rinfo_l4.png", "RInfo.png", true);
-                            break;
-                        case 2:
-                            File.Copy("Rinfo_l5.png", "RInfo.png", true);
-                            break;
-                        case 3:
-                            File.Copy("Rinfo_l6.png", "RInfo.png", true);
-                            break;
-                        case 4:
-                            File.Copy("Rinfo_r2.png", "RInfo.png", true);
-                            break;
-                        case 5:
-                            File.Copy("Rinfo_r4.png", "RInfo.png", true);
-                            break;
-                        case 6:
-                            File.Copy("Rinfo_r5.png", "RInfo.png", true);
-                            break;
-                        case 7:
-                            File.Copy("Rinfo_r6.png", "RInfo.png", true);
-                            break;
-                    }
-                    break;
-                default:
-                    //Game Information/Commentators, use 1
-                    File.Copy("Rinfo_r1.png", "Rinfo.png", true);
-                    break;
-            }
-        }
-        */
 
         private void TonbTab_Clicked(object sender, TabControlEventArgs e)
         {
             TonbTab = e.TabPageIndex;
-            //UpdateTonbIcons();
             ChangedThisMin = true;
         }
-
-        /* void UpdateTonbIcons()
-         {
-             //Mainly used to move hands around
-             switch (TonbTab)
-             {
-                 case 0:
-                     //Splits, 1,3,5,7
-                     if (TonbSplitNum == 0)
-                     { File.Copy("Rinfo_r1.png", "Rinfo.png", true); break; }
-                     if (TonbSplitNum == 1)
-                     { File.Copy("Rinfo_r3.png", "Rinfo.png", true); break; }
-                     else if (TonbSplitNum == Splits.Length - 1)
-                     { File.Copy("RInfo_r7.png", "Rinfo.png", true); break; }
-                     else
-                     { File.Copy("RInfo_r5.png", "Rinfo.png", true); }
-                     break;
-                 case 2:
-                 case 5:
-                 case 3:
-                 case 6:
-                     if (TonbGame == 16)
-                     { File.Copy("Rinfo_r8.png", "RInfo.png", true); break; }
-                     if ((TonbGame >= 8 && TonbGame != 16 && (TonbTab == 2 || TonbTab == 5)) || (TonbGame < 8 && (TonbTab == 3 || TonbTab == 6)))
-                     {
-                         File.Copy("Rinfo_r0.png", "RInfo.png", true); break; //Top if on "wrong" page
-                     }
-                     switch (TonbGame % 8) //2,4,5,6 each side, 8 at bottom, same side
-                     {
-                         case 0:
-                             File.Copy("Rinfo_l2.png", "RInfo.png", true);
-                             break;
-                         case 1:
-                             File.Copy("Rinfo_l4.png", "RInfo.png", true);
-                             break;
-                         case 2:
-                             File.Copy("Rinfo_l5.png", "RInfo.png", true);
-                             break;
-                         case 3:
-                             File.Copy("Rinfo_l6.png", "RInfo.png", true);
-                             break;
-                         case 4:
-                             File.Copy("Rinfo_r2.png", "RInfo.png", true);
-                             break;
-                         case 5:
-                             File.Copy("Rinfo_r4.png", "RInfo.png", true);
-                             break;
-                         case 6:
-                             File.Copy("Rinfo_r5.png", "RInfo.png", true);
-                             break;
-                         case 7:
-                             File.Copy("Rinfo_r6.png", "RInfo.png", true);
-                             break;
-                     }
-                     break;
-                 default:
-                     //Game Information/Commentators, use 1
-                     File.Copy("Rinfo_r1.png", "Rinfo.png", true);
-                     break;
-             }
-         }
-         * */
 
         private void CommUpdate_Click(object sender, EventArgs e)
         {
@@ -710,9 +509,9 @@ namespace ffrelaytoolv1
             {
                 TonbRunners = File.ReadAllLines("tonb-runners.txt");
             }
-            MogCommentary.Text = "Commentary: " + Commentators[mogIcon - 1];//.Replace(",", "\n");
-            ChocoCommentary.Text = "Commentary: " + Commentators[chocoIcon - 1];//.Replace(",", "\n");
-            TonbCommentary.Text = Commentators[tonbIcon - 1].Replace(",", "\n");
+            MogCommentary.Text = "Commentary: " + Commentators[mogIcon - 1];
+            ChocoCommentary.Text = "Commentary: " + Commentators[chocoIcon - 1];
+            TonbCommentary.Text = "Commentary: " + Commentators[tonbIcon - 1];
             ReadSplitFiles();
         }
 
