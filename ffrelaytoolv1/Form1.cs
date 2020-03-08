@@ -392,7 +392,7 @@ namespace ffrelaytoolv1
                 teamTimer.Text = teamSplits[splitNum];
                 return;
             }
-            string lefttimes = MogGameEnd[0] + "\n";
+            string lefttimes = teamGameEnds[0] + "\n";
             string righttimes = "";
             for (int j = 1; j < numberOfGames; j++)
             {

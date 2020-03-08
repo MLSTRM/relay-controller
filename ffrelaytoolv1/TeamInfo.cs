@@ -5,37 +5,46 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using System.Drawing;
 
 namespace ffrelaytoolv1
 {
     class TeamInfo
     {
-        int teamIcon { get; set; }
+        public string teamName { get; set; }
 
-        Timer teamCooldown { get; set; }
+        public int teamIcon { get; set; }
 
-        bool teamWaiting { get; set; }
+        public Timer teamCooldown { get; set; }
 
-        string[] teamRunners { get; set; }
+        public bool teamWaiting { get; set; }
 
-        int teamGame { get; set; }
+        public string[] teamRunners { get; set; }
 
-        int teamSplitNum { get; set; }
+        public int teamGame { get; set; }
 
-        string[] teamSplits { get; set; }
+        public int teamSplitNum { get; set; }
 
-        string[] teamGameEnd { get; set; }
+        public string[] teamSplits { get; set; }
 
-        string teamFinish { get; set; }
+        public string[] teamGameEnd { get; set; }
 
-        bool teamFinished { get; set; }
+        public string teamFinish { get; set; }
 
-        int teamTab { get; set; }
+        public bool teamFinished { get; set; }
 
-        string[] teamGameEndArchive { get; set; }
+        public int teamTab { get; set; }
 
-        public TeamInfo(int numberOfGames, int numberOfSplits, string runnerFileName)
+        public string[] teamGameEndArchive { get; set; }
+
+        public Color color { get; set; }
+
+        public Bitmap tabBackground { get; set; }
+
+        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Bitmap bg)
         {
+            this.tabBackground = bg;
+            this.color = color;
             teamIcon = 1;
             teamCooldown = new Timer();
             teamWaiting = false;
@@ -43,6 +52,7 @@ namespace ffrelaytoolv1
             teamSplitNum = 0;
             teamFinished = false;
             teamTab = 0;
+            this.teamName = teamName;
             if(File.Exists(runnerFileName)){
                 teamRunners = File.ReadAllLines(runnerFileName);
             }
