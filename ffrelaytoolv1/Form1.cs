@@ -25,6 +25,7 @@ namespace ffrelaytoolv1
         KeyboardHook hook = new KeyboardHook();
         bool MainTimerRunning = false;
         public DateTime TimerStart;
+        int numberOfGames = 14;
         //int bgnum = 1;
         int chocoIcon = 1;
         int mogIcon = 1;
@@ -129,9 +130,6 @@ namespace ffrelaytoolv1
             hook.RegisterHotKey(0, Keys.F1);
             hook.RegisterHotKey(0, Keys.F2);
             hook.RegisterHotKey(0, Keys.F3);
-            //File.Copy("bg_1.png", "background.png", true);
-            //File.Copy("Rinfo_r1.png", "RInfo.png", true);
-            //File.Copy("Linfo_l1.png", "LInfo.png", true);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -162,9 +160,6 @@ namespace ffrelaytoolv1
                 tick.Start();
                 tick.Tick += new EventHandler(TimerEventProcessor);
                 tick.Interval = 250;
-                //UpdateMogIcons();
-                //UpdateChocoIcons();
-                //UpdateTonbIcons();
             }
             else
             {
@@ -192,17 +187,14 @@ namespace ffrelaytoolv1
             {
                 if (!ChangedThisMin)
                 {
-                    //if (infomog.SelectedIndex == 3 || (infomog.SelectedIndex == 2 && MogGame == 0))
                     if (infomog.SelectedIndex == 2)
                     { infomog.SelectedIndex = 0; }
                     else { infomog.SelectedIndex++; }
 
-                    //if (infochoco.SelectedIndex == 3 || (infochoco.SelectedIndex == 2 && ChocoGame == 0))
                     if (infochoco.SelectedIndex == 2)
                     { infochoco.SelectedIndex = 0; }
                     else { infochoco.SelectedIndex++; }
 
-                    // if (infotonb.SelectedIndex == 3 || (infotonb.SelectedIndex == 2 && TonbGame == 0))
                     if (infotonb.SelectedIndex == 2)
                     { infotonb.SelectedIndex = 0; }
                     else { infotonb.SelectedIndex++; }
@@ -451,7 +443,7 @@ namespace ffrelaytoolv1
 
         void UpdateMogSplits()
         {
-            updateSplits(MogSplitNum, Splits, MogGame, 14, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
+            updateSplits(MogSplitNum, Splits, MogGame, numberOfGames, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
                 MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits,
                 new VersusWrapper[] { new VersusWrapper(ChocoSplitNum, ChocoSplits, MogSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, MogSplitVs2) },
                 ref MogGameEndArchive, MogGameEnd, MogGameTimersL, MogGameEndL, MogTimer, MogGameTimersR);
@@ -467,7 +459,7 @@ namespace ffrelaytoolv1
 
         void UpdateChocoSplits()
         {
-            updateSplits(ChocoSplitNum, Splits, ChocoGame, 14, ChocoSplitName1, ChocoSplitName2, ChocoSplitName3, ChocoSplitName4,
+            updateSplits(ChocoSplitNum, Splits, ChocoGame, numberOfGames, ChocoSplitName1, ChocoSplitName2, ChocoSplitName3, ChocoSplitName4,
                 ChocoSplitTime1, ChocoSplitTime2, ChocoSplitTime3, ChocoSplitTime4, ChocoSplits,
                 new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, ChocoSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, ChocoSplitVs2) },
                 ref ChocoGameEndArchive, ChocoGameEnd, ChocoGameTimersL, ChocoGameEndL, ChocoTimer, ChocoGameTimersR);
@@ -483,7 +475,7 @@ namespace ffrelaytoolv1
 
         void UpdateTonbSplits()
         {
-            updateSplits(TonbSplitNum, Splits, TonbGame, 14, TonbSplitName1, TonbSplitName2, TonbSplitName3, TonbSplitName4,
+            updateSplits(TonbSplitNum, Splits, TonbGame, numberOfGames, TonbSplitName1, TonbSplitName2, TonbSplitName3, TonbSplitName4,
                 TonbSplitTime1, TonbSplitTime2, TonbSplitTime3, TonbSplitTime4, TonbSplits,
                 new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, TonbSplitVs1), new VersusWrapper(ChocoSplitNum, ChocoSplits, TonbSplitVs2) },
                 ref TonbGameEndArchive, TonbGameEnd, TonbGameTimersL, TonbGameEndL, TonbTimer, TonbGameTimersR);
@@ -569,53 +561,6 @@ namespace ffrelaytoolv1
                         TonbSplits[i - 1] = split[3];
                     }
                 }
-                ResolveOffsets();
-            }
-        }
-
-        private void ResolveOffsets()
-        {
-            string s1 = MogSplits[MogSplitNum > 0 ? MogSplitNum - 1 : 0];
-            string s2 = ChocoSplits[ChocoSplitNum > 0 ? ChocoSplitNum - 1 : 0];
-            string s3 = TonbSplits[TonbSplitNum > 0 ? TonbSplitNum - 1 : 0];
-            TimeSpan t1 = new TimeSpan(int.Parse(s1.Split(':')[0]), int.Parse(s1.Split(':')[1]), int.Parse(s1.Split(':')[2]));
-            TimeSpan t2 = new TimeSpan(int.Parse(s2.Split(':')[0]), int.Parse(s2.Split(':')[1]), int.Parse(s2.Split(':')[2]));
-            TimeSpan t3 = new TimeSpan(int.Parse(s3.Split(':')[0]), int.Parse(s3.Split(':')[1]), int.Parse(s3.Split(':')[2]));
-            if (MogSplitNum == ChocoSplitNum)
-            {
-                //Mog 1, Choco 1
-                TimeSpan seg1 = t1 - t2;
-                string current = "";
-                if (seg1.TotalHours > -1)
-                { if (seg1.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg1.TotalHours, seg1);
-                MogSplitVs1.Text = current;
-                string swapcurrent = (current.Substring(0, 1) == "-" ? "+" : "-") + current.Substring(1);
-                ChocoSplitVs1.Text = swapcurrent;
-            }
-            if (ChocoSplitNum == TonbSplitNum)
-            {
-                //Choco 2, Tonb 2
-                TimeSpan seg2 = t2 - t3;
-                string current = "";
-                if (seg2.TotalHours > -1)
-                { if (seg2.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg2.TotalHours, seg2);
-                ChocoSplitVs2.Text = current;
-                string swapcurrent = (current.Substring(0, 1) == "-" ? "+" : "-") + current.Substring(1);
-                TonbSplitVs2.Text = swapcurrent;
-            }
-            if (MogSplitNum == TonbSplitNum)
-            {
-                //Mog 2, Tonb 1
-                TimeSpan seg3 = t1 - t3;
-                string current = "";
-                if (seg3.TotalHours > -1)
-                { if (seg3.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg3.TotalHours, seg3);
-                MogSplitVs2.Text = current;
-                string swapcurrent = (current.Substring(0, 1) == "-" ? "+" : "-") + current.Substring(1);
-                TonbSplitVs1.Text = swapcurrent;
             }
         }
     }
