@@ -7,19 +7,16 @@ using System.Windows.Forms;
 
 namespace ffrelaytoolv1
 {
-    class VersusWrapper
+    public class VersusWrapper
     {
         public int splitNum;
 
         public string[] splits;
 
-        public Label vsLabel;
-
-        public VersusWrapper(int num, string[] splits, Label label)
+        public VersusWrapper(int num, string[] splits)
         {
             this.splitNum = num;
             this.splits = splits;
-            this.vsLabel = label;
         }
     }
 }

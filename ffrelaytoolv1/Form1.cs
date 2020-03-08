@@ -86,6 +86,8 @@ namespace ffrelaytoolv1
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
                                      "00:00:00", "00:00:00"};
 
+        TeamControl[] teams;
+
         public Form1()
         {
             InitializeComponent();
@@ -116,6 +118,7 @@ namespace ffrelaytoolv1
             hook.RegisterHotKey(0, Keys.F1);
             hook.RegisterHotKey(0, Keys.F2);
             hook.RegisterHotKey(0, Keys.F3);
+            teams = new TeamControl[3];
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -323,102 +326,6 @@ namespace ffrelaytoolv1
             label.Text = current;
         }
 
-        void updateSplits(int splitNum, string[] Splits, int teamGame, int numberOfGames,
-            Label teamSplitName1, Label teamSplitName2, Label teamSplitName3, Label teamSplitName4,
-            Label teamSplitTime1, Label teamSplitTime2, Label teamSplitTime3, Label teamSplitTime4, string[] teamSplits, VersusWrapper[] otherTeams,
-            ref string[] teamGameEndArchive, string[] teamGameEnds, Label teamGameTimerL, Label teamGameEndL, Label teamTimer, Label teamGameTimerR)
-        {
-            int i = splitNum;
-            if (i == 0) { i += 2; }
-            else if (i == 1) { i++; }
-            else if (i == Splits.Length - 1) { i--; }
-            teamSplitName1.Text = stripGameIndicator(Splits[i - 2]);
-            teamSplitName2.Text = stripGameIndicator(Splits[i - 1]);
-            teamSplitName3.Text = stripGameIndicator(Splits[i]);
-            teamSplitName4.Text = stripGameIndicator(Splits[i + 1]);
-            teamSplitTime1.Text = teamSplits[i - 2];
-            teamSplitTime2.Text = teamSplits[i - 1];
-            teamSplitTime3.Text = teamSplits[i];
-            teamSplitTime4.Text = teamSplits[i + 1];
-
-            //Split comparisons, since this works even on FF1 it needs to be here
-            int offset = 0;
-            bool[] vs = new bool[otherTeams.Length];
-            while (offset <= splitNum)
-            {
-                for (int team = 0; team < otherTeams.Length; team++)
-                {
-                    //If we're on the same split, then don't update the versus differences.
-                    if (otherTeams[team].splitNum == splitNum)
-                    {
-                        vs[team] = true;
-                        if (splitNum > 0)
-                        {
-                            TimeSpan seg = resolveTimeSpan(teamSplits[splitNum - 1], otherTeams[team].splits[splitNum - 1]);
-                            updateDifferenceDisplay(otherTeams[team].vsLabel, seg);
-                        }
-                    }
-                    //Otherwise update the value based on the live difference (Only if greater than static difference?)
-                    if (!vs[team] && otherTeams[team].splits[splitNum - offset] != "00:00:00")
-                    {
-                        TimeSpan seg = resolveTimeSpan(teamSplits[splitNum - offset], otherTeams[team].splits[splitNum - offset]);
-                        if (splitNum - offset > 0)
-                        {
-                            //If the offset on the previous split is larger than the live one then use that.
-                            TimeSpan olderseg = resolveTimeSpan(teamSplits[splitNum - offset - 1], otherTeams[team].splits[splitNum - offset - 1]);
-                            if (Math.Abs(olderseg.Ticks) > Math.Abs(seg.Ticks))
-                            {
-                                seg = olderseg;
-                            }
-                        }
-                        updateDifferenceDisplay(otherTeams[team].vsLabel, seg);
-                        vs[team] = true;
-                    }
-                }
-                if (vs.All(b => b))
-                {
-                    offset = splitNum;
-                }
-                offset++;
-            }
-
-            //Per Game Splits
-            //Since we're always at least on FF1, just include the time for it in here, removes the special case later
-            teamGameEndArchive = teamGameEnds;
-            if (teamGame == 0)
-            {
-                teamGameTimerL.Text = teamSplits[splitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                teamGameEndL.Text = teamSplits[splitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                teamTimer.Text = teamSplits[splitNum];
-                return;
-            }
-            string lefttimes = teamGameEnds[0] + "\n";
-            string righttimes = "";
-            for (int j = 1; j < numberOfGames; j++)
-            {
-                string current = "00:00:00";
-                //If we're past the selected game, then subtract the previous one to get the segment time over split time
-                if (teamGame > j)
-                {
-                    TimeSpan seg = resolveTimeSpan(teamGameEnds[j], teamGameEnds[j - 1]);
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                }
-                else if (teamGame == j)
-                {
-                    TimeSpan seg = resolveTimeSpan(teamSplits[splitNum], teamGameEnds[j - 1]);
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    teamTimer.Text = current;
-                    teamGameEndArchive[teamGame] = teamSplits[splitNum];
-                }
-                if (j < 7)
-                { lefttimes += current + "\n"; }
-                else
-                { righttimes += current + "\n"; }
-            }
-            teamGameTimerL.Text = lefttimes;
-            teamGameTimerR.Text = righttimes;
-        }
-
         private void MogSplit_Click(object sender, EventArgs e)
         {
             splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
@@ -429,10 +336,7 @@ namespace ffrelaytoolv1
 
         void UpdateMogSplits()
         {
-            updateSplits(MogSplitNum, Splits, MogGame, numberOfGames, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
-                MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits,
-                new VersusWrapper[] { new VersusWrapper(ChocoSplitNum, ChocoSplits, MogSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, MogSplitVs2) },
-                ref MogGameEndArchive, MogGameEnd, MogGameTimersL, MogGameEndL, MogTimer, MogGameTimersR);
+
         }
 
         private void ChocoSplit_Click(object sender, EventArgs e)
@@ -445,10 +349,7 @@ namespace ffrelaytoolv1
 
         void UpdateChocoSplits()
         {
-            updateSplits(ChocoSplitNum, Splits, ChocoGame, numberOfGames, ChocoSplitName1, ChocoSplitName2, ChocoSplitName3, ChocoSplitName4,
-                ChocoSplitTime1, ChocoSplitTime2, ChocoSplitTime3, ChocoSplitTime4, ChocoSplits,
-                new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, ChocoSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, ChocoSplitVs2) },
-                ref ChocoGameEndArchive, ChocoGameEnd, ChocoGameTimersL, ChocoGameEndL, ChocoTimer, ChocoGameTimersR);
+            
         }
 
         private void TonbSplit_Click(object sender, EventArgs e)
@@ -461,10 +362,7 @@ namespace ffrelaytoolv1
 
         void UpdateTonbSplits()
         {
-            updateSplits(TonbSplitNum, Splits, TonbGame, numberOfGames, TonbSplitName1, TonbSplitName2, TonbSplitName3, TonbSplitName4,
-                TonbSplitTime1, TonbSplitTime2, TonbSplitTime3, TonbSplitTime4, TonbSplits,
-                new VersusWrapper[] { new VersusWrapper(MogSplitNum, MogSplits, TonbSplitVs1), new VersusWrapper(ChocoSplitNum, ChocoSplits, TonbSplitVs2) },
-                ref TonbGameEndArchive, TonbGameEnd, TonbGameTimersL, TonbGameEndL, TonbTimer, TonbGameTimersR);
+            
         }
 
         private void MogTab_Clicked(object sender, TabControlEventArgs e)
@@ -554,6 +452,18 @@ namespace ffrelaytoolv1
                     }
                 }
             }
+        }
+
+        public VersusWrapper[] fetchOtherTeamInfo(TeamControl self)
+        {
+            VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
+            int adjustedIndex = 0;
+            for (int i = 0; i < teams.Length - 1; i++)
+            {
+                if (self == teams[i]) { adjustedIndex++; }
+                wrapperArray[i] = new VersusWrapper(teams[adjustedIndex].teamInfo.teamSplitNum, teams[adjustedIndex].teamInfo.teamSplits);
+            }
+            return wrapperArray;
         }
     }
 }

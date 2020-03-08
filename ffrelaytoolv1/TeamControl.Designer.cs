@@ -31,20 +31,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TeamControl));
             this.TeamSplitButton = new System.Windows.Forms.Button();
             this.TimerLabel = new System.Windows.Forms.Label();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPageTimes = new System.Windows.Forms.TabPage();
             this.gameTimesL = new System.Windows.Forms.Label();
             this.gameTimesR = new System.Windows.Forms.Label();
             this.GameTitlesR2 = new System.Windows.Forms.Label();
             this.GameTitlesL2 = new System.Windows.Forms.Label();
             this.GameTitlesR1 = new System.Windows.Forms.Label();
             this.GameTitlesL1 = new System.Windows.Forms.Label();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPageCategories = new System.Windows.Forms.TabPage();
             this.CommentatorsText = new System.Windows.Forms.Label();
             this.label25 = new System.Windows.Forms.Label();
             this.CategoryInfo2 = new System.Windows.Forms.Label();
             this.CategoryInfo1 = new System.Windows.Forms.Label();
             this.CategoryInfo3 = new System.Windows.Forms.Label();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPageSplits = new System.Windows.Forms.TabPage();
             this.teamVsText2 = new System.Windows.Forms.Label();
             this.teamVsText1 = new System.Windows.Forms.Label();
             this.teamVsTime2 = new System.Windows.Forms.Label();
@@ -58,9 +58,9 @@
             this.splitText2 = new System.Windows.Forms.Label();
             this.splitText1 = new System.Windows.Forms.Label();
             this.teamTabGroup = new System.Windows.Forms.TabControl();
-            this.tabPage4.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageTimes.SuspendLayout();
+            this.tabPageCategories.SuspendLayout();
+            this.tabPageSplits.SuspendLayout();
             this.teamTabGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -87,22 +87,22 @@
             this.TimerLabel.Text = "00:00:00";
             this.TimerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabPage4
+            // tabPageTimes
             // 
-            this.tabPage4.BackColor = System.Drawing.Color.Black;
-            this.tabPage4.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPage4.BackgroundImage")));
-            this.tabPage4.Controls.Add(this.gameTimesL);
-            this.tabPage4.Controls.Add(this.gameTimesR);
-            this.tabPage4.Controls.Add(this.GameTitlesR2);
-            this.tabPage4.Controls.Add(this.GameTitlesL2);
-            this.tabPage4.Controls.Add(this.GameTitlesR1);
-            this.tabPage4.Controls.Add(this.GameTitlesL1);
-            this.tabPage4.Location = new System.Drawing.Point(4, 22);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage4.Size = new System.Drawing.Size(400, 228);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "M: Times";
+            this.tabPageTimes.BackColor = System.Drawing.Color.Black;
+            this.tabPageTimes.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageTimes.BackgroundImage")));
+            this.tabPageTimes.Controls.Add(this.gameTimesL);
+            this.tabPageTimes.Controls.Add(this.gameTimesR);
+            this.tabPageTimes.Controls.Add(this.GameTitlesR2);
+            this.tabPageTimes.Controls.Add(this.GameTitlesL2);
+            this.tabPageTimes.Controls.Add(this.GameTitlesR1);
+            this.tabPageTimes.Controls.Add(this.GameTitlesL1);
+            this.tabPageTimes.Location = new System.Drawing.Point(4, 22);
+            this.tabPageTimes.Name = "tabPageTimes";
+            this.tabPageTimes.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageTimes.Size = new System.Drawing.Size(400, 228);
+            this.tabPageTimes.TabIndex = 3;
+            this.tabPageTimes.Text = "M: Times";
             // 
             // gameTimesL
             // 
@@ -176,21 +176,21 @@
             this.GameTitlesL1.Text = "CC7 : \r\nFFCC : \r\nX-2 : \r\nWoFF : ";
             this.GameTitlesL1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // tabPage3
+            // tabPageCategories
             // 
-            this.tabPage3.BackColor = System.Drawing.Color.Black;
-            this.tabPage3.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPage3.BackgroundImage")));
-            this.tabPage3.Controls.Add(this.CommentatorsText);
-            this.tabPage3.Controls.Add(this.label25);
-            this.tabPage3.Controls.Add(this.CategoryInfo2);
-            this.tabPage3.Controls.Add(this.CategoryInfo1);
-            this.tabPage3.Controls.Add(this.CategoryInfo3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 22);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage3.Size = new System.Drawing.Size(400, 228);
-            this.tabPage3.TabIndex = 1;
-            this.tabPage3.Text = "M: Cats";
+            this.tabPageCategories.BackColor = System.Drawing.Color.Black;
+            this.tabPageCategories.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageCategories.BackgroundImage")));
+            this.tabPageCategories.Controls.Add(this.CommentatorsText);
+            this.tabPageCategories.Controls.Add(this.label25);
+            this.tabPageCategories.Controls.Add(this.CategoryInfo2);
+            this.tabPageCategories.Controls.Add(this.CategoryInfo1);
+            this.tabPageCategories.Controls.Add(this.CategoryInfo3);
+            this.tabPageCategories.Location = new System.Drawing.Point(4, 22);
+            this.tabPageCategories.Name = "tabPageCategories";
+            this.tabPageCategories.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageCategories.Size = new System.Drawing.Size(400, 228);
+            this.tabPageCategories.TabIndex = 1;
+            this.tabPageCategories.Text = "M: Cats";
             // 
             // CommentatorsText
             // 
@@ -257,28 +257,28 @@
             this.CategoryInfo3.Text = "MogCategory";
             this.CategoryInfo3.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabPage2
+            // tabPageSplits
             // 
-            this.tabPage2.BackColor = System.Drawing.Color.Black;
-            this.tabPage2.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPage2.BackgroundImage")));
-            this.tabPage2.Controls.Add(this.teamVsText2);
-            this.tabPage2.Controls.Add(this.teamVsText1);
-            this.tabPage2.Controls.Add(this.teamVsTime2);
-            this.tabPage2.Controls.Add(this.teamVsTime1);
-            this.tabPage2.Controls.Add(this.splitTime4);
-            this.tabPage2.Controls.Add(this.splitText4);
-            this.tabPage2.Controls.Add(this.splitTime3);
-            this.tabPage2.Controls.Add(this.splitTime2);
-            this.tabPage2.Controls.Add(this.splitTime1);
-            this.tabPage2.Controls.Add(this.splitText3);
-            this.tabPage2.Controls.Add(this.splitText2);
-            this.tabPage2.Controls.Add(this.splitText1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(400, 228);
-            this.tabPage2.TabIndex = 0;
-            this.tabPage2.Text = "M: Splits";
+            this.tabPageSplits.BackColor = System.Drawing.Color.Black;
+            this.tabPageSplits.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageSplits.BackgroundImage")));
+            this.tabPageSplits.Controls.Add(this.teamVsText2);
+            this.tabPageSplits.Controls.Add(this.teamVsText1);
+            this.tabPageSplits.Controls.Add(this.teamVsTime2);
+            this.tabPageSplits.Controls.Add(this.teamVsTime1);
+            this.tabPageSplits.Controls.Add(this.splitTime4);
+            this.tabPageSplits.Controls.Add(this.splitText4);
+            this.tabPageSplits.Controls.Add(this.splitTime3);
+            this.tabPageSplits.Controls.Add(this.splitTime2);
+            this.tabPageSplits.Controls.Add(this.splitTime1);
+            this.tabPageSplits.Controls.Add(this.splitText3);
+            this.tabPageSplits.Controls.Add(this.splitText2);
+            this.tabPageSplits.Controls.Add(this.splitText1);
+            this.tabPageSplits.Location = new System.Drawing.Point(4, 22);
+            this.tabPageSplits.Name = "tabPageSplits";
+            this.tabPageSplits.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageSplits.Size = new System.Drawing.Size(400, 228);
+            this.tabPageSplits.TabIndex = 0;
+            this.tabPageSplits.Text = "M: Splits";
             // 
             // teamVsText2
             // 
@@ -299,7 +299,7 @@
             this.teamVsText1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 16F);
             this.teamVsText1.ForeColor = System.Drawing.Color.White;
             this.teamVsText1.ImageAlign = System.Drawing.ContentAlignment.TopCenter;
-            this.teamVsText1.Location = new System.Drawing.Point(3, 135);
+            this.teamVsText1.Location = new System.Drawing.Point(3, 156);
             this.teamVsText1.Name = "teamVsText1";
             this.teamVsText1.Size = new System.Drawing.Size(230, 29);
             this.teamVsText1.TabIndex = 14;
@@ -323,7 +323,7 @@
             this.teamVsTime1.BackColor = System.Drawing.Color.Transparent;
             this.teamVsTime1.Font = new System.Drawing.Font("Lucida Sans Typewriter", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.teamVsTime1.ForeColor = System.Drawing.Color.White;
-            this.teamVsTime1.Location = new System.Drawing.Point(242, 135);
+            this.teamVsTime1.Location = new System.Drawing.Point(242, 156);
             this.teamVsTime1.Name = "teamVsTime1";
             this.teamVsTime1.Size = new System.Drawing.Size(140, 29);
             this.teamVsTime1.TabIndex = 11;
@@ -432,9 +432,9 @@
             // 
             // teamTabGroup
             // 
-            this.teamTabGroup.Controls.Add(this.tabPage2);
-            this.teamTabGroup.Controls.Add(this.tabPage3);
-            this.teamTabGroup.Controls.Add(this.tabPage4);
+            this.teamTabGroup.Controls.Add(this.tabPageSplits);
+            this.teamTabGroup.Controls.Add(this.tabPageCategories);
+            this.teamTabGroup.Controls.Add(this.tabPageTimes);
             this.teamTabGroup.Location = new System.Drawing.Point(8, 170);
             this.teamTabGroup.Name = "teamTabGroup";
             this.teamTabGroup.SelectedIndex = 0;
@@ -450,9 +450,9 @@
             this.Controls.Add(this.teamTabGroup);
             this.Name = "TeamControl";
             this.Size = new System.Drawing.Size(426, 429);
-            this.tabPage4.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage2.ResumeLayout(false);
+            this.tabPageTimes.ResumeLayout(false);
+            this.tabPageCategories.ResumeLayout(false);
+            this.tabPageSplits.ResumeLayout(false);
             this.teamTabGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -462,20 +462,20 @@
 
         private System.Windows.Forms.Button TeamSplitButton;
         private System.Windows.Forms.Label TimerLabel;
-        private System.Windows.Forms.TabPage tabPage4;
+        private System.Windows.Forms.TabPage tabPageTimes;
         private System.Windows.Forms.Label gameTimesL;
         private System.Windows.Forms.Label gameTimesR;
         private System.Windows.Forms.Label GameTitlesR2;
         private System.Windows.Forms.Label GameTitlesL2;
         private System.Windows.Forms.Label GameTitlesR1;
         private System.Windows.Forms.Label GameTitlesL1;
-        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPageCategories;
         private System.Windows.Forms.Label CommentatorsText;
         private System.Windows.Forms.Label label25;
         private System.Windows.Forms.Label CategoryInfo2;
         private System.Windows.Forms.Label CategoryInfo1;
         private System.Windows.Forms.Label CategoryInfo3;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPageSplits;
         private System.Windows.Forms.Label teamVsText2;
         private System.Windows.Forms.Label teamVsText1;
         private System.Windows.Forms.Label teamVsTime2;

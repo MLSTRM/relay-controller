@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace ffrelaytoolv1
 {
@@ -31,6 +32,40 @@ namespace ffrelaytoolv1
             { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
             current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
             label.Text = current;
+        }
+
+        public static T Clamp<T>(T target, T upper, T lower) where T : IComparable{
+            if (target.CompareTo(lower) < 0)
+            {
+                return target;
+            }
+            else if (target.CompareTo(upper)>0)
+            {
+                return upper;
+            }
+            return target;
+        }
+
+        public static FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
+
+        public static Font lucidaFont = new Font(lucida, 16);
+
+        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
+        {
+            Label label = new Label();
+            label.Location = new Point(x, y);
+            label.Size = new Size(w, h);
+            label.ForeColor = Color.White;
+            label.TextAlign = textAlign;
+            label.BackColor = Color.Transparent;
+            label.Font = Util.lucidaFont;
+            label.Text = text;
+            return label;
+        }
+
+        public static Label createBaseLabel(int x, int y, int w, int h, string text)
+        {
+            return createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
         }
     }
 }

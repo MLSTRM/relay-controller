@@ -9,7 +9,7 @@ using System.Drawing;
 
 namespace ffrelaytoolv1
 {
-    class TeamInfo
+    public class TeamInfo
     {
         public string teamName { get; set; }
 

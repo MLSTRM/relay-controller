@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
-  <data name="tabPage4.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tabPageTimes.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAZAAAADkCAYAAAC2e3KvAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         EwAACxMBAJqcGAAAAAd0SU1FB+EDDBMyFht+W+YAADDwSURBVHhe7Z3nmiRHlYYRDEKABBJGCIT37hJ0
@@ -333,7 +333,7 @@
         z+6lBMQLJZr9g+1HAzLhiH+r1f8DOhSTa3cdC6QAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="tabPage3.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tabPageCategories.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAZAAAADkCAYAAAC2e3KvAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         EwAACxMBAJqcGAAAAAd0SU1FB+EDDBMyFht+W+YAADDwSURBVHhe7Z3nmiRHlYYRDEKABBJGCIT37hJ0
@@ -548,7 +548,7 @@
         z+6lBMQLJZr9g+1HAzLhiH+r1f8DOhSTa3cdC6QAAAAASUVORK5CYII=
 </value>
   </data>
-  <data name="tabPage2.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+  <data name="tabPageSplits.BackgroundImage" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAAZAAAADkCAYAAAC2e3KvAAAABGdBTUEAALGPC/xhBQAAAAlwSFlzAAAL
         EwAACxMBAJqcGAAAAAd0SU1FB+EDDBMyFht+W+YAADDwSURBVHhe7Z3nmiRHlYYRDEKABBJGCIT37hJ0
