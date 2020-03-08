@@ -70,7 +70,7 @@ namespace ffrelaytoolv1
         string[] TonbSplits;
         string[] TonbGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",};
+                                     "00:00:00", "00:00:00"};
         string TonbFinish;
         bool TonbFinished = false;
         int TonbTab = 0;
@@ -83,7 +83,7 @@ namespace ffrelaytoolv1
                                      "00:00:00", "00:00:00"};
         string[] TonbGameEndArchive = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",};
+                                     "00:00:00", "00:00:00"};
 
         public Form1()
         {
@@ -120,7 +120,7 @@ namespace ffrelaytoolv1
             UpdateMogSplits();
             UpdateChocoSplits();
             UpdateTonbSplits();
-            chocoIcon = mogIcon = 17;
+            chocoIcon = mogIcon = tonbIcon = 17;
             CyclePurpleIcon();
             CycleBlueIcon();
             CycleGreenIcon();
@@ -234,29 +234,34 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
+        private void cycleIcon(string teamName, int teamIcon, Label teamIconLabel, Label teamInfoCat1, 
+            Label teamInfoCat2, Label teamInfoCat3, Label teamCommentary, string[] runners, string[] commentators)
+        {
+            teamIcon++;
+            if (File.Exists("icon_" + teamIcon + ".png"))
+            {
+                File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
+                teamIconLabel.Text = "Cur: " + teamIcon;
+            }
+            else
+            {
+                File.Copy("icon_1.png", teamName + "-Icon.png", true);
+                teamIcon = 1;
+                teamIconLabel.Text = "Cur: 1";
+            }
+            teamInfoCat1.Text = runners[(teamIcon * 4) - 4];
+            teamInfoCat2.Text = runners[(teamIcon * 4) - 3];
+            teamInfoCat3.Text = runners[(teamIcon * 4) - 2];
+            teamCommentary.Text = "Commentary: " + commentators[teamIcon - 1];
+        }
+
         private void hbbutton_Click(object sender, EventArgs e)
         {
             CycleBlueIcon();
         }
         void CycleBlueIcon()
         {
-            mogIcon++;
-            //Cycle background images
-            if (File.Exists("icon_" + mogIcon + ".png"))
-            {
-                File.Copy("icon_" + mogIcon + ".png", "mog-Icon.png", true);
-                MogIconlabel.Text = "Cur: " + mogIcon;
-            }
-            else
-            {
-                File.Copy("icon_1.png", "mog-Icon.png", true);
-                mogIcon = 1;
-                MogIconlabel.Text = "Cur: 1";
-            }
-            MogInfoCat1.Text = MogRunners[(mogIcon * 4) - 4];
-            MogInfoCat2.Text = MogRunners[(mogIcon * 4) - 3];
-            MogInfoCat3.Text = MogRunners[(mogIcon * 4) - 2];
-            MogCommentary.Text = "Commentary: "+Commentators[mogIcon - 1];//.Replace(",", "\n");
+            cycleIcon("mog", mogIcon, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
         }
 
         private void hpbutton_Click(object sender, EventArgs e)
@@ -265,23 +270,7 @@ namespace ffrelaytoolv1
         }
         void CyclePurpleIcon()
         {
-            chocoIcon++;
-            //Cycle background images
-            if (File.Exists("icon_" + chocoIcon + ".png"))
-            {
-                File.Copy("icon_" + chocoIcon + ".png", "choco-Icon.png", true);
-                ChocoIconlabel.Text = "Cur: " + chocoIcon;
-            }
-            else
-            {
-                File.Copy("icon_1.png", "choco-Icon.png", true);
-                chocoIcon = 1;
-                ChocoIconlabel.Text = "Cur: 1";
-            }
-            ChocoInfoCat1.Text = ChocoRunners[(chocoIcon * 4) - 4];
-            ChocoInfoCat2.Text = ChocoRunners[(chocoIcon * 4) - 3];
-            ChocoInfoCat3.Text = ChocoRunners[(chocoIcon * 4) - 2];
-            ChocoCommentary.Text = "Commentary: " + Commentators[chocoIcon - 1];//.Replace(",", "\n");
+            cycleIcon("choco", chocoIcon, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
         }
 
         private void tonbIconButton_Click(object sender, EventArgs e)
@@ -289,26 +278,8 @@ namespace ffrelaytoolv1
             CycleGreenIcon();
         }
         void CycleGreenIcon()
-        {
-            return;
-            
-            tonbIcon++;
-            //Cycle background images
-            if (File.Exists("icon_" + tonbIcon + ".png"))
-            {
-                File.Copy("icon_" + tonbIcon + ".png", "tonb-Icon.png", true);
-                TonbIconlabel.Text = "Cur: " + tonbIcon;
-            }
-            else
-            {
-                File.Copy("icon_1.png", "tonb-Icon.png", true);
-                tonbIcon = 1;
-                TonbIconlabel.Text = "Cur: 1";
-            }
-            TonbInfoCat1.Text = TonbRunners[(tonbIcon * 4) - 4];
-            TonbInfoCat2.Text = TonbRunners[(tonbIcon * 4) - 3];
-            TonbInfoCat3.Text = TonbRunners[(tonbIcon * 4) - 2];
-            TonbCommentary.Text = "Commentary: " + Commentators[tonbIcon - 1]//.Replace(",", "\n");*/
+        {            
+            cycleIcon("tonb", tonbIcon, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
         }
 
         private void MogSplit_Click(object sender, EventArgs e)
