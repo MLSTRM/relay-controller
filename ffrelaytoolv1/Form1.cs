@@ -336,135 +336,121 @@ namespace ffrelaytoolv1
             return s.Replace(gameSep,"");
         }
 
-        void UpdateMogSplits()
+        class splitsAndNum
         {
-            //Main splits
-            //Want to have 4, active one is third
-            int i = MogSplitNum;
+            public int splitNum;
+            public string[] splits;
+            public Label vsLabel;
+            public splitsAndNum(int num, string[] splits, Label label){
+                this.splitNum = num;
+                this.splits = splits;
+                this.vsLabel = label;
+            }
+        }
+
+        void updateSplits(int splitNum, string[] Splits, int teamGame, int numberOfGames, 
+            Label teamSplitName1, Label teamSplitName2, Label teamSplitName3, Label teamSplitName4,
+            Label teamSplitTime1, Label teamSplitTime2, Label teamSplitTime3, Label teamSplitTime4, string[] teamSplits, splitsAndNum[] otherTeams,
+            ref string[] teamGameEndArchive, string[] teamGameEnds, Label teamGameTimerL, Label teamGameEndL, Label teamTimer, Label teamGameTimerR)
+        {
+            int i = splitNum;
             if (i == 0) { i += 2; }
             else if (i == 1) { i++; }
             else if (i == Splits.Length - 1) { i--; }
-            MogSplitName1.Text = stripGameIndicator(Splits[i - 2]);
-            MogSplitName2.Text = stripGameIndicator(Splits[i - 1]);
-            MogSplitName3.Text = stripGameIndicator(Splits[i]);
-            MogSplitName4.Text = stripGameIndicator(Splits[i + 1]);
-            MogSplitTime1.Text = MogSplits[i - 2];
-            MogSplitTime2.Text = MogSplits[i - 1];
-            MogSplitTime3.Text = MogSplits[i];
-            MogSplitTime4.Text = MogSplits[i + 1];
+            teamSplitName1.Text = stripGameIndicator(Splits[i - 2]);
+            teamSplitName2.Text = stripGameIndicator(Splits[i - 1]);
+            teamSplitName3.Text = stripGameIndicator(Splits[i]);
+            teamSplitName4.Text = stripGameIndicator(Splits[i + 1]);
+            teamSplitTime1.Text = teamSplits[i - 2];
+            teamSplitTime2.Text = teamSplits[i - 1];
+            teamSplitTime3.Text = teamSplits[i];
+            teamSplitTime4.Text = teamSplits[i + 1];
 
             //Split comparisons, since this works even on FF1 it needs to be here
             int offset = 0;
-            bool vs1 = false;
-            bool vs2 = false;
-            while (offset <= MogSplitNum)
+            bool[] vs = new bool[otherTeams.Length];
+            while (offset <= splitNum)
             {
-                if (ChocoSplitNum == MogSplitNum)
-                { vs1 = true; }
-                if (TonbSplitNum == MogSplitNum)
-                { vs2 = true; }
-                if (ChocoSplits[MogSplitNum - offset] != "00:00:00" && !vs1)
+                for (int team = 0; team < otherTeams.Length; team++)
                 {
-                    string a = MogSplits[MogSplitNum - offset];
-                    string b = ChocoSplits[MogSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    MogSplitVs1.Text = current;
-                    vs1 = true;
+                    if (otherTeams[team].splitNum == splitNum)
+                    {
+                        vs[team] = true;
+                    }
+                    if (!vs[team] && otherTeams[team].splits[splitNum - offset] != "00:00:00" )
+                    {
+                        string a = teamSplits[splitNum - offset];
+                        string b = otherTeams[team].splits[splitNum - offset];
+                        TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
+                        TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
+                        TimeSpan seg = s1 - s2;
+                        string current = "";
+                        if (seg.TotalHours > -1)
+                        { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
+                        current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
+                        otherTeams[team].vsLabel.Text = current;
+                        vs[team] = true;
+                    }
                 }
-                if (TonbSplits[MogSplitNum - offset] != "00:00:00" && !vs2)
-                {
-                    string a = MogSplits[MogSplitNum - offset];
-                    string b = TonbSplits[MogSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    MogSplitVs2.Text = current;
-                    vs2 = true;
+                if(vs.All(b=>b)){
+                    offset = splitNum;
                 }
-                if (vs1 && vs2)
-                { offset = MogSplitNum; }
                 offset++;
             }
 
-
             //Per Game Splits
             //Since we're always at least on FF1, just include the time for it in here, removes the special case later
-            MogGameEndArchive = MogGameEnd;
-            if (MogGame == 0)
+            teamGameEndArchive = teamGameEnds;
+            if (teamGame == 0)
             {
-                MogGameTimersL.Text = MogSplits[MogSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                MogGameEndL.Text = MogSplits[MogSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                MogTimer.Text = MogSplits[MogSplitNum];
+                teamGameTimerL.Text = teamSplits[splitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
+                teamGameEndL.Text = teamSplits[splitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
+                teamTimer.Text = teamSplits[splitNum];
                 return;
             }
             string lefttimes = MogGameEnd[0] + "\n";
             string righttimes = "";
-            string midtimes = "";
-
-
-            for (int j = 1; j < 17; j++)
+            for (int j = i; j< numberOfGames; j++)
             {
                 string current = "00:00:00";
                 //If we're past the selected game, then subtract the previous one to get the segment time over split time
-                if (MogGame > j)
+                if (teamGame > j)
                 {
                     //TimeSpan seg = TimeSpan.Parse(MogGameEnd[j]) - TimeSpan.Parse(MogGameEnd[j - 1]);
-                    string a = MogGameEnd[j];
-                    string b = MogGameEnd[j - 1];
+                    string a = teamGameEnds[j];
+                    string b = teamGameEnds[j - 1];
                     TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
                     TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
                     TimeSpan seg = s1 - s2;
                     current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
                 }
-                else if (MogGame == j)
+                else if (teamGame == j)
                 {
                     //TimeSpan seg = TimeSpan.Parse(MogSplits[MogSplitNum]) - TimeSpan.Parse(MogGameEnd[j - 1]);
-                    string a = MogSplits[MogSplitNum];
-                    string b = MogGameEnd[j - 1];
+                    string a = teamSplits[splitNum];
+                    string b = teamGameEnds[j - 1];
                     TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
                     TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
                     TimeSpan seg = s1 - s2;
                     current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    MogTimer.Text = current;
-                    MogGameEndArchive[MogGame] = MogSplits[MogSplitNum];
+                    teamTimer.Text = current;
+                    teamGameEndArchive[teamGame] = teamSplits[splitNum];
                 }
-                /*if (j < 8)
-                { lefttimes += current + "\n"; }
-                else if (j < 16)
-                { righttimes += current + "\n"; }
-                else
-                { midtimes += current + "\n"; }*/
                 if (j < 7)
                 { lefttimes += current + "\n"; }
                 else
                 { righttimes += current + "\n"; }
             }
+            teamGameTimerL.Text = lefttimes;
+            teamGameTimerR.Text = righttimes;
+        }
 
-
-            MogGameTimersL.Text = lefttimes;
-            MogGameTimersR.Text = righttimes;
-            //MogGameTimers2M.Text = midtimes;
-            /*string E1L = "";
-            string E1R = "";
-
-            for (int k = 0; k < 7; k++)
-            {
-                E1L += MogGameEnd[k] + "\n";
-                E1R += MogGameEnd[k + 7] + "\n";
-            }
-            MogGameEndL.Text = E1L;
-            MogGameEndR.Text = E1R;
-            MogGameEnd2M.Text = MogGameEndArchive[16];*/
+        void UpdateMogSplits()
+        {
+            updateSplits(MogSplitNum, Splits, MogGame, 14, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
+                MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits, 
+                new splitsAndNum[] { new splitsAndNum(ChocoSplitNum, ChocoSplits, MogSplitVs1), new splitsAndNum(TonbSplitNum, TonbSplits, MogSplitVs2) }, 
+                ref MogGameEndArchive, MogGameEnd, MogGameTimersL, MogGameEndL, MogTimer, MogGameTimersR);
         }
 
         private void ChocoSplit_Click(object sender, EventArgs e)
@@ -477,129 +463,10 @@ namespace ffrelaytoolv1
 
         void UpdateChocoSplits()
         {
-            //Main splits
-            int i = ChocoSplitNum;
-            if (i == 0) { i += 2; }
-            else if (i == 1) { i++; }
-            else if (i == Splits.Length - 1) { i--; }
-            ChocoSplitName1.Text = stripGameIndicator(Splits[i - 2]);
-            ChocoSplitName2.Text = stripGameIndicator(Splits[i - 1]);
-            ChocoSplitName3.Text = stripGameIndicator(Splits[i]);
-            ChocoSplitName4.Text = stripGameIndicator(Splits[i + 1]);
-            ChocoSplitTime1.Text = ChocoSplits[i - 2];
-            ChocoSplitTime2.Text = ChocoSplits[i - 1];
-            ChocoSplitTime3.Text = ChocoSplits[i];
-            ChocoSplitTime4.Text = ChocoSplits[i + 1];
-
-            //Split comparisons, since this works even on FF1 it needs to be here
-            int offset = 0;
-            bool vs1 = false;
-            bool vs2 = false;
-            while (offset <= ChocoSplitNum)
-            {
-                if (ChocoSplitNum == MogSplitNum)
-                { vs1 = true; }
-                if (TonbSplitNum == ChocoSplitNum)
-                { vs2 = true; }
-                if (MogSplits[ChocoSplitNum - offset] != "00:00:00" && !vs1)
-                {
-                    string a = MogSplits[ChocoSplitNum - offset];
-                    string b = ChocoSplits[ChocoSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s2 - s1;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    ChocoSplitVs1.Text = current;
-                    vs1 = true;
-                }
-                if (TonbSplits[ChocoSplitNum - offset] != "00:00:00" && !vs2)
-                {
-                    string a = ChocoSplits[ChocoSplitNum - offset];
-                    string b = TonbSplits[ChocoSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    ChocoSplitVs2.Text = current;
-                    vs2 = true;
-                }
-                if (vs1 && vs2)
-                { offset = ChocoSplitNum; }
-                offset++;
-            }
-
-            //Per Game Splits
-            //Since we're always at least on FF1, just include the time for it in here, removes the special case later
-            ChocoGameEndArchive = ChocoGameEnd;
-            if (ChocoGame == 0)
-            {
-                ChocoGameTimersL.Text = ChocoSplits[ChocoSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                ChocoGameEndL.Text = ChocoSplits[ChocoSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                ChocoTimer.Text = ChocoSplits[ChocoSplitNum];
-                return;
-            }
-            string lefttimes = ChocoGameEnd[0] + "\n";
-            string righttimes = "";
-            string midtimes = "";
-            for (int j = 1; j < 17; j++)
-            {
-                string current = "00:00:00";
-                //If we're past the current game, then subtract the previous one to get the segment time over split time
-                if (ChocoGame > j)
-                {
-                    //TimeSpan seg = TimeSpan.Parse(ChocoGameEnd[j]) - TimeSpan.Parse(ChocoGameEnd[j - 1]);
-                    string a = ChocoGameEnd[j];
-                    string b = ChocoGameEnd[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                }
-                else if (ChocoGame == j)
-                {
-                    //TimeSpan seg = TimeSpan.Parse(ChocoSplits[ChocoSplitNum]) - TimeSpan.Parse(ChocoGameEnd[j - 1]);
-                    string a = ChocoSplits[ChocoSplitNum];
-                    string b = ChocoGameEnd[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    ChocoTimer.Text = current;
-                    ChocoGameEndArchive[ChocoGame] = ChocoSplits[ChocoSplitNum];
-                }
-                /*if (j < 8)
-                { lefttimes += current + "\n"; }
-                else if (j < 16)
-                { righttimes += current + "\n"; }
-                else
-                { midtimes += current + "\n"; }*/
-                if (j < 7)
-                { lefttimes += current + "\n"; }
-                else
-                { righttimes += current + "\n"; }
-            }
-
-
-            ChocoGameTimersL.Text = lefttimes;
-            ChocoGameTimersR.Text = righttimes;
-            //ChocoGameTimers2M.Text = midtimes;
-            /*string E1L = "";
-            string E1R = "";
-
-            for (int k = 0; k < 8; k++)
-            {
-                E1L += ChocoGameEnd[k] + "\n";
-                E1R += ChocoGameEnd[k + 8] + "\n";
-            }
-            ChocoGameEndL.Text = E1L;
-            ChocoGameEndR.Text = E1R;
-            ChocoGameEnd2M.Text = ChocoGameEndArchive[16];*/
+            updateSplits(ChocoSplitNum, Splits, ChocoGame, 14, ChocoSplitName1, ChocoSplitName2, ChocoSplitName3, ChocoSplitName4,
+                ChocoSplitTime1, ChocoSplitTime2, ChocoSplitTime3, ChocoSplitTime4, ChocoSplits,
+                new splitsAndNum[] { new splitsAndNum(MogSplitNum, MogSplits, ChocoSplitVs1), new splitsAndNum(TonbSplitNum, TonbSplits, ChocoSplitVs2) },
+                ref ChocoGameEndArchive, ChocoGameEnd, ChocoGameTimersL, ChocoGameEndL, ChocoTimer, ChocoGameTimersR);
         }
 
         private void TonbSplit_Click(object sender, EventArgs e)
@@ -612,129 +479,10 @@ namespace ffrelaytoolv1
 
         void UpdateTonbSplits()
         {
-            //Main splits
-            int i = TonbSplitNum;
-            if (i == 0) { i += 2; }
-            else if (i == 1) { i++; }
-            else if (i == Splits.Length - 1) { i--; }
-            TonbSplitName1.Text = stripGameIndicator(Splits[i - 2]);
-            TonbSplitName2.Text = stripGameIndicator(Splits[i - 1]);
-            TonbSplitName3.Text = stripGameIndicator(Splits[i]);
-            TonbSplitName4.Text = stripGameIndicator(Splits[i + 1]);
-            TonbSplitTime1.Text = TonbSplits[i - 2];
-            TonbSplitTime2.Text = TonbSplits[i - 1];
-            TonbSplitTime3.Text = TonbSplits[i];
-            TonbSplitTime4.Text = TonbSplits[i + 1];
-
-            //Split comparisons, since this works even on FF1 it needs to be here
-            int offset = 0;
-            bool vs1 = false;
-            bool vs2 = false;
-            while (offset <= TonbSplitNum)
-            {
-                if (TonbSplitNum == MogSplitNum)
-                { vs1 = true; }
-                if (TonbSplitNum == ChocoSplitNum)
-                { vs2 = true; }
-                if (MogSplits[TonbSplitNum - offset] != "00:00:00" && !vs1)
-                {
-                    string a = MogSplits[TonbSplitNum - offset];
-                    string b = TonbSplits[TonbSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s2 - s1;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    TonbSplitVs1.Text = current;
-                    vs1 = true;
-                }
-                if (ChocoSplits[TonbSplitNum - offset] != "00:00:00" && !vs2)
-                {
-                    string a = ChocoSplits[TonbSplitNum - offset];
-                    string b = TonbSplits[TonbSplitNum - offset];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s2 - s1;
-                    string current = "";
-                    if (seg.TotalHours > -1)
-                    { if (seg.Seconds < 0) { current += "-"; } else { current += "+"; } }
-                    current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    TonbSplitVs2.Text = current;
-                    vs2 = true;
-                }
-                if (vs1 && vs2)
-                { offset = TonbSplitNum; }
-                offset++;
-            }
-
-            //Per Game Splits
-            //Since we're always at least on FF1, just include the time for it in here, removes the special case later
-            TonbGameEndArchive = TonbGameEnd;
-            if (TonbGame == 0)
-            {
-                TonbGameTimersL.Text = TonbSplits[TonbSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                TonbGameEndL.Text = TonbSplits[TonbSplitNum] + "\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00\n00:00:00";
-                TonbTimer.Text = TonbSplits[TonbSplitNum];
-                return;
-            }
-            string lefttimes = TonbGameEnd[0] + "\n";
-            string righttimes = "";
-            string midtimes = "";
-            for (int j = 1; j < 17; j++)
-            {
-                string current = "00:00:00";
-                //If we're past the current game, then subtract the previous one to get the segment time over split time
-                if (TonbGame > j)
-                {
-                    //TimeSpan seg = TimeSpan.Parse(TonbGameEnd[j]) - TimeSpan.Parse(TonbGameEnd[j - 1]);
-                    string a = TonbGameEnd[j];
-                    string b = TonbGameEnd[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                }
-                else if (TonbGame == j)
-                {
-                    //TimeSpan seg = TimeSpan.Parse(TonbSplits[TonbSplitNum]) - TimeSpan.Parse(TonbGameEnd[j - 1]);
-                    string a = TonbSplits[TonbSplitNum];
-                    string b = TonbGameEnd[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
-                    current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                    TonbTimer.Text = current;
-                    TonbGameEndArchive[TonbGame] = TonbSplits[TonbSplitNum];
-                }
-                /*if (j < 8)
-                { lefttimes += current + "\n"; }
-                else if (j < 16)
-                { righttimes += current + "\n"; }
-                else
-                { midtimes += current + "\n"; }*/
-                if (j < 7)
-                { lefttimes += current + "\n"; }
-                else
-                { righttimes += current + "\n"; }
-            }
-
-
-            TonbGameTimersL.Text = lefttimes;
-            TonbGameTimersR.Text = righttimes;
-            //TonbGameTimers2M.Text = midtimes;
-            /*string E1L = "";
-            string E1R = "";
-
-            for (int k = 0; k < 8; k++)
-            {
-                E1L += TonbGameEnd[k] + "\n";
-                E1R += TonbGameEnd[k + 8] + "\n";
-            }
-            TonbGameEndL.Text = E1L;
-            TonbGameEndR.Text = E1R;
-            TonbGameEnd2M.Text = TonbGameEndArchive[16];*/
+            updateSplits(TonbSplitNum, Splits, TonbGame, 14, TonbSplitName1, TonbSplitName2, TonbSplitName3, TonbSplitName4,
+                TonbSplitTime1, TonbSplitTime2, TonbSplitTime3, TonbSplitTime4, TonbSplits,
+                new splitsAndNum[] { new splitsAndNum(MogSplitNum, MogSplits, TonbSplitVs1), new splitsAndNum(ChocoSplitNum, ChocoSplits, TonbSplitVs2) },
+                ref TonbGameEndArchive, TonbGameEnd, TonbGameTimersL, TonbGameEndL, TonbTimer, TonbGameTimersR);
         }
 
         private void MogTab_Clicked(object sender, TabControlEventArgs e)
