@@ -330,7 +330,6 @@
             this.MogSplitName7.TabIndex = 15;
             this.MogSplitName7.Text = "Team Tonberry:";
             this.MogSplitName7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.MogSplitName7.Visible = false;
             // 
             // MogSplitName6
             // 
@@ -356,7 +355,6 @@
             this.MogSplitVs2.TabIndex = 12;
             this.MogSplitVs2.Text = "00:00:00";
             this.MogSplitVs2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.MogSplitVs2.Visible = false;
             // 
             // MogSplitVs1
             // 
@@ -856,7 +854,6 @@
             this.label32.TabIndex = 16;
             this.label32.Text = "Team Tonberry:";
             this.label32.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label32.Visible = false;
             // 
             // ChocoSplitVs2
             // 
@@ -869,7 +866,6 @@
             this.ChocoSplitVs2.TabIndex = 12;
             this.ChocoSplitVs2.Text = "00:00:00";
             this.ChocoSplitVs2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.ChocoSplitVs2.Visible = false;
             // 
             // ChocoSplitVs1
             // 
