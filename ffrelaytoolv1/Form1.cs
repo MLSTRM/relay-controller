@@ -99,28 +99,14 @@ namespace ffrelaytoolv1
                 for (int i = 0; i < Splits.Length; i++)
                 { MogSplits[i] = "00:00:00"; ChocoSplits[i] = "00:00:00"; TonbSplits[i] = "00:00:00"; }
             }
-            if (File.Exists("mog-runners.txt"))
-            {
-                MogRunners = File.ReadAllLines("mog-runners.txt");
-            }
-            if (File.Exists("choco-runners.txt"))
-            {
-                ChocoRunners = File.ReadAllLines("choco-runners.txt");
-            }
-            if (File.Exists("tonb-runners.txt"))
-            {
-                TonbRunners = File.ReadAllLines("tonb-runners.txt");
-            }
-            if (File.Exists("commentators.txt"))
-            {
-                Commentators = File.ReadAllLines("commentators.txt");
-            }
+            
             ChocoCooldown = new Timer();
             MogCooldown = new Timer();
             TonbCooldown = new Timer();
             UpdateMogSplits();
             UpdateChocoSplits();
             UpdateTonbSplits();
+            loadCommentators();
             //chocoIcon = mogIcon = tonbIcon = 17;
             CyclePurpleIcon();
             CycleBlueIcon();
@@ -315,14 +301,6 @@ namespace ffrelaytoolv1
             }
         }
 
-        private void MogSplit_Click(object sender, EventArgs e)
-        {
-            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
-                MogSplitTime4, Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
-        }
-        void MogCooldownDone(Object myObject, EventArgs myEventArgs)
-        { MogWaiting = false; MogCooldown.Stop(); }
-
         String stripGameIndicator(String s)
         {
             return s.Replace(gameSep, "");
@@ -441,6 +419,14 @@ namespace ffrelaytoolv1
             teamGameTimerR.Text = righttimes;
         }
 
+        private void MogSplit_Click(object sender, EventArgs e)
+        {
+            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
+                MogSplitTime4, Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
+        }
+        void MogCooldownDone(Object myObject, EventArgs myEventArgs)
+        { MogWaiting = false; MogCooldown.Stop(); }
+
         void UpdateMogSplits()
         {
             updateSplits(MogSplitNum, Splits, MogGame, numberOfGames, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
@@ -499,7 +485,7 @@ namespace ffrelaytoolv1
             ChangedThisMin = true;
         }
 
-        private void CommUpdate_Click(object sender, EventArgs e)
+        private void loadCommentators()
         {
             if (File.Exists("commentators.txt"))
             {
@@ -517,9 +503,14 @@ namespace ffrelaytoolv1
             {
                 TonbRunners = File.ReadAllLines("tonb-runners.txt");
             }
-            MogCommentary.Text = "Commentary: " + Commentators[MogGame - 1];
-            ChocoCommentary.Text = "Commentary: " + Commentators[ChocoGame - 1];
-            TonbCommentary.Text = "Commentary: " + Commentators[TonbGame - 1];
+            MogCommentary.Text = "Commentary: " + Commentators[MogGame];
+            ChocoCommentary.Text = "Commentary: " + Commentators[ChocoGame];
+            TonbCommentary.Text = "Commentary: " + Commentators[TonbGame];
+        }
+
+        private void CommUpdate_Click(object sender, EventArgs e)
+        {
+            loadCommentators();
             ReadSplitFiles();
         }
 
@@ -531,15 +522,16 @@ namespace ffrelaytoolv1
             {
                 File.Delete("splits_output.txt");
             }
-            string[] line = new string[Splits.Length + 1];
+            string[] lines = new string[Splits.Length + 1];
             //line[0] = "Time   | Mog   | Choco | Tonb  ";
-            line[0] = "Time   | Mog   | Choco | Tonb  ";
+            lines[0] = "Time   | Mog   | Choco | Tonb  ";
             for (int i = 0; i < Splits.Length; i++)
             {
-                line[i + 1] = Splits[i] + sep + (MogSplitNum > i ? MogSplits[i] : no) + sep + (ChocoSplitNum > i ? ChocoSplits[i] : no) + sep + (TonbSplitNum > i ? TonbSplits[i] : no);
+                lines[i + 1] = Splits[i] + sep + (MogSplitNum > i ? MogSplits[i] : no) + sep + (ChocoSplitNum > i ? ChocoSplits[i] : no) + sep + (TonbSplitNum > i ? TonbSplits[i] : no);
             }
-            File.WriteAllLines("splits_output.txt", line);
+            File.WriteAllLines("splits_output.txt", lines);
         }
+
         private void ReadSplitFiles()
         {
             if (File.Exists("splits_output.txt"))
