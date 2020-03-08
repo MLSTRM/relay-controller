@@ -202,7 +202,7 @@ namespace ffrelaytoolv1
                     { infochoco.SelectedIndex = 0; }
                     else { infochoco.SelectedIndex++; }
 
-                   // if (infotonb.SelectedIndex == 3 || (infotonb.SelectedIndex == 2 && TonbGame == 0))
+                    // if (infotonb.SelectedIndex == 3 || (infotonb.SelectedIndex == 2 && TonbGame == 0))
                     if (infotonb.SelectedIndex == 2)
                     { infotonb.SelectedIndex = 0; }
                     else { infotonb.SelectedIndex++; }
@@ -234,7 +234,7 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        private void cycleIcon(string teamName, ref int teamIcon, Label teamIconLabel, Label teamInfoCat1, 
+        private void cycleIcon(string teamName, ref int teamIcon, Label teamIconLabel, Label teamInfoCat1,
             Label teamInfoCat2, Label teamInfoCat3, Label teamCommentary, string[] runners, string[] commentators)
         {
             teamIcon++;
@@ -278,12 +278,12 @@ namespace ffrelaytoolv1
             CycleGreenIcon();
         }
         void CycleGreenIcon()
-        {            
+        {
             cycleIcon("tonb", ref tonbIcon, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
         }
 
-        private void splitClick(ref bool waiting, ref int splitNum, ref bool finished, ref string teamFinish, 
-            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, ref string[] splits, 
+        private void splitClick(ref bool waiting, ref int splitNum, ref bool finished, ref string teamFinish,
+            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, ref string[] splits,
             Action cycleIcons, Timer cooldown, Action updateTeamSplits, EventHandler cooldownDone)
         {
             //Activate Cooldown
@@ -325,18 +325,35 @@ namespace ffrelaytoolv1
 
         private void MogSplit_Click(object sender, EventArgs e)
         {
-            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish,ref MogSplits,ref MogGameEnd, ref MogGame, 
-                MogSplitTime4, ref Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);          
+            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
+                MogSplitTime4, ref Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
         }
         void MogCooldownDone(Object myObject, EventArgs myEventArgs)
         { MogWaiting = false; MogCooldown.Stop(); }
 
         String stripGameIndicator(String s)
         {
-            return s.Replace(gameSep,"");
+            return s.Replace(gameSep, "");
         }
 
-        void updateSplits(int splitNum, string[] Splits, int teamGame, int numberOfGames, 
+        TimeSpan resolveTimeSpan(string a, string b)
+        {
+            TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
+            TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
+            TimeSpan seg = s1 - s2;
+            return seg;
+        }
+
+        void updateDifferenceDisplay(Label label, TimeSpan seg)
+        {
+            string current = "";
+            if (seg.TotalHours > -1)
+            { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
+            current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
+            label.Text = current;
+        }
+
+        void updateSplits(int splitNum, string[] Splits, int teamGame, int numberOfGames,
             Label teamSplitName1, Label teamSplitName2, Label teamSplitName3, Label teamSplitName4,
             Label teamSplitTime1, Label teamSplitTime2, Label teamSplitTime3, Label teamSplitTime4, string[] teamSplits, VersusWrapper[] otherTeams,
             ref string[] teamGameEndArchive, string[] teamGameEnds, Label teamGameTimerL, Label teamGameEndL, Label teamTimer, Label teamGameTimerR)
@@ -361,26 +378,35 @@ namespace ffrelaytoolv1
             {
                 for (int team = 0; team < otherTeams.Length; team++)
                 {
+                    //If we're on the same split, then don't update the versus differences.
                     if (otherTeams[team].splitNum == splitNum)
                     {
                         vs[team] = true;
+                        if (splitNum > 0)
+                        {
+                            TimeSpan seg = resolveTimeSpan(teamSplits[splitNum - 1], otherTeams[team].splits[splitNum - 1]);
+                            updateDifferenceDisplay(otherTeams[team].vsLabel, seg);
+                        }
                     }
-                    if (!vs[team] && otherTeams[team].splits[splitNum - offset] != "00:00:00" )
+                    //Otherwise update the value based on the live difference (Only if greater than static difference?)
+                    if (!vs[team] && otherTeams[team].splits[splitNum - offset] != "00:00:00")
                     {
-                        string a = teamSplits[splitNum - offset];
-                        string b = otherTeams[team].splits[splitNum - offset];
-                        TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                        TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                        TimeSpan seg = s1 - s2;
-                        string current = "";
-                        if (seg.TotalHours > -1)
-                        { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
-                        current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-                        otherTeams[team].vsLabel.Text = current;
+                        TimeSpan seg = resolveTimeSpan(teamSplits[splitNum - offset], otherTeams[team].splits[splitNum - offset]);
+                        if (splitNum - offset > 0)
+                        {
+                            //If the offset on the previous split is larger than the live one then use that.
+                            TimeSpan olderseg = resolveTimeSpan(teamSplits[splitNum - offset - 1], otherTeams[team].splits[splitNum - offset - 1]);
+                            if (Math.Abs(olderseg.Ticks) > Math.Abs(seg.Ticks))
+                            {
+                                seg = olderseg;
+                            }
+                        }
+                        updateDifferenceDisplay(otherTeams[team].vsLabel, seg);
                         vs[team] = true;
                     }
                 }
-                if(vs.All(b=>b)){
+                if (vs.All(b => b))
+                {
                     offset = splitNum;
                 }
                 offset++;
@@ -398,28 +424,18 @@ namespace ffrelaytoolv1
             }
             string lefttimes = MogGameEnd[0] + "\n";
             string righttimes = "";
-            for (int j = i; j< numberOfGames; j++)
+            for (int j = i; j < numberOfGames; j++)
             {
                 string current = "00:00:00";
                 //If we're past the selected game, then subtract the previous one to get the segment time over split time
                 if (teamGame > j)
                 {
-                    //TimeSpan seg = TimeSpan.Parse(MogGameEnd[j]) - TimeSpan.Parse(MogGameEnd[j - 1]);
-                    string a = teamGameEnds[j];
-                    string b = teamGameEnds[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
+                    TimeSpan seg = resolveTimeSpan(teamGameEnds[j], teamGameEnds[j - 1]);
                     current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
                 }
                 else if (teamGame == j)
                 {
-                    //TimeSpan seg = TimeSpan.Parse(MogSplits[MogSplitNum]) - TimeSpan.Parse(MogGameEnd[j - 1]);
-                    string a = teamSplits[splitNum];
-                    string b = teamGameEnds[j - 1];
-                    TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-                    TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-                    TimeSpan seg = s1 - s2;
+                    TimeSpan seg = resolveTimeSpan(teamSplits[splitNum], teamGameEnds[j - 1]);
                     current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
                     teamTimer.Text = current;
                     teamGameEndArchive[teamGame] = teamSplits[splitNum];
@@ -437,14 +453,14 @@ namespace ffrelaytoolv1
         {
             updateSplits(MogSplitNum, Splits, MogGame, 14, MogSplitName1, MogSplitName2, MogSplitName3, MogSplitName4,
                 MogSplitTime1, MogSplitTime2, MogSplitTime3, MogSplitTime4, MogSplits,
-                new VersusWrapper[] { new VersusWrapper(ChocoSplitNum, ChocoSplits, MogSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, MogSplitVs2) }, 
+                new VersusWrapper[] { new VersusWrapper(ChocoSplitNum, ChocoSplits, MogSplitVs1), new VersusWrapper(TonbSplitNum, TonbSplits, MogSplitVs2) },
                 ref MogGameEndArchive, MogGameEnd, MogGameTimersL, MogGameEndL, MogTimer, MogGameTimersR);
         }
 
         private void ChocoSplit_Click(object sender, EventArgs e)
         {
             splitClick(ref ChocoWaiting, ref ChocoSplitNum, ref ChocoFinished, ref ChocoFinish, ref ChocoSplits, ref ChocoGameEnd, ref ChocoGame,
-                ChocoSplitTime4, ref Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);            
+                ChocoSplitTime4, ref Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);
         }
         void ChocoCooldownDone(Object myObject, EventArgs myEventArgs)
         { ChocoWaiting = false; ChocoCooldown.Stop(); }
@@ -523,7 +539,7 @@ namespace ffrelaytoolv1
             {
                 File.Delete("splits_output.txt");
             }
-            string[] line = new string[Splits.Length+1];
+            string[] line = new string[Splits.Length + 1];
             //line[0] = "Time   | Mog   | Choco | Tonb  ";
             line[0] = "Time   | Mog   | Choco | Tonb  ";
             for (int i = 0; i < Splits.Length; i++)
@@ -559,9 +575,9 @@ namespace ffrelaytoolv1
 
         private void ResolveOffsets()
         {
-            string s1 = MogSplits[MogSplitNum>0?MogSplitNum - 1:0];
-            string s2 = ChocoSplits[ChocoSplitNum>0?ChocoSplitNum - 1:0];
-            string s3 = TonbSplits[TonbSplitNum - 1];
+            string s1 = MogSplits[MogSplitNum > 0 ? MogSplitNum - 1 : 0];
+            string s2 = ChocoSplits[ChocoSplitNum > 0 ? ChocoSplitNum - 1 : 0];
+            string s3 = TonbSplits[TonbSplitNum > 0 ? TonbSplitNum - 1 : 0];
             TimeSpan t1 = new TimeSpan(int.Parse(s1.Split(':')[0]), int.Parse(s1.Split(':')[1]), int.Parse(s1.Split(':')[2]));
             TimeSpan t2 = new TimeSpan(int.Parse(s2.Split(':')[0]), int.Parse(s2.Split(':')[1]), int.Parse(s2.Split(':')[2]));
             TimeSpan t3 = new TimeSpan(int.Parse(s3.Split(':')[0]), int.Parse(s3.Split(':')[1]), int.Parse(s3.Split(':')[2]));
@@ -574,7 +590,7 @@ namespace ffrelaytoolv1
                 { if (seg1.Seconds < 0) { current += "-"; } else { current += "+"; } }
                 current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg1.TotalHours, seg1);
                 MogSplitVs1.Text = current;
-                string swapcurrent = (current.Substring(0,1)=="-"?"+":"-")+current.Substring(1);
+                string swapcurrent = (current.Substring(0, 1) == "-" ? "+" : "-") + current.Substring(1);
                 ChocoSplitVs1.Text = swapcurrent;
             }
             if (ChocoSplitNum == TonbSplitNum)
