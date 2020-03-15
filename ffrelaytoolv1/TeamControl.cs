@@ -129,6 +129,19 @@ namespace ffrelaytoolv1
             }
         }
 
+        public string getSplit(int i)
+        {
+           return teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
+        }
+
+        public void setSplit(string split, int i)
+        {
+            if (teamInfo.teamSplitNum > i)
+            {
+                teamInfo.teamSplits[i] = split;
+            }
+        }
+
         private void splitClick()
         {
             //Activate Cooldown

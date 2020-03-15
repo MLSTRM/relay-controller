@@ -12,6 +12,8 @@ namespace ffrelaytoolv1
     {
         public static string gameSep = "!";
 
+        public static string emptyTime = "00:00:00";
+
         public static TimeSpan resolveTimeSpan(string a, string b)
         {
             TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));

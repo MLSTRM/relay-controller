@@ -26,56 +26,30 @@ namespace ffrelaytoolv1
         KeyboardHook hook = new KeyboardHook();
         bool MainTimerRunning = false;
         public DateTime TimerStart;
-        int numberOfGames = 14;
-        //int bgnum = 1;
-        int chocoIcon = 1;
-        int mogIcon = 1;
-        int tonbIcon = 1;
-        Timer MogCooldown;
-        Timer ChocoCooldown;
-        Timer TonbCooldown;
-        bool MogWaiting = false;
-        bool ChocoWaiting = false;
-        bool TonbWaiting = false;
+
         int MinuteCount = 0;
         bool ChangedThisMin = false;
-        String gameSep = "!";
+
 
         string[] Splits;
-        string[] MogRunners;
-        string[] ChocoRunners;
-        string[] TonbRunners;
-        string[] Commentators;
 
-        int MogGame = 0;
         int MogSplitNum = 0;
         string[] MogSplits;
         string[] MogGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
                                     "00:00:00", "00:00:00"};
-        string MogFinish;
-        bool MogFinished = false;
-        int MogTab = 0;
 
-        int ChocoGame = 0;
         int ChocoSplitNum = 0;
         string[] ChocoSplits;
         string[] ChocoGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
                                      "00:00:00", "00:00:00"};
-        string ChocoFinish;
-        bool ChocoFinished = false;
-        int ChocoTab = 0;
 
-        int TonbGame = 0;
         int TonbSplitNum = 0;
         string[] TonbSplits;
         string[] TonbGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
                                      "00:00:00", "00:00:00"};
-        string TonbFinish;
-        bool TonbFinished = false;
-        int TonbTab = 0;
 
         string[] MogGameEndArchive = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
@@ -231,8 +205,7 @@ namespace ffrelaytoolv1
         {
             if (File.Exists("commentators.txt"))
             {
-                Commentators = File.ReadAllLines("commentators.txt");
-                meta.commentators = Commentators;
+                meta.commentators = File.ReadAllLines("commentators.txt");
             }
             foreach(TeamControl team in teams){
                 team.reloadRunnerInfo();
