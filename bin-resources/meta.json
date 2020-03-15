@@ -1,0 +1,22 @@
+{
+  "games": ["FF1","FF2","FF3","FF4","FF5","FF6","FF7","FFT","FF8","FF9","FFX","FF12","FF13","FF15"],
+  "splitsToShow": 4,
+  "splitFocusOffset": 2,
+  "teams": [
+	{
+		"name": "mog",
+		"color": "#0000FF",
+		"image": "mog-box.png",
+	},
+	{
+		"name": "choco",
+		"color": "#FF8888",
+		"image": "choco-box.png",
+	},
+	{
+		"name": "tonb",
+		"color": "#00FF00",
+		"image": "tonb-box.png",
+	},
+  ]
+}

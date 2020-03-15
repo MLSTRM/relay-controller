@@ -35,6 +35,7 @@
             this.tabPageCategories = new System.Windows.Forms.TabPage();
             this.tabPageSplits = new System.Windows.Forms.TabPage();
             this.teamTabGroup = new System.Windows.Forms.TabControl();
+            this.cycleIconButton = new System.Windows.Forms.Button();
             this.teamTabGroup.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -86,7 +87,6 @@
             // tabPageSplits
             // 
             this.tabPageSplits.BackColor = System.Drawing.Color.Black;
-            this.tabPageSplits.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageSplits.BackgroundImage")));
             this.tabPageSplits.Location = new System.Drawing.Point(4, 22);
             this.tabPageSplits.Name = "tabPageSplits";
             this.tabPageSplits.Padding = new System.Windows.Forms.Padding(3);
@@ -105,15 +105,26 @@
             this.teamTabGroup.Size = new System.Drawing.Size(408, 254);
             this.teamTabGroup.TabIndex = 16;
             // 
+            // cycleIconButton
+            // 
+            this.cycleIconButton.Location = new System.Drawing.Point(348, 7);
+            this.cycleIconButton.Name = "cycleIconButton";
+            this.cycleIconButton.Size = new System.Drawing.Size(64, 64);
+            this.cycleIconButton.TabIndex = 19;
+            this.cycleIconButton.Text = "button1";
+            this.cycleIconButton.UseVisualStyleBackColor = true;
+            this.cycleIconButton.Click += new System.EventHandler(this.button1_Click);
+            // 
             // TeamControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.cycleIconButton);
             this.Controls.Add(this.TimerLabel);
             this.Controls.Add(this.TeamSplitButton);
             this.Controls.Add(this.teamTabGroup);
             this.Name = "TeamControl";
-            this.Size = new System.Drawing.Size(426, 429);
+            this.Size = new System.Drawing.Size(430, 430);
             this.teamTabGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -127,6 +138,7 @@
         private System.Windows.Forms.TabPage tabPageCategories;
         private System.Windows.Forms.TabPage tabPageSplits;
         private System.Windows.Forms.TabControl teamTabGroup;
+        private System.Windows.Forms.Button cycleIconButton;
 
 
     }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace ffrelaytoolv1
 {
@@ -86,6 +87,8 @@ namespace ffrelaytoolv1
                                      "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
                                      "00:00:00", "00:00:00"};
 
+        MetaContext meta;
+
         TeamControl[] teams;
 
         public Form1()
@@ -101,48 +104,54 @@ namespace ffrelaytoolv1
                 for (int i = 0; i < Splits.Length; i++)
                 { MogSplits[i] = "00:00:00"; ChocoSplits[i] = "00:00:00"; TonbSplits[i] = "00:00:00"; }
             }
-            
-            ChocoCooldown = new Timer();
-            MogCooldown = new Timer();
-            TonbCooldown = new Timer();
-            UpdateMogSplits();
-            UpdateChocoSplits();
-            UpdateTonbSplits();
-            loadCommentators();
-            //chocoIcon = mogIcon = tonbIcon = 17;
-            CyclePurpleIcon();
-            CycleBlueIcon();
-            CycleGreenIcon();
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
             hook.RegisterHotKey(0, Keys.F1);
             hook.RegisterHotKey(0, Keys.F2);
             hook.RegisterHotKey(0, Keys.F3);
 
+            MetaFile metaFile = JsonConvert.DeserializeObject<MetaFile>(File.ReadAllText("meta.json"));
+
+            string[] teamNames = metaFile.teams.Select(team => team.name).ToArray();
+
             //Programmatic stuff
-            MetaContext meta = new MetaContext(4,2,Splits,new string[]{"mog","choco","tonb"},new string[]{"FF1","FF2","FF3","FF4","FF5","FF6","FF7","FFT","FF8","9","X","12","13","15"});
-            teams = new TeamControl[3];
-            teams[0] = teamControl1;
-            teamControl1.setupTeamControl(this, new TeamInfo(14, Splits.Length, "mog", "mog-runners.txt", Color.Blue, Properties.Resources.mog_box),meta);
-            teams[1] = teamControl2;
-            teamControl2.setupTeamControl(this, new TeamInfo(14, Splits.Length, "choco", "choco-runners.txt", Color.HotPink, Properties.Resources.choco_box), meta);
-            teams[2] = teamControl3;
-            teamControl3.setupTeamControl(this, new TeamInfo(14, Splits.Length, "tonb", "tonb-runners.txt", Color.Green, Properties.Resources.tonb_box), meta);
+            meta = new MetaContext(metaFile.splitsToShow,metaFile.splitFocusOffset,Splits,teamNames,metaFile.games);
+            teams = new TeamControl[metaFile.teams.Length];
+            //Create team controls based on the meta file.
+            int wide = metaFile.teamsPerRow;
+            int height = (metaFile.teams.Length / metaFile.teamsPerRow);
+            for(int i = 0; i<metaFile.teams.Length; i++)
+            {
+                teams[i] = new TeamControl();
+                int row = i / metaFile.teamsPerRow;
+                teams[i].Location = new Point(15 + i*440,120+440*row);
+                MetaFile.Team team = metaFile.teams[i];
+                teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name + "-runners.txt",
+                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta);
+                this.Controls.Add(teams[i]);
+            }
+            loadCommentators();
+            this.Size = new Size(30 + wide * 440, 150 + 440 * height);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
         {
+            int i = -1;
             switch (e.Key)
             {
                 case Keys.F1:
-                    MogSplit_Click(this, EventArgs.Empty);
+                    i = 0;
                     break;
                 case Keys.F2:
-                    ChocoSplit_Click(this, EventArgs.Empty);
+                    i = 1;
                     break;
                 case Keys.F3:
-                    TonbSplit_Click(this, EventArgs.Empty);
+                    i=2;
                     break;
+            }
+            if (i > -1 && i < teams.Length)
+            {
+                teams[i].TeamSplitButton_Click(this, EventArgs.Empty);
             }
         }
 
@@ -173,12 +182,6 @@ namespace ffrelaytoolv1
             string current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
             //string current = d.ToString(@"hh\:mm\:ss");
             MainTimer.Text = current;
-            MogSplits[MogSplitNum] = current;
-            ChocoSplits[ChocoSplitNum] = current;
-            TonbSplits[TonbSplitNum] = current;
-            if (!MogFinished) { UpdateMogSplits(); }
-            if (!ChocoFinished) { UpdateChocoSplits(); }
-            if (!TonbFinished) { UpdateTonbSplits(); }
 
             //Programmatic
             foreach (TeamControl team in teams)
@@ -191,25 +194,10 @@ namespace ffrelaytoolv1
             MinuteCount++;
             if (MinuteCount >= 60) //1 Minute = 60 seconds = 240 timer ticks
             {
-                if (!ChangedThisMin)
-                {
-                    if (infomog.SelectedIndex == 2)
-                    { infomog.SelectedIndex = 0; }
-                    else { infomog.SelectedIndex++; }
-
-                    if (infochoco.SelectedIndex == 2)
-                    { infochoco.SelectedIndex = 0; }
-                    else { infochoco.SelectedIndex++; }
-
-                    if (infotonb.SelectedIndex == 2)
-                    { infotonb.SelectedIndex = 0; }
-                    else { infotonb.SelectedIndex++; }
-                }
                 ChangedThisMin = false;
                 MinuteCount = 0;
             }
 
-            
         }
 
         private void button1_Click_1(object sender, EventArgs e) //Stop click warning
@@ -234,171 +222,8 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        private void cycleIcon(string teamName, int teamIcon, Label teamIconLabel, Label teamInfoCat1,
-            Label teamInfoCat2, Label teamInfoCat3, Label teamCommentary, string[] runners, string[] commentators)
+        public void childTabChanged()
         {
-            //teamIcon++;
-            if (File.Exists("icon_" + teamIcon + ".png"))
-            {
-                File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
-                teamIconLabel.Text = "Cur: " + teamIcon;
-            }
-            else
-            {
-                File.Copy("icon_1.png", teamName + "-Icon.png", true);
-                teamIcon = 1;
-                teamIconLabel.Text = "Cur: 1";
-            }
-            teamInfoCat1.Text = runners[(teamIcon * 4) - 4];
-            teamInfoCat2.Text = runners[(teamIcon * 4) - 3];
-            teamInfoCat3.Text = runners[(teamIcon * 4) - 2];
-            teamCommentary.Text = "Commentary: " + commentators[teamIcon - 1];
-        }
-
-        private void hbbutton_Click(object sender, EventArgs e)
-        {
-            CycleBlueIcon();
-        }
-        void CycleBlueIcon()
-        {
-            cycleIcon("mog", MogGame+1, MogIconlabel, MogInfoCat1, MogInfoCat2, MogInfoCat3, MogCommentary, MogRunners, Commentators);
-        }
-
-        private void hpbutton_Click(object sender, EventArgs e)
-        {
-            CyclePurpleIcon();
-        }
-        void CyclePurpleIcon()
-        {
-            cycleIcon("choco", ChocoGame+1, ChocoIconlabel, ChocoInfoCat1, ChocoInfoCat2, ChocoInfoCat3, ChocoCommentary, ChocoRunners, Commentators);
-        }
-
-        private void tonbIconButton_Click(object sender, EventArgs e)
-        {
-            CycleGreenIcon();
-        }
-        void CycleGreenIcon()
-        {
-            cycleIcon("tonb", TonbGame+1, TonbIconlabel, TonbInfoCat1, TonbInfoCat2, TonbInfoCat3, TonbCommentary, TonbRunners, Commentators);
-        }
-
-        private void splitClick(ref bool waiting, ref int splitNum, ref bool finished, ref string teamFinish,
-            ref string[] teamSplits, ref string[] gameEnds, ref int teamGame, Label teamSplit4, string[] splits,
-            Action cycleIcons, Timer cooldown, Action updateTeamSplits, EventHandler cooldownDone)
-        {
-            //Activate Cooldown
-            if (!waiting)
-            {
-                if (splitNum >= splits.Length - 1)
-                {
-                    if (!finished)
-                    {
-                        teamFinish = teamSplits[splitNum];
-                        gameEnds[teamGame] = teamFinish;
-                        teamSplit4.Text = teamFinish;
-                        finished = true;
-                    }
-                    return;
-                }
-                //Handle the splits. Showing 3 at a time, need to cycle games on end splits (Contains "Final Fantasy")
-                //This year we need to catch LR and MQ. If we do "Lightning Returns: Final Fantasy XIII" it's too damn long, so we'll cut at LR
-                //Catch that we're ending a game before we move onto the next one
-                if (splits[splitNum].Contains(gameSep))
-                {
-                    //Assign the per-game timer to be our current split time, which is stored in teamSplits[splitNum]
-                    gameEnds[teamGame] = teamSplits[splitNum];
-                    //Move the current game along for tracking
-                    teamGame++;
-                    //Move onto the next game using the hand / icons
-                    cycleIcons();
-                }
-                splitNum++;
-                updateTeamSplits();
-                cooldown.Enabled = true;
-                cooldown.Interval = 5000;
-                cooldown.Start();
-                cooldown.Tick += new EventHandler(cooldownDone);
-                waiting = true;
-                WriteSplitFiles();
-            }
-        }
-
-        String stripGameIndicator(String s)
-        {
-            return s.Replace(gameSep, "");
-        }
-
-        TimeSpan resolveTimeSpan(string a, string b)
-        {
-            TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
-            TimeSpan s2 = new TimeSpan(int.Parse(b.Split(':')[0]), int.Parse(b.Split(':')[1]), int.Parse(b.Split(':')[2]));
-            TimeSpan seg = s1 - s2;
-            return seg;
-        }
-
-        void updateDifferenceDisplay(Label label, TimeSpan seg)
-        {
-            string current = "";
-            if (seg.TotalHours > -1)
-            { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
-            current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
-            label.Text = current;
-        }
-
-        private void MogSplit_Click(object sender, EventArgs e)
-        {
-            splitClick(ref MogWaiting, ref MogSplitNum, ref MogFinished, ref MogFinish, ref MogSplits, ref MogGameEnd, ref MogGame,
-                MogSplitTime4, Splits, CycleBlueIcon, MogCooldown, UpdateMogSplits, MogCooldownDone);
-        }
-        void MogCooldownDone(Object myObject, EventArgs myEventArgs)
-        { MogWaiting = false; MogCooldown.Stop(); }
-
-        void UpdateMogSplits()
-        {
-
-        }
-
-        private void ChocoSplit_Click(object sender, EventArgs e)
-        {
-            splitClick(ref ChocoWaiting, ref ChocoSplitNum, ref ChocoFinished, ref ChocoFinish, ref ChocoSplits, ref ChocoGameEnd, ref ChocoGame,
-                ChocoSplitTime4, Splits, CyclePurpleIcon, ChocoCooldown, UpdateChocoSplits, ChocoCooldownDone);
-        }
-        void ChocoCooldownDone(Object myObject, EventArgs myEventArgs)
-        { ChocoWaiting = false; ChocoCooldown.Stop(); }
-
-        void UpdateChocoSplits()
-        {
-            
-        }
-
-        private void TonbSplit_Click(object sender, EventArgs e)
-        {
-            splitClick(ref TonbWaiting, ref TonbSplitNum, ref TonbFinished, ref TonbFinish, ref TonbSplits, ref TonbGameEnd, ref TonbGame,
-                TonbSplitTime4, Splits, CycleGreenIcon, TonbCooldown, UpdateTonbSplits, TonbCooldownDone);
-        }
-        void TonbCooldownDone(Object myObject, EventArgs myEventArgs)
-        { TonbWaiting = false; TonbCooldown.Stop(); }
-
-        void UpdateTonbSplits()
-        {
-            
-        }
-
-        private void MogTab_Clicked(object sender, TabControlEventArgs e)
-        {
-            MogTab = e.TabPageIndex;
-            ChangedThisMin = true;
-        }
-
-        private void ChocoTab_Clicked(object sender, TabControlEventArgs e)
-        {
-            ChocoTab = e.TabPageIndex;
-            ChangedThisMin = true;
-        }
-
-        private void TonbTab_Clicked(object sender, TabControlEventArgs e)
-        {
-            TonbTab = e.TabPageIndex;
             ChangedThisMin = true;
         }
 
@@ -407,22 +232,11 @@ namespace ffrelaytoolv1
             if (File.Exists("commentators.txt"))
             {
                 Commentators = File.ReadAllLines("commentators.txt");
+                meta.commentators = Commentators;
             }
-            if (File.Exists("mog-runners.txt"))
-            {
-                MogRunners = File.ReadAllLines("mog-runners.txt");
+            foreach(TeamControl team in teams){
+                team.reloadRunnerInfo();
             }
-            if (File.Exists("choco-runners.txt"))
-            {
-                ChocoRunners = File.ReadAllLines("choco-runners.txt");
-            }
-            if (File.Exists("tonb-runners.txt"))
-            {
-                TonbRunners = File.ReadAllLines("tonb-runners.txt");
-            }
-            MogCommentary.Text = "Commentary: " + Commentators[MogGame];
-            ChocoCommentary.Text = "Commentary: " + Commentators[ChocoGame];
-            TonbCommentary.Text = "Commentary: " + Commentators[TonbGame];
         }
 
         private void CommUpdate_Click(object sender, EventArgs e)
@@ -431,7 +245,7 @@ namespace ffrelaytoolv1
             ReadSplitFiles();
         }
 
-        private void WriteSplitFiles()
+        public void WriteSplitFiles()
         {
             string sep = "|";
             string no = "00:00:00";

@@ -47,6 +47,8 @@ namespace ffrelaytoolv1
                 page.BackgroundImage = teamInfo.tabBackground;
             }
 
+            teamTabGroup.Selected += teamTabGroup_Selected;
+
             //Construct splits tab
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
@@ -97,11 +99,18 @@ namespace ffrelaytoolv1
             gameShortR = Util.createBaseLabel(295, 9, 90, 175, titlesR, ContentAlignment.MiddleLeft);
             tabPageTimes.Controls.Add(gameShortR);
             updateSplits(new VersusWrapper[]{});
+            updateButtonText();
+            cycleIconButton.BackColor = teamInfo.color;
         }
 
-        private void TeamSplitButton_Click(object sender, EventArgs e)
+        private void teamTabGroup_Selected(object sender, TabControlEventArgs e)
         {
+            parent.childTabChanged();
+        }
 
+        public void TeamSplitButton_Click(object sender, EventArgs e)
+        {
+            splitClick();
         }
 
         public void updateTimerEvent(string current, bool cycleInfo)
@@ -119,7 +128,72 @@ namespace ffrelaytoolv1
             }
         }
 
-        void updateSplits(VersusWrapper[] otherTeams)
+        private void splitClick()
+        {
+            //Activate Cooldown
+            if (!teamInfo.teamWaiting)
+            {
+                if (teamInfo.teamSplitNum >= context.splits.Length - 1)
+                {
+                    if (!teamInfo.teamFinished)
+                    {
+                        teamInfo.teamFinish = teamInfo.teamSplits[teamInfo.teamSplitNum];
+                        teamInfo.teamGameEnd[teamInfo.teamGame] = teamInfo.teamFinish;
+                        teamSplitTimes[context.splitsToShow-1].Text = teamInfo.teamFinish;
+                        teamInfo.teamFinished = true;
+                    }
+                    return;
+                }
+                //Handle the splits. Showing 3 at a time, need to cycle games on end splits (Contains "Final Fantasy")
+                //This year we need to catch LR and MQ. If we do "Lightning Returns: Final Fantasy XIII" it's too damn long, so we'll cut at LR
+                //Catch that we're ending a game before we move onto the next one
+                if (context.splits[teamInfo.teamSplitNum].Contains(Util.gameSep))
+                {
+                    //Assign the per-game timer to be our current split time, which is stored in teamSplits[splitNum]
+                    teamInfo.teamGameEnd[teamInfo.teamGame] = teamInfo.teamSplits[teamInfo.teamSplitNum];
+                    //Move the current game along for tracking
+                    teamInfo.teamGame++;
+                    //Move onto the next game using the hand / icons
+                    cycleIcon();
+                }
+                teamInfo.teamSplitNum++;
+                updateSplits(parent.fetchOtherTeamInfo(this));
+                teamInfo.teamCooldown.Enabled = true;
+                teamInfo.teamCooldown.Interval = 5000;
+                teamInfo.teamCooldown.Start();
+                teamInfo.teamCooldown.Tick += new EventHandler((o, e) => { teamInfo.teamWaiting = false; teamInfo.teamCooldown.Stop(); });
+                teamInfo.teamWaiting = true;
+                parent.WriteSplitFiles();
+            }
+        }
+
+        private void updateButtonText()
+        {
+            cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
+        }
+
+        private void cycleIcon()
+        {
+            //teamIcon++;
+            teamInfo.cycleTeamIcon(updateButtonText);
+            reloadCategoryTab();
+        }
+
+        private void reloadCategoryTab()
+        {
+            categoryLabels[0].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 4];
+            categoryLabels[1].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 3];
+            categoryLabels[2].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2];
+            commentaryLabel.Text = "Commentary: " + context.commentators[teamInfo.teamIcon - 1];
+        }
+
+        public void reloadRunnerInfo()
+        {
+            teamInfo.reloadRunnerInfo();
+            reloadCategoryTab();
+        }
+
+        private void updateSplits(VersusWrapper[] otherTeams)
         {
 
             int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset - 1), context.splitFocusOffset);
@@ -215,6 +289,11 @@ namespace ffrelaytoolv1
             }
             gameEndsL.Text = lefttimes;
             gameEndsR.Text = righttimes;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            cycleIcon();
         }
 
     }

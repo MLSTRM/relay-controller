@@ -39,9 +39,11 @@ namespace ffrelaytoolv1
 
         public Color color { get; set; }
 
-        public Bitmap tabBackground { get; set; }
+        public Image tabBackground { get; set; }
 
-        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Bitmap bg)
+        private string runnerFileName;
+
+        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg)
         {
             this.tabBackground = bg;
             this.color = color;
@@ -53,6 +55,7 @@ namespace ffrelaytoolv1
             teamFinished = false;
             teamTab = 0;
             this.teamName = teamName;
+            this.runnerFileName = runnerFileName;
             if(File.Exists(runnerFileName)){
                 teamRunners = File.ReadAllLines(runnerFileName);
             }
@@ -67,6 +70,27 @@ namespace ffrelaytoolv1
             for (int i = 0; i < numberOfSplits; i++)
             {
                 teamSplits[i] = "00:00:00";
+            }
+        }
+
+        public void reloadRunnerInfo() {
+            if(File.Exists(runnerFileName)){
+                teamRunners = File.ReadAllLines(runnerFileName);
+            }
+        }
+
+        public void cycleTeamIcon(Action buttonCallback)
+        {
+            if (File.Exists("icon_" + teamIcon + ".png"))
+            {
+                File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
+                buttonCallback();
+            }
+            else
+            {
+                File.Copy("icon_1.png", teamName + "-Icon.png", true);
+                teamIcon = 1;
+                buttonCallback();
             }
         }
     }
