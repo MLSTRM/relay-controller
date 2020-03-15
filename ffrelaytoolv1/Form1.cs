@@ -21,7 +21,6 @@ namespace ffrelaytoolv1
          * 
          */
 
-
         Timer tick;
         KeyboardHook hook = new KeyboardHook();
         bool MainTimerRunning = false;
@@ -30,36 +29,7 @@ namespace ffrelaytoolv1
         int MinuteCount = 0;
         bool ChangedThisMin = false;
 
-
         string[] Splits;
-
-        int MogSplitNum = 0;
-        string[] MogSplits;
-        string[] MogGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                    "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                    "00:00:00", "00:00:00"};
-
-        int ChocoSplitNum = 0;
-        string[] ChocoSplits;
-        string[] ChocoGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00"};
-
-        int TonbSplitNum = 0;
-        string[] TonbSplits;
-        string[] TonbGameEnd = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00"};
-
-        string[] MogGameEndArchive = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00"};
-        string[] ChocoGameEndArchive = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00"};
-        string[] TonbGameEndArchive = {  "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", 
-                                     "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00", "00:00:00",
-                                     "00:00:00", "00:00:00"};
 
         MetaContext meta;
 
@@ -72,11 +42,6 @@ namespace ffrelaytoolv1
             if (File.Exists("splits.txt"))
             {
                 Splits = File.ReadAllLines("splits.txt");
-                MogSplits = new string[Splits.Length];
-                ChocoSplits = new string[Splits.Length];
-                TonbSplits = new string[Splits.Length];
-                for (int i = 0; i < Splits.Length; i++)
-                { MogSplits[i] = "00:00:00"; ChocoSplits[i] = "00:00:00"; TonbSplits[i] = "00:00:00"; }
             }
 
             hook.KeyPressed += new EventHandler<KeyPressedEventArgs>(hook_KeyPressed);
@@ -221,7 +186,6 @@ namespace ffrelaytoolv1
         public void WriteSplitFiles()
         {
             string sep = "|";
-            string no = "00:00:00";
             if (File.Exists("splits_output.txt"))
             {
                 File.Delete("splits_output.txt");
