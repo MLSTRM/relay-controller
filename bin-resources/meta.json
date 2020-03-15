@@ -1,22 +1,23 @@
 {
-  "games": ["FF1","FF2","FF3","FF4","FF5","FF6","FF7","FFT","FF8","FF9","FFX","FF12","FF13","FF15"],
+  "games": ["I","II","III","IV","V","VI","VII","T","VIII","IX","X","XII","XIII","XV"],
   "splitsToShow": 4,
   "splitFocusOffset": 2,
+  "teamsPerRow": 3,
   "teams": [
 	{
-		"name": "mog",
+		"name": "Mog",
 		"color": "#0000FF",
 		"image": "mog-box.png",
 	},
 	{
-		"name": "choco",
+		"name": "Choco",
 		"color": "#FF8888",
 		"image": "choco-box.png",
 	},
 	{
-		"name": "tonb",
+		"name": "Tonberry",
 		"color": "#00FF00",
-		"image": "tonb-box.png",
+		"image": "tonberry-box.png",
 	},
   ]
 }
