@@ -68,7 +68,7 @@ namespace ffrelaytoolv1
             //Construct splits tab
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
-            int splitLabelHeight = (context.layout.boxHeight - 2 * context.layout.boxMargin) / (context.splitsToShow + context.numberOfTeams);
+            int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / (context.splitsToShow + context.numberOfTeams);
             for (int i = 0; i < context.splitsToShow; i++)
             {
                 teamSplitNames[i] = Util.createBaseLabel(3, splitLabelHeight * i + context.layout.boxMargin, 256, splitLabelHeight, "test+" + i);

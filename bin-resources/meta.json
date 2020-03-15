@@ -6,18 +6,25 @@
   "teams": [
 	{
 		"name": "Mog",
-		"color": "#00009C",
+		"color": "#3030CC",
 		"image": "mog-box.png",
 	},
 	{
 		"name": "Choco",
-		"color": "#AC117B",
+		"color": "#DC41AB",
 		"image": "choco-box.png",
 	},
 	{
 		"name": "Tonberry",
-		"color": "#0B7700",
+		"color": "#3BA730",
 		"image": "tonberry-box.png",
 	},
-  ]
+  ],
+  "layout": {
+	"boxHeight": 228,
+	"boxWidth": 400,
+	"timerWidth": 254,
+	"timerHeight": 64,
+	"boxMargin": 6,
+  }
 }
