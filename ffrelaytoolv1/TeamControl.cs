@@ -38,13 +38,29 @@ namespace ffrelaytoolv1
 
         public void setupTeamControl(Form1 parent, TeamInfo info, MetaContext context)
         {
+            //TODO: Make base layout more configurable for sizes
             this.parent = parent;
             this.teamInfo = info;
             this.context = context;
+            TimerLabel.Size = new System.Drawing.Size(context.layout.timerWidth, context.layout.timerHeight);
             TeamSplitButton.BackColor = teamInfo.color;
+            if (teamInfo.color.GetBrightness() < 0.5f)
+            {
+                TeamSplitButton.ForeColor = Color.White;
+                cycleIconButton.ForeColor = Color.White;
+            }
+            cycleIconButton.Location = new Point(20 + context.layout.timerWidth, 8);
+            cycleIconButton.BackColor = teamInfo.color;
+            TeamSplitButton.Location = new Point(8, 16 + context.layout.timerHeight);
+            TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth + 72,408), 54);
+            teamTabGroup.Location = new Point(8,80+context.layout.timerHeight);
+
+            //TODO: Only contruct tabs if they're setup in the layout config?
+            //Potentially just have everything and only cycle the target ones. Might be easier.
             foreach (TabPage page in teamTabGroup.TabPages)
             {
                 page.BackgroundImage = teamInfo.tabBackground;
+                page.Size = new Size(context.layout.boxWidth, context.layout.boxHeight);
             }
 
             teamTabGroup.Selected += teamTabGroup_Selected;
@@ -83,6 +99,7 @@ namespace ffrelaytoolv1
             tabPageCategories.Controls.Add(commentaryLabel);
 
             //Construct game times tab
+            //TODO: Need to solve/configure the middle case for an odd number of games. Right now it just appends that to the left side.
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             gameEndsL = new Label[gamesOnEach];
             gameEndsR = new Label[context.numberOfGames - gamesOnEach];
@@ -104,7 +121,6 @@ namespace ffrelaytoolv1
 
             updateSplits(new VersusWrapper[] { });
             updateButtonText();
-            cycleIconButton.BackColor = teamInfo.color;
         }
 
         private void teamTabGroup_Selected(object sender, TabControlEventArgs e)
@@ -271,19 +287,16 @@ namespace ffrelaytoolv1
             {
                 gameEndsL[0].Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 gameEndsR[0].Text = "00:00:00";
-                //teamGameEndL.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 for (int linesToFill = 1; linesToFill < context.numberOfGames / 2; linesToFill++)
                 {
                     gameEndsL[i].Text = "00:00:00";
                     gameEndsR[i].Text = "00:00:00";
-                    //teamGameEndL.Text += "\n00:00:00";
                 }
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
             }
             string lefttimes = teamInfo.teamGameEnd[0] + "\n";
             gameEndsL[0].Text = teamInfo.teamGameEnd[0];
-            string righttimes = "";
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             for (int j = 1; j < context.numberOfGames; j++)
             {
@@ -306,8 +319,6 @@ namespace ffrelaytoolv1
                 else
                 { gameEndsR[j - gamesOnEach].Text = current; }
             }
-            //gameEndsL.Text = lefttimes;
-            //gameEndsR.Text = righttimes;
         }
 
         private void button1_Click(object sender, EventArgs e)

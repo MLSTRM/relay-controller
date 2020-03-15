@@ -54,7 +54,7 @@
             // 
             this.TimerLabel.BackColor = System.Drawing.Color.White;
             this.TimerLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 40F);
-            this.TimerLabel.Location = new System.Drawing.Point(85, 7);
+            this.TimerLabel.Location = new System.Drawing.Point(12, 8);
             this.TimerLabel.Margin = new System.Windows.Forms.Padding(0);
             this.TimerLabel.Name = "TimerLabel";
             this.TimerLabel.Size = new System.Drawing.Size(254, 64);
@@ -107,7 +107,7 @@
             // 
             // cycleIconButton
             // 
-            this.cycleIconButton.Location = new System.Drawing.Point(348, 7);
+            this.cycleIconButton.Location = new System.Drawing.Point(348, 8);
             this.cycleIconButton.Name = "cycleIconButton";
             this.cycleIconButton.Size = new System.Drawing.Size(64, 64);
             this.cycleIconButton.TabIndex = 19;

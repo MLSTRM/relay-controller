@@ -25,7 +25,10 @@ namespace ffrelaytoolv1
         //Abbreviations for time display
         public readonly string[] games;
 
-        public MetaContext(int splitsToShow, int splitFocusOffset, string[] splits, string[] teamNames, string[] games)
+        //TODO: Add more properties for layout config
+        public readonly MetaFile.Layout layout;
+
+        public MetaContext(int splitsToShow, int splitFocusOffset, string[] splits, string[] teamNames, string[] games, MetaFile.Layout layout)
         {
             this.splitsToShow = splitsToShow;
             this.splitFocusOffset = splitFocusOffset;
@@ -34,6 +37,7 @@ namespace ffrelaytoolv1
             this.numberOfTeams = teamNames.Length;
             this.games = games;
             this.numberOfGames = games.Length;
+            this.layout = layout;
         }
     }
 }

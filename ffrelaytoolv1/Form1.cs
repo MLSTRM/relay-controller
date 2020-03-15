@@ -54,7 +54,7 @@ namespace ffrelaytoolv1
             string[] teamNames = metaFile.teams.Select(team => team.name).ToArray();
 
             //Programmatic stuff
-            meta = new MetaContext(metaFile.splitsToShow,metaFile.splitFocusOffset,Splits,teamNames,metaFile.games);
+            meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits, teamNames, metaFile.games, metaFile.layout);
             teams = new TeamControl[metaFile.teams.Length];
             //Create team controls based on the meta file.
             int wide = metaFile.teamsPerRow;

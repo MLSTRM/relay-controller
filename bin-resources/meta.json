@@ -6,17 +6,17 @@
   "teams": [
 	{
 		"name": "Mog",
-		"color": "#0000FF",
+		"color": "#00009C",
 		"image": "mog-box.png",
 	},
 	{
 		"name": "Choco",
-		"color": "#FF8888",
+		"color": "#AC117B",
 		"image": "choco-box.png",
 	},
 	{
 		"name": "Tonberry",
-		"color": "#00FF00",
+		"color": "#0B7700",
 		"image": "tonberry-box.png",
 	},
   ]
