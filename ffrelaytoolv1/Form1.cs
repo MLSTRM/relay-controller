@@ -228,10 +228,21 @@ namespace ffrelaytoolv1
             }
             string[] lines = new string[Splits.Length + 1];
             //line[0] = "Time   | Mog   | Choco | Tonb  ";
-            lines[0] = "Time   | Mog   | Choco | Tonb  ";
+            //Parameterised
+            int timePad = Splits.Select(str => str.Length).Max();
+            lines[0] = "Time".PadRight(timePad,' ');
             for (int i = 0; i < Splits.Length; i++)
             {
-                lines[i + 1] = Splits[i] + sep + (MogSplitNum > i ? MogSplits[i] : no) + sep + (ChocoSplitNum > i ? ChocoSplits[i] : no) + sep + (TonbSplitNum > i ? TonbSplits[i] : no);
+                lines[i + 1] = Splits[i].PadRight(timePad, ' ');
+            }
+            for (int i = 0; i < teams.Length; i++)
+            {
+                TeamControl team = teams[i];
+                lines[0] += sep + team.teamInfo.teamName.PadRight(8,' ');
+                for (int j = 0; j < Splits.Length; j++)
+                {
+                    lines[j + 1] += sep + team.getSplit(j);
+                }
             }
             File.WriteAllLines("splits_output.txt", lines);
         }
@@ -244,17 +255,18 @@ namespace ffrelaytoolv1
                 for (int i = 1; i < lines.Length; i++)
                 {
                     string[] split = lines[i].Split('|');
-                    if (MogSplitNum > i - 1)
+                    if (split.Length != teams.Length + 1)
                     {
-                        MogSplits[i - 1] = split[1];
+                        //TODO: Show warning message
+                        warning PU = new warning();
+                        PU.setWarning("WARN: line " + i + " did not match expected seperations.");
+                        DialogResult dr = PU.ShowDialog();
+                        PU.Dispose();
+                        return;
                     }
-                    if (ChocoSplitNum > i - 1)
+                    for (var j = 1; j < split.Length; j++)
                     {
-                        ChocoSplits[i - 1] = split[2];
-                    }
-                    if (TonbSplitNum > i - 1)
-                    {
-                        TonbSplits[i - 1] = split[3];
+                        teams[j - 1].setSplit(split[j], i - 1);
                     }
                 }
             }
