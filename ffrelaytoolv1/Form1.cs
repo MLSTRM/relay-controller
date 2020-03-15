@@ -167,6 +167,7 @@ namespace ffrelaytoolv1
                 tick.Start();
                 tick.Tick += new EventHandler(TimerEventProcessor);
                 tick.Interval = 250;
+                ChangedThisMin = true;
             }
             else
             {
@@ -182,17 +183,16 @@ namespace ffrelaytoolv1
             string current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
             //string current = d.ToString(@"hh\:mm\:ss");
             MainTimer.Text = current;
+            bool toCycle = !ChangedThisMin;
 
-            //Programmatic
             foreach (TeamControl team in teams)
             {
-                team.updateTimerEvent(current, MinuteCount >= 60 && !ChangedThisMin);
+                team.updateTimerEvent(current, toCycle);
             }
-            //Programmatic end
 
             //This section auto cycles
             MinuteCount++;
-            if (MinuteCount >= 60) //1 Minute = 60 seconds = 240 timer ticks
+            if (MinuteCount >= 10) //1 Minute = 60 seconds = 240 timer ticks
             {
                 ChangedThisMin = false;
                 MinuteCount = 0;
@@ -291,10 +291,11 @@ namespace ffrelaytoolv1
         {
             VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
             int adjustedIndex = 0;
-            for (int i = 0; i < teams.Length - 1; i++)
+            for (int i = 0; i < teams.Length; i++)
             {
-                if (self == teams[i]) { adjustedIndex++; }
-                wrapperArray[i] = new VersusWrapper(teams[adjustedIndex].teamInfo.teamSplitNum, teams[adjustedIndex].teamInfo.teamSplits);
+                if (self == teams[i]) { continue; }
+                wrapperArray[adjustedIndex] = new VersusWrapper(teams[i].teamInfo.teamSplitNum, teams[i].teamInfo.teamSplits);
+                adjustedIndex++;
             }
             return wrapperArray;
         }

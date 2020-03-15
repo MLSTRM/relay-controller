@@ -62,13 +62,14 @@ namespace ffrelaytoolv1
             vsLabelNames = new Label[context.numberOfTeams - 1];
             vsLabelTimes = new Label[context.numberOfTeams - 1];
             int adjustedIndex = 0;
-            for (int i = 0; i < context.numberOfTeams - 1; i++)
+            for (int i = 0; i < context.numberOfTeams; i++)
             {
-                if (context.teamNames[i].Equals(info.teamName)) { adjustedIndex++; }
-                vsLabelNames[i] = Util.createBaseLabel(3, 156 + 30 * i, 230, 29, "Vs Team " + context.teamNames[adjustedIndex]);
-                tabPageSplits.Controls.Add(vsLabelNames[i]);
-                vsLabelTimes[i] = Util.createBaseLabel(242, 156 + 30 * i, 140, 29, "00:00:00");
-                tabPageSplits.Controls.Add(vsLabelTimes[i]);
+                if (context.teamNames[i].Equals(info.teamName)) { continue; }
+                vsLabelNames[adjustedIndex] = Util.createBaseLabel(3, 156 + 30 * adjustedIndex, 230, 29, "Vs Team " + context.teamNames[i]);
+                tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
+                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(242, 156 + 30 * adjustedIndex, 140, 29, "00:00:00");
+                tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
+                adjustedIndex++;
             }
 
             //Construct runner/category/commentary tab
@@ -91,8 +92,8 @@ namespace ffrelaytoolv1
             string titlesR = "";
             for (int i = 0; i < gamesOnEach; i++)
             {
-                titlesL += context.games[i] + " : \n";
-                titlesR += " : " + context.games[i + gamesOnEach]+"\n";
+                titlesL += context.games[i].PadLeft(4,' ') + ": \n";
+                titlesR += " :" + context.games[i + gamesOnEach].PadRight(4,' ')+"\n";
             }
             gameShortL = Util.createBaseLabel(3, 9, 90, 175, titlesL, ContentAlignment.MiddleRight);
             tabPageTimes.Controls.Add(gameShortL);
