@@ -31,6 +31,7 @@ namespace ffrelaytoolv1
             public bool showSplits = true;
             public bool showCategory = true;
             public bool showGameTimes = true;
+            public int boxMargin = 6;
         }
     }
 }

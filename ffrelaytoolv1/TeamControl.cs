@@ -52,8 +52,8 @@ namespace ffrelaytoolv1
             cycleIconButton.Location = new Point(20 + context.layout.timerWidth, 8);
             cycleIconButton.BackColor = teamInfo.color;
             TeamSplitButton.Location = new Point(8, 16 + context.layout.timerHeight);
-            TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth + 72,408), 54);
-            teamTabGroup.Location = new Point(8,80+context.layout.timerHeight);
+            TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth + 72, 408), 54);
+            teamTabGroup.Location = new Point(8, 80 + context.layout.timerHeight);
 
             //TODO: Only contruct tabs if they're setup in the layout config?
             //Potentially just have everything and only cycle the target ones. Might be easier.
@@ -68,11 +68,12 @@ namespace ffrelaytoolv1
             //Construct splits tab
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
+            int splitLabelHeight = (context.layout.boxHeight - 2 * context.layout.boxMargin) / (context.splitsToShow + context.numberOfTeams);
             for (int i = 0; i < context.splitsToShow; i++)
             {
-                teamSplitNames[i] = Util.createBaseLabel(3, 30 * i + 6, 256, 29, "test+" + i);
+                teamSplitNames[i] = Util.createBaseLabel(3, splitLabelHeight * i + context.layout.boxMargin, 256, splitLabelHeight, "test+" + i);
                 tabPageSplits.Controls.Add(teamSplitNames[i]);
-                teamSplitTimes[i] = Util.createBaseLabel(265, 30 * i + 6, 117, 29, "00:00:00");
+                teamSplitTimes[i] = Util.createBaseLabel(265, splitLabelHeight * i + context.layout.boxMargin, 117, splitLabelHeight, "00:00:00");
                 tabPageSplits.Controls.Add(teamSplitTimes[i]);
             }
             vsLabelNames = new Label[context.numberOfTeams - 1];
@@ -81,21 +82,23 @@ namespace ffrelaytoolv1
             for (int i = 0; i < context.numberOfTeams; i++)
             {
                 if (context.teamNames[i].Equals(info.teamName)) { continue; }
-                vsLabelNames[adjustedIndex] = Util.createBaseLabel(3, 156 + 30 * adjustedIndex, 230, 29, "Vs Team " + context.teamNames[i]);
+                int height = adjustedIndex + context.splitsToShow + 1;
+                vsLabelNames[adjustedIndex] = Util.createBaseLabel(3, splitLabelHeight * height + context.layout.boxMargin, 230, splitLabelHeight, "Vs Team " + context.teamNames[i]);
                 tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
-                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(265, 156 + 30 * adjustedIndex, 140, 29, "00:00:00");
+                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(265, splitLabelHeight * height + context.layout.boxMargin, 140, splitLabelHeight, "00:00:00");
                 tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                 adjustedIndex++;
             }
 
             //Construct runner/category/commentary tab
             categoryLabels = new Label[3];
+            int categoryHeight = (context.layout.boxHeight-context.layout.boxMargin) / 6;
             for (int i = 0; i < 3; i++)
             {
-                categoryLabels[i] = Util.createBaseLabel(3, 3 + 30 * i, 391, 35, "test+" + i, ContentAlignment.MiddleCenter);
+                categoryLabels[i] = Util.createBaseLabel(3, 3 + categoryHeight * i, 391, categoryHeight, "test+" + i, ContentAlignment.MiddleCenter);
                 tabPageCategories.Controls.Add(categoryLabels[i]);
             }
-            commentaryLabel = Util.createBaseLabel(3, 96, 391, 68, "Commentators: ", ContentAlignment.MiddleCenter);
+            commentaryLabel = Util.createBaseLabel(3, context.layout.boxHeight / 2, 391, context.layout.boxHeight / 2, "Commentators: ", ContentAlignment.MiddleCenter);
             tabPageCategories.Controls.Add(commentaryLabel);
 
             //Construct game times tab
@@ -105,7 +108,7 @@ namespace ffrelaytoolv1
             gameEndsR = new Label[context.numberOfGames - gamesOnEach];
             gameShortL = new Label[gamesOnEach];
             gameShortR = new Label[context.numberOfGames - gamesOnEach];
-            int offset = tabPageTimes.Height / gamesOnEach; 
+            int offset = tabPageTimes.Height / gamesOnEach;
 
             for (int i = 0; i < gamesOnEach; i++)
             {
