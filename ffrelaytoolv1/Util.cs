@@ -54,6 +54,7 @@ namespace ffrelaytoolv1
 
         public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
         {
+            System.Console.WriteLine("creating label at " + x + ", " + y);
             Label label = new Label();
             label.Location = new Point(x, y);
             label.Size = new Size(w, h);
