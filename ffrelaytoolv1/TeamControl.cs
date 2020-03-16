@@ -210,7 +210,7 @@ namespace ffrelaytoolv1
 
         private void cycleIcon()
         {
-            //teamIcon++;
+            teamInfo.teamIcon++;
             teamInfo.cycleTeamIcon(updateButtonText);
             reloadCategoryTab();
         }
@@ -232,7 +232,7 @@ namespace ffrelaytoolv1
         private void updateSplits(VersusWrapper[] otherTeams)
         {
 
-            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset - 1), context.splitFocusOffset);
+            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
             for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
             {
                 teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
@@ -292,8 +292,8 @@ namespace ffrelaytoolv1
                 gameEndsR[0].Text = "00:00:00";
                 for (int linesToFill = 1; linesToFill < context.numberOfGames / 2; linesToFill++)
                 {
-                    gameEndsL[i].Text = "00:00:00";
-                    gameEndsR[i].Text = "00:00:00";
+                    gameEndsL[linesToFill].Text = "00:00:00";
+                    gameEndsR[linesToFill].Text = "00:00:00";
                 }
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
