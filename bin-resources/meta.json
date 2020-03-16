@@ -1,0 +1,30 @@
+{
+  "games": ["I","II","III","IV","V","VI","VII","T","VIII","IX","X","XII","XIII","XV"],
+  "splitsToShow": 4,
+  "splitFocusOffset": 2,
+  "teamsPerRow": 3,
+  "teams": [
+	{
+		"name": "Mog",
+		"color": "#3030CC",
+		"image": "mog-box.png",
+	},
+	{
+		"name": "Choco",
+		"color": "#DC41AB",
+		"image": "choco-box.png",
+	},
+	{
+		"name": "Tonberry",
+		"color": "#3BA730",
+		"image": "tonberry-box.png",
+	},
+  ],
+  "layout": {
+	"boxHeight": 228,
+	"boxWidth": 400,
+	"timerWidth": 254,
+	"timerHeight": 64,
+	"boxMargin": 6,
+  }
+}
