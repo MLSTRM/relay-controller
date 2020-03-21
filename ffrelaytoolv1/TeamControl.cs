@@ -268,7 +268,7 @@ namespace ffrelaytoolv1
                             //If the offset on the previous split is larger than the live one then use that.
                             TimeSpan olderseg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum - offset - 1],
                                 otherTeams[team].splits[teamInfo.teamSplitNum - offset - 1]);
-                            if (Math.Abs(olderseg.Ticks) > Math.Abs(seg.Ticks))
+                            if ((Math.Abs(olderseg.Ticks) > Math.Abs(seg.Ticks)) && (Math.Sign(olderseg.Ticks) == Math.Sign(seg.Ticks)))
                             {
                                 seg = olderseg;
                             }
