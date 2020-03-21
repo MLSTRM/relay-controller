@@ -26,5 +26,8 @@
 	"timerWidth": 254,
 	"timerHeight": 64,
 	"boxMargin": 6,
+	"timerTickInterval": 250,
+    "infoCycleTicks": 1000,
+	"splitButtonCooldown": 5000,
   }
 }

@@ -32,6 +32,9 @@ namespace ffrelaytoolv1
             public bool showCategory = true;
             public bool showGameTimes = true;
             public int boxMargin = 6;
+            public int timerTickInterval = 250;
+            public int infoCycleTicks = 40;
+            public int splitButtonCooldown = 5000;
         }
     }
 }

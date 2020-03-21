@@ -26,6 +26,10 @@ namespace ffrelaytoolv1
         bool MainTimerRunning = false;
         public DateTime TimerStart;
 
+        int timerTickInterval = 250;
+
+        int infoCycleTicks = 40;
+
         int MinuteCount = 0;
         bool ChangedThisMin = false;
 
@@ -52,6 +56,9 @@ namespace ffrelaytoolv1
             MetaFile metaFile = JsonConvert.DeserializeObject<MetaFile>(File.ReadAllText("meta.json"));
 
             string[] teamNames = metaFile.teams.Select(team => team.name).ToArray();
+
+            timerTickInterval = metaFile.layout.timerTickInterval;
+            infoCycleTicks = metaFile.layout.infoCycleTicks;
 
             //Programmatic stuff
             meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits, teamNames, metaFile.games, metaFile.layout);
@@ -105,7 +112,7 @@ namespace ffrelaytoolv1
                 tick.Interval = 1;
                 tick.Start();
                 tick.Tick += new EventHandler(TimerEventProcessor);
-                tick.Interval = 250;
+                tick.Interval = timerTickInterval;
                 ChangedThisMin = true;
             }
             else
@@ -131,7 +138,7 @@ namespace ffrelaytoolv1
 
             //This section auto cycles
             MinuteCount++;
-            if (MinuteCount >= 10) //1 Minute = 60 seconds = 240 timer ticks
+            if (MinuteCount >= infoCycleTicks) //1 Minute = 60 seconds = 240 timer ticks
             {
                 ChangedThisMin = false;
                 MinuteCount = 0;

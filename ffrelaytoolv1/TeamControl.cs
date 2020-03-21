@@ -193,12 +193,13 @@ namespace ffrelaytoolv1
                     cycleIcon();
                 }
                 teamInfo.teamSplitNum++;
-                updateSplits(parent.fetchOtherTeamInfo(this));
+                //updateSplits(parent.fetchOtherTeamInfo(this));
                 teamInfo.teamCooldown.Enabled = true;
-                teamInfo.teamCooldown.Interval = 5000;
+                teamInfo.teamCooldown.Interval = context.layout.splitButtonCooldown;
                 teamInfo.teamCooldown.Start();
-                teamInfo.teamCooldown.Tick += new EventHandler((o, e) => { teamInfo.teamWaiting = false; teamInfo.teamCooldown.Stop(); });
+                teamInfo.teamCooldown.Tick += new EventHandler((o, e) => { teamInfo.teamWaiting = false; teamInfo.teamCooldown.Stop(); TeamSplitButton.BackColor = teamInfo.color; });
                 teamInfo.teamWaiting = true;
+                TeamSplitButton.BackColor = Color.Gray;
                 parent.WriteSplitFiles();
             }
         }
