@@ -250,7 +250,7 @@ namespace ffrelaytoolv1
             for (int i = 0; i < teams.Length; i++)
             {
                 if (self == teams[i]) { continue; }
-                wrapperArray[adjustedIndex] = new VersusWrapper(teams[i].teamInfo.teamSplitNum, teams[i].teamInfo.teamSplits);
+                wrapperArray[adjustedIndex] = new VersusWrapper(teams[i].teamInfo.teamSplitNum, teams[i].teamInfo.teamSplits, teams[i].teamInfo.teamFinished);
                 adjustedIndex++;
             }
             return wrapperArray;

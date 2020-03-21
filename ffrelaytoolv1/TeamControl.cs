@@ -138,10 +138,14 @@ namespace ffrelaytoolv1
 
         public void updateTimerEvent(string current, bool cycleInfo)
         {
-            teamInfo.teamSplits[teamInfo.teamSplitNum] = current;
             if (!teamInfo.teamFinished)
             {
+                teamInfo.teamSplits[teamInfo.teamSplitNum] = current;
                 updateSplits(parent.fetchOtherTeamInfo(this));
+            }
+            else
+            {
+                updateVsSplits(parent.fetchOtherTeamInfo(this));
             }
             if (cycleInfo)
             {
@@ -230,16 +234,8 @@ namespace ffrelaytoolv1
             reloadCategoryTab();
         }
 
-        private void updateSplits(VersusWrapper[] otherTeams)
+        private void updateVsSplits(VersusWrapper[] otherTeams)
         {
-
-            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
-            for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
-            {
-                teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
-                teamSplitTimes[offsetSplit].Text = teamInfo.teamSplits[i - (context.splitFocusOffset - offsetSplit)];
-            }
-
             //Split comparisons, since this works even on FF1 it needs to be here
             int offset = 0;
             bool[] vs = new bool[otherTeams.Length];
@@ -253,8 +249,13 @@ namespace ffrelaytoolv1
                         vs[team] = true;
                         if (teamInfo.teamSplitNum > 0)
                         {
-                            TimeSpan seg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum - 1],
-                                otherTeams[team].splits[teamInfo.teamSplitNum - 1]);
+                            int notFinished = 1;
+                            if (teamInfo.teamSplitNum == context.splits.Length - 1 && (teamInfo.teamFinished || otherTeams[team].finished))
+                            {
+                                notFinished = 0;
+                            }
+                            TimeSpan seg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum - notFinished],
+                                otherTeams[team].splits[teamInfo.teamSplitNum - notFinished]);
                             Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
                         }
                     }
@@ -283,6 +284,19 @@ namespace ffrelaytoolv1
                 }
                 offset++;
             }
+        }
+
+        private void updateSplits(VersusWrapper[] otherTeams)
+        {
+
+            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
+            for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
+            {
+                teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
+                teamSplitTimes[offsetSplit].Text = teamInfo.teamSplits[i - (context.splitFocusOffset - offsetSplit)];
+            }
+
+            updateVsSplits(otherTeams);
 
             //Per Game Splits
             //Since we're always at least on FF1, just include the time for it in here, removes the special case later
