@@ -21,6 +21,7 @@ namespace ffrelaytoolv1
             public string name;
             public string color;
             public string image;
+            public int splitKey;
         }
 
         public class Layout
