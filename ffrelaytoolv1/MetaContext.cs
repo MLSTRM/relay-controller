@@ -28,7 +28,9 @@ namespace ffrelaytoolv1
         //TODO: Add more properties for layout config
         public readonly MetaFile.Layout layout;
 
-        public MetaContext(int splitsToShow, int splitFocusOffset, string[] splits, string[] teamNames, string[] games, MetaFile.Layout layout)
+        public readonly MetaFile.Features features;
+
+        public MetaContext(int splitsToShow, int splitFocusOffset, string[] splits, string[] teamNames, string[] games, MetaFile.Layout layout, MetaFile.Features features)
         {
             this.splitsToShow = splitsToShow;
             this.splitFocusOffset = splitFocusOffset;
@@ -38,6 +40,7 @@ namespace ffrelaytoolv1
             this.games = games;
             numberOfGames = games.Length;
             this.layout = layout;
+            this.features = features;
         }
     }
 }

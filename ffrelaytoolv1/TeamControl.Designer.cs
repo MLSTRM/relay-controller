@@ -28,15 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TeamControl));
             this.TeamSplitButton = new System.Windows.Forms.Button();
             this.TimerLabel = new System.Windows.Forms.Label();
-            this.tabPageTimes = new System.Windows.Forms.TabPage();
-            this.tabPageCategories = new System.Windows.Forms.TabPage();
-            this.tabPageSplits = new System.Windows.Forms.TabPage();
             this.teamTabGroup = new System.Windows.Forms.TabControl();
             this.cycleIconButton = new System.Windows.Forms.Button();
-            this.teamTabGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // TeamSplitButton
@@ -62,43 +57,8 @@
             this.TimerLabel.Text = "00:00:00";
             this.TimerLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // tabPageTimes
-            // 
-            this.tabPageTimes.BackColor = System.Drawing.Color.Black;
-            this.tabPageTimes.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageTimes.BackgroundImage")));
-            this.tabPageTimes.Location = new System.Drawing.Point(4, 22);
-            this.tabPageTimes.Name = "tabPageTimes";
-            this.tabPageTimes.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageTimes.Size = new System.Drawing.Size(400, 228);
-            this.tabPageTimes.TabIndex = 3;
-            this.tabPageTimes.Text = "M: Times";
-            // 
-            // tabPageCategories
-            // 
-            this.tabPageCategories.BackColor = System.Drawing.Color.Black;
-            this.tabPageCategories.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("tabPageCategories.BackgroundImage")));
-            this.tabPageCategories.Location = new System.Drawing.Point(4, 22);
-            this.tabPageCategories.Name = "tabPageCategories";
-            this.tabPageCategories.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageCategories.Size = new System.Drawing.Size(400, 228);
-            this.tabPageCategories.TabIndex = 1;
-            this.tabPageCategories.Text = "M: Cats";
-            // 
-            // tabPageSplits
-            // 
-            this.tabPageSplits.BackColor = System.Drawing.Color.Black;
-            this.tabPageSplits.Location = new System.Drawing.Point(4, 22);
-            this.tabPageSplits.Name = "tabPageSplits";
-            this.tabPageSplits.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageSplits.Size = new System.Drawing.Size(400, 228);
-            this.tabPageSplits.TabIndex = 0;
-            this.tabPageSplits.Text = "M: Splits";
-            // 
             // teamTabGroup
             // 
-            this.teamTabGroup.Controls.Add(this.tabPageSplits);
-            this.teamTabGroup.Controls.Add(this.tabPageCategories);
-            this.teamTabGroup.Controls.Add(this.tabPageTimes);
             this.teamTabGroup.Location = new System.Drawing.Point(8, 170);
             this.teamTabGroup.Name = "teamTabGroup";
             this.teamTabGroup.SelectedIndex = 0;
@@ -125,7 +85,6 @@
             this.Controls.Add(this.teamTabGroup);
             this.Name = "TeamControl";
             this.Size = new System.Drawing.Size(430, 430);
-            this.teamTabGroup.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -134,9 +93,6 @@
 
         private System.Windows.Forms.Button TeamSplitButton;
         private System.Windows.Forms.Label TimerLabel;
-        private System.Windows.Forms.TabPage tabPageTimes;
-        private System.Windows.Forms.TabPage tabPageCategories;
-        private System.Windows.Forms.TabPage tabPageSplits;
         private System.Windows.Forms.TabControl teamTabGroup;
         private System.Windows.Forms.Button cycleIconButton;
 
