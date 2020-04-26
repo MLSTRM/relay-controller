@@ -14,6 +14,7 @@ namespace ffrelaytoolv1
         public int teamsPerRow;
         public Team[] teams;
         public Layout layout = new Layout();
+        public Features features = new Features();
 
         public class Team
         {
@@ -36,6 +37,14 @@ namespace ffrelaytoolv1
             public int infoCycleTicks = 40;
             public int splitButtonCooldown = 5000;
             public int splitTimerWidth = 120;
+        }
+
+        public class Features
+        {
+            public bool showSplits = true;
+            public bool showRunners = true;
+            public bool showGameTimes = true;
+            public bool syncInfoCycling = false;
         }
     }
 }

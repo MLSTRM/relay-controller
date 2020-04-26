@@ -55,20 +55,52 @@ namespace ffrelaytoolv1
             cycleIconButton.BackColor = teamInfo.color;
             TeamSplitButton.Location = new Point(8, 16 + context.layout.timerHeight);
             TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth + 72, 408), 54);
+            TeamSplitButton.Text = "Team " + teamInfo.teamName + " Split";
+            
             teamTabGroup.Location = new Point(8, 80 + context.layout.timerHeight);
-
-            //TODO: Only contruct tabs if they're setup in the layout config?
-            //Potentially just have everything and only cycle the target ones. Might be easier.
-            foreach (TabPage page in teamTabGroup.TabPages)
-            {
-                page.BackgroundImage = teamInfo.tabBackground;
-                page.Size = new Size(context.layout.boxWidth, context.layout.boxHeight);
-            }
             teamTabGroup.Size = new Size(context.layout.boxWidth+8, context.layout.boxHeight+26);
-
             teamTabGroup.Selected += teamTabGroup_Selected;
 
-            //Construct splits tab
+            //TODO: Only contruct tabs if they're setup in the layout config?
+            int tabCount = 0;
+            //Potentially just have everything and only cycle the target ones. Might be easier.
+
+            if (context.features.showSplits)
+            {
+                //Construct splits tab
+                teamTabGroup.Controls.Add(createSplitsPage(context, info, ++tabCount));
+            }
+
+            if (context.features.showRunners)
+            {
+                //Construct runner/category/commentary tab
+                teamTabGroup.Controls.Add(createCommentaryPage(context, info, ++tabCount));
+            }
+
+            if (context.features.showGameTimes)
+            {
+                //Construct game times tab
+                //TODO: Need to solve/configure the middle case for an odd number of games. Right now it just appends that to the left side.
+                teamTabGroup.Controls.Add(createTimesPage(context, info, ++tabCount));
+            }
+
+            updateSplits(new VersusWrapper[] { });
+            updateButtonText();
+        }
+
+        private TabPage createSplitsPage(MetaContext context, TeamInfo info, int tabCounter)
+        {
+            TabPage tabPageSplits = new TabPage()
+            {
+                BackColor = System.Drawing.Color.Black,
+                Location = new System.Drawing.Point(4, 22),
+                Name = "tabPageSplits",
+                Padding = new System.Windows.Forms.Padding(3),
+                BackgroundImage = info.tabBackground,
+                Size = new Size(context.layout.boxWidth, context.layout.boxHeight),
+                TabIndex = tabCounter,
+                Text = "Splits",
+            };
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
             int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / (context.splitsToShow + context.numberOfTeams);
@@ -95,10 +127,24 @@ namespace ffrelaytoolv1
                 tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                 adjustedIndex++;
             }
+            return tabPageSplits;
+        }
 
-            //Construct runner/category/commentary tab
+        private TabPage createCommentaryPage(MetaContext context, TeamInfo info, int tabCounter)
+        {
+            TabPage tabPageCategories = new TabPage()
+            {
+                BackColor = System.Drawing.Color.Black,
+                Location = new System.Drawing.Point(4, 22),
+                Name = "tabPageCategories",
+                Padding = new System.Windows.Forms.Padding(3),
+                BackgroundImage = info.tabBackground,
+                Size = new Size(context.layout.boxWidth, context.layout.boxHeight),
+                TabIndex = tabCounter,
+                Text = "Category & Runner",
+            };
             categoryLabels = new Label[3];
-            int categoryHeight = (context.layout.boxHeight-context.layout.boxMargin) / 6;
+            int categoryHeight = (context.layout.boxHeight - context.layout.boxMargin) / 6;
             for (int i = 0; i < 3; i++)
             {
                 categoryLabels[i] = Util.createBaseLabel(3, 3 + categoryHeight * i, 391, categoryHeight, "test+" + i, ContentAlignment.MiddleCenter);
@@ -106,9 +152,22 @@ namespace ffrelaytoolv1
             }
             commentaryLabel = Util.createBaseLabel(3, context.layout.boxHeight / 2, 391, context.layout.boxHeight / 2, "Commentators: ", ContentAlignment.MiddleCenter);
             tabPageCategories.Controls.Add(commentaryLabel);
+            return tabPageCategories;
+        }
 
-            //Construct game times tab
-            //TODO: Need to solve/configure the middle case for an odd number of games. Right now it just appends that to the left side.
+        private TabPage createTimesPage(MetaContext context, TeamInfo info, int tabCounter)
+        {
+            TabPage tabPageTimes = new TabPage()
+            {
+                BackColor = System.Drawing.Color.Black,
+                Location = new System.Drawing.Point(4, 22),
+                Name = "tabPageTimes",
+                Padding = new System.Windows.Forms.Padding(3),
+                BackgroundImage = info.tabBackground,
+                Size = new Size(context.layout.boxWidth, context.layout.boxHeight), 
+                TabIndex = tabCounter,
+                Text = "Game Times",
+            };
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             gameEndsL = new Label[gamesOnEach];
             gameEndsR = new Label[context.numberOfGames - gamesOnEach];
@@ -127,9 +186,7 @@ namespace ffrelaytoolv1
                 gameShortR[i] = Util.createBaseLabel(295, offset * i, 90, offset, " :" + context.games[i + gamesOnEach].PadRight(4, ' '), ContentAlignment.MiddleLeft);
                 tabPageTimes.Controls.Add(gameShortR[i]);
             }
-
-            updateSplits(new VersusWrapper[] { });
-            updateButtonText();
+            return tabPageTimes;
         }
 
         private void teamTabGroup_Selected(object sender, TabControlEventArgs e) => parent.childTabChanged();
@@ -138,7 +195,7 @@ namespace ffrelaytoolv1
         public void TeamSplitButton_Click(object sender, EventArgs e) => splitClick();
         
 
-        public void updateTimerEvent(string current, bool cycleInfo)
+        public int updateTimerEvent(string current, bool cycleInfo, int targetTab=-1)
         {
             if (!teamInfo.teamFinished)
             {
@@ -151,10 +208,14 @@ namespace ffrelaytoolv1
             }
             if (cycleInfo)
             {
-                if (teamTabGroup.SelectedIndex == 2)
+                if (targetTab > -1)
+                {
+                    teamTabGroup.SelectedIndex = Util.clamp(targetTab, teamTabGroup.TabCount, 0);
+                } else if (teamTabGroup.SelectedIndex == teamTabGroup.TabCount)
                 { teamTabGroup.SelectedIndex = 0; }
                 else { teamTabGroup.SelectedIndex++; }
             }
+            return teamTabGroup.SelectedIndex;
         }
 
         public string getSplit(int i) => teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
@@ -218,10 +279,12 @@ namespace ffrelaytoolv1
 
         private void reloadCategoryTab()
         {
-            categoryLabels[0].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 4];
-            categoryLabels[1].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 3];
-            categoryLabels[2].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2];
-            commentaryLabel.Text = "Commentary: " + context.commentators[teamInfo.teamIcon - 1];
+            if (context.features.showRunners) { 
+                categoryLabels[0].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 4];
+                categoryLabels[1].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 3];
+                categoryLabels[2].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2];
+                commentaryLabel.Text = "Commentary: " + context.commentators[teamInfo.teamIcon - 1];
+            }
         }
 
         public void reloadRunnerInfo()
@@ -252,7 +315,10 @@ namespace ffrelaytoolv1
                             }
                             TimeSpan seg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum - notFinished],
                                 otherTeams[team].splits[teamInfo.teamSplitNum - notFinished]);
-                            Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                            if (context.features.showSplits)
+                            {
+                                Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                            }
                         }
                     }
                     //Otherwise update the value based on the live difference (Only if greater than static difference?)
@@ -270,7 +336,10 @@ namespace ffrelaytoolv1
                                 seg = olderseg;
                             }
                         }
-                        Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                        if (context.features.showSplits)
+                        {
+                            Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                        }
                         vs[team] = true;
                     }
                 }
@@ -286,10 +355,12 @@ namespace ffrelaytoolv1
         {
 
             int i = Util.clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
-            for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
-            {
-                teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
-                teamSplitTimes[offsetSplit].Text = teamInfo.teamSplits[i - (context.splitFocusOffset - offsetSplit)];
+            if (context.features.showSplits) { 
+                for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
+                {
+                    teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
+                    teamSplitTimes[offsetSplit].Text = teamInfo.teamSplits[i - (context.splitFocusOffset - offsetSplit)];
+                }
             }
 
             updateVsSplits(otherTeams);
@@ -299,17 +370,17 @@ namespace ffrelaytoolv1
             teamInfo.teamGameEndArchive = teamInfo.teamGameEnd;
             if (teamInfo.teamGame == 0)
             {
-                gameEndsL[0].Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
-                gameEndsR[0].Text = "00:00:00";
+                updateGameEndsL(0, teamInfo.teamSplits[teamInfo.teamSplitNum]);
+                updateGameEndsR(0, "00:00:00");
                 for (int linesToFill = 1; linesToFill < context.numberOfGames / 2; linesToFill++)
                 {
-                    gameEndsL[linesToFill].Text = "00:00:00";
-                    gameEndsR[linesToFill].Text = "00:00:00";
+                    updateGameEndsL(linesToFill, "00:00:00");
+                    updateGameEndsL(linesToFill, "00:00:00");
                 }
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
             }
-            gameEndsL[0].Text = teamInfo.teamGameEnd[0];
+            updateGameEndsL(0, teamInfo.teamGameEnd[0]);
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             for (int j = 1; j < context.numberOfGames; j++)
             {
@@ -328,9 +399,25 @@ namespace ffrelaytoolv1
                     teamInfo.teamGameEndArchive[teamInfo.teamGame] = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 }
                 if (j < gamesOnEach)
-                { gameEndsL[j].Text = current; }
+                { updateGameEndsL(j, current); }
                 else
-                { gameEndsR[j - gamesOnEach].Text = current; }
+                { updateGameEndsR(j - gamesOnEach, current); }
+            }
+        }
+
+        private void updateGameEndsL(int index, String text)
+        {
+            if (context.features.showGameTimes)
+            {
+                gameEndsL[index].Text = text;
+            }
+        }
+
+        private void updateGameEndsR(int index, String text)
+        {
+            if (context.features.showGameTimes)
+            {
+                gameEndsR[index].Text = text;
             }
         }
 

@@ -61,17 +61,18 @@ namespace ffrelaytoolv1
             infoCycleTicks = metaFile.layout.infoCycleTicks;
 
             //Programmatic stuff
-            meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits, teamNames, metaFile.games, metaFile.layout);
+            meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits,
+                teamNames, metaFile.games, metaFile.layout, metaFile.features);
             teams = new TeamControl[metaFile.teams.Length];
             //Create team controls based on the meta file.
             int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
             double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
             Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(400, meta.layout.boxHeight + meta.layout.timerHeight + 106));
-            for(int i = 0; i<metaFile.teams.Length; i++)
+            for (int i = 0; i < metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
                 int row = i / metaFile.teamsPerRow;
-                teams[i].Location = new Point(15 + (i%metaFile.teamsPerRow)*(teamSize.Width+10), 120+(teamSize.Height+10)* row);
+                teams[i].Location = new Point(15 + (i % metaFile.teamsPerRow) * (teamSize.Width + 10), 120 + (teamSize.Height + 10) * row);
                 MetaFile.Team team = metaFile.teams[i];
                 teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
                     ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta, teamSize);
@@ -89,7 +90,7 @@ namespace ffrelaytoolv1
             captureLines.Add(Util.outputCaptureInfo(this, this));
             captureLines.Add("Main timer:");
             captureLines.Add(Util.outputCaptureInfo(MainTimer, this));
-            foreach(TeamControl team in teams)
+            foreach (TeamControl team in teams)
             {
                 captureLines.AddRange(team.outputCaptureInfo(this));
             }
@@ -108,7 +109,7 @@ namespace ffrelaytoolv1
                     i = 1;
                     break;
                 case Keys.F3:
-                    i=2;
+                    i = 2;
                     break;
             }
             if (i > -1 && i < teams.Length)
@@ -147,9 +148,19 @@ namespace ffrelaytoolv1
             MainTimer.Text = current;
             bool toCycle = !ChangedThisMin;
 
-            foreach (TeamControl team in teams)
+            if (!meta.features.syncInfoCycling)
             {
-                team.updateTimerEvent(current, toCycle);
+                foreach (TeamControl team in teams)
+                {
+                    team.updateTimerEvent(current, toCycle);
+                }
+            }
+            else
+            {
+                int targetTab = teams[0].updateTimerEvent(current, toCycle);
+                if (!toCycle) { targetTab = -1; }
+                teams.Except(new TeamControl[] { teams[0] }).ToList()
+                    .ForEach(t => t.updateTimerEvent(current, toCycle, targetTab));
             }
 
             //This section auto cycles
@@ -192,7 +203,8 @@ namespace ffrelaytoolv1
             {
                 meta.commentators = File.ReadAllLines("commentators.txt");
             }
-            foreach(TeamControl team in teams){
+            foreach (TeamControl team in teams)
+            {
                 team.reloadRunnerInfo();
             }
         }
@@ -214,7 +226,7 @@ namespace ffrelaytoolv1
             //line[0] = "Time   | Mog   | Choco | Tonb  ";
             //Parameterised
             int timePad = Splits.Select(str => str.Length).Max();
-            lines[0] = "Time".PadRight(timePad,' ');
+            lines[0] = "Time".PadRight(timePad, ' ');
             for (int i = 0; i < Splits.Length; i++)
             {
                 lines[i + 1] = Splits[i].PadRight(timePad, ' ');
@@ -222,7 +234,7 @@ namespace ffrelaytoolv1
             for (int i = 0; i < teams.Length; i++)
             {
                 TeamControl team = teams[i];
-                lines[0] += sep + team.teamInfo.teamName.PadRight(8,' ');
+                lines[0] += sep + team.teamInfo.teamName.PadRight(8, ' ');
                 for (int j = 0; j < Splits.Length; j++)
                 {
                     lines[j + 1] += sep + team.getSplit(j);
