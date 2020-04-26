@@ -81,6 +81,7 @@ namespace ffrelaytoolv1
             loadCommentators();
             this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
             outputCaptureInformation();
+            cycleMainBG();
         }
 
         private void outputCaptureInformation()
@@ -226,6 +227,17 @@ namespace ffrelaytoolv1
             File.WriteAllLines("splits_output.txt", lines);
         }
 
+        public void cycleMainBG()
+        {
+            if (meta.features.mainLayoutBackground) { 
+                int bgnum = teams.Max(t => t.teamInfo.teamIcon);
+                if (File.Exists("background_" + bgnum + ".png"))
+                {
+                    File.Copy("background_" + bgnum + ".png", "background.png", true);
+                }
+            }
+        }
+
         private void ReadSplitFiles()
         {
             if (File.Exists("splits_output.txt"))
@@ -252,7 +264,7 @@ namespace ffrelaytoolv1
 
         public VersusWrapper[] fetchOtherTeamInfo(TeamControl self)
         {
-            //teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
+            //return teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
             VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
             int adjustedIndex = 0;
             for (int i = 0; i < teams.Length; i++)
