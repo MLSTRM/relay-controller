@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace ffrelaytoolv1
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         /*
          * Boxes have gone 228->166
@@ -39,7 +39,7 @@ namespace ffrelaytoolv1
 
         TeamControl[] teams;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             tick = new Timer();
@@ -64,20 +64,21 @@ namespace ffrelaytoolv1
             meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits, teamNames, metaFile.games, metaFile.layout);
             teams = new TeamControl[metaFile.teams.Length];
             //Create team controls based on the meta file.
-            int wide = metaFile.teamsPerRow;
-            int height = (metaFile.teams.Length / metaFile.teamsPerRow);
+            int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
+            double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
+            Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(400, meta.layout.boxHeight + meta.layout.timerHeight + 106));
             for(int i = 0; i<metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
                 int row = i / metaFile.teamsPerRow;
-                teams[i].Location = new Point(15 + i*440,120+440*row);
+                teams[i].Location = new Point(15 + (i%metaFile.teamsPerRow)*(teamSize.Width+10), 120+(teamSize.Height+10)* row);
                 MetaFile.Team team = metaFile.teams[i];
-                teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta);
+                teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
+                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
             loadCommentators();
-            this.Size = new Size(30 + wide * 440, 150 + 440 * height);
+            this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)

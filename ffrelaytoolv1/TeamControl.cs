@@ -14,7 +14,7 @@ namespace ffrelaytoolv1
     {
         public TeamInfo teamInfo;
 
-        Form1 parent;
+        MainForm parent;
 
         MetaContext context;
 
@@ -36,13 +36,15 @@ namespace ffrelaytoolv1
             InitializeComponent();
         }
 
-        public void setupTeamControl(Form1 parent, TeamInfo info, MetaContext context)
+        public void setupTeamControl(MainForm parent, TeamInfo info, MetaContext context, Size teamSize)
         {
             //TODO: Make base layout more configurable for sizes
             this.parent = parent;
             this.teamInfo = info;
             this.context = context;
-            TimerLabel.Size = new System.Drawing.Size(context.layout.timerWidth, context.layout.timerHeight);
+            this.Size = teamSize;
+
+            TimerLabel.Size = new Size(context.layout.timerWidth, context.layout.timerHeight);
             TeamSplitButton.BackColor = teamInfo.color;
             if (teamInfo.color.GetBrightness() < 0.5f)
             {
@@ -62,6 +64,7 @@ namespace ffrelaytoolv1
                 page.BackgroundImage = teamInfo.tabBackground;
                 page.Size = new Size(context.layout.boxWidth, context.layout.boxHeight);
             }
+            teamTabGroup.Size = new Size(context.layout.boxWidth+8, context.layout.boxHeight+26);
 
             teamTabGroup.Selected += teamTabGroup_Selected;
 
