@@ -69,20 +69,20 @@ namespace ffrelaytoolv1
         public static Label createBaseLabel(int x, int y, int w, int h, string text) => 
             createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
 
-        public static String outputCaptureInfo(Control control)
+        public static String outputCaptureInfo(Control control, Control parent)
         {
-            return "x: " + control.Location.X + 
-                ", y: " + control.Location.Y + 
-                ", w: " + control.Size.Width + 
-                ", h: " + control.Size.Height;
+            return "l: " + control.Location.X + 
+                ", t: " + control.Location.Y + 
+                ", r: " + (parent.ClientSize.Width - control.Location.X - control.Size.Width) + 
+                ", b: " + (parent.ClientSize.Height - control.Location.Y - control.Size.Height);
         }
 
-        public static String outputCaptureInfoRelative(Control control, params Control[] outer)
+        public static String outputCaptureInfoRelative(Control control, Control parent, params Control[] outer)
         {
-            return "x: " + (outer.Sum(c => c.Location.X) + control.Location.X) +
-                ", y: " + (outer.Sum(c => c.Location.Y) + control.Location.Y) +
-                ", w: " + control.Size.Width +
-                ", h: " + control.Size.Height;
+            return "l: " + (outer.Sum(c => c.Location.X) + control.Location.X) +
+                ", t: " + (outer.Sum(c => c.Location.Y) + control.Location.Y) +
+                ", r: " + (parent.ClientSize.Width - outer.Sum(c => c.Location.X) - control.Location.X - control.Size.Width) +
+                ", b: " + (parent.ClientSize.Height - outer.Sum(c => c.Location.Y) - control.Location.Y - control.Size.Height);
         }
     }
 }

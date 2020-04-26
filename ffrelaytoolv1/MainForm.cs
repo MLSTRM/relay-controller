@@ -86,12 +86,12 @@ namespace ffrelaytoolv1
         {
             List<String> captureLines = new List<string>();
             captureLines.Add("Program Size: ");
-            captureLines.Add(Util.outputCaptureInfo(this));
+            captureLines.Add(Util.outputCaptureInfo(this, this));
             captureLines.Add("Main timer:");
-            captureLines.Add(Util.outputCaptureInfo(MainTimer));
+            captureLines.Add(Util.outputCaptureInfo(MainTimer, this));
             foreach(TeamControl team in teams)
             {
-                captureLines.AddRange(team.outputCaptureInfo());
+                captureLines.AddRange(team.outputCaptureInfo(this));
             }
             File.WriteAllLines("capture-info.txt", captureLines);
         }
