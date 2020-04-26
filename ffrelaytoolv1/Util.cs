@@ -18,6 +18,8 @@ namespace ffrelaytoolv1
 
         public readonly static Font lucidaFont = new Font(lucida, 16);
 
+        public static Font lucidaFontSized(int size) => new Font(lucida, size);
+
         public static TimeSpan resolveTimeSpan(string a, string b)
         {
             TimeSpan s1 = new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
@@ -66,5 +68,21 @@ namespace ffrelaytoolv1
 
         public static Label createBaseLabel(int x, int y, int w, int h, string text) => 
             createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
+
+        public static String outputCaptureInfo(Control control)
+        {
+            return "x: " + control.Location.X + 
+                ", y: " + control.Location.Y + 
+                ", w: " + control.Size.Width + 
+                ", h: " + control.Size.Height;
+        }
+
+        public static String outputCaptureInfoRelative(Control control, params Control[] outer)
+        {
+            return "x: " + (outer.Sum(c => c.Location.X) + control.Location.X) +
+                ", y: " + (outer.Sum(c => c.Location.Y) + control.Location.Y) +
+                ", w: " + control.Size.Width +
+                ", h: " + control.Size.Height;
+        }
     }
 }

@@ -79,6 +79,21 @@ namespace ffrelaytoolv1
             }
             loadCommentators();
             this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
+            outputCaptureInformation();
+        }
+
+        private void outputCaptureInformation()
+        {
+            List<String> captureLines = new List<string>();
+            captureLines.Add("Program Size: ");
+            captureLines.Add(Util.outputCaptureInfo(this));
+            captureLines.Add("Main timer:");
+            captureLines.Add(Util.outputCaptureInfo(MainTimer));
+            foreach(TeamControl team in teams)
+            {
+                captureLines.AddRange(team.outputCaptureInfo());
+            }
+            File.WriteAllLines("capture-info.txt", captureLines);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)

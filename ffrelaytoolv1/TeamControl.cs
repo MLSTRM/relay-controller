@@ -338,5 +338,17 @@ namespace ffrelaytoolv1
             cycleIcon();
         }
 
+        public List<String> outputCaptureInfo()
+        {
+            List<String> captureLines = new List<string>();
+            captureLines.Add("");
+            captureLines.Add("Team " + teamInfo.teamName);
+            captureLines.Add("Timer: ");
+            captureLines.Add(Util.outputCaptureInfoRelative(TimerLabel, this));
+            captureLines.Add("Info box: ");
+            captureLines.Add(Util.outputCaptureInfoRelative(teamTabGroup.TabPages[0], teamTabGroup, this));
+            return captureLines;
+        }
+
     }
 }
