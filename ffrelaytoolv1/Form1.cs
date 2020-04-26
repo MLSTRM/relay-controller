@@ -168,10 +168,7 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        public void childTabChanged()
-        {
-            ChangedThisMin = true;
-        }
+        public void childTabChanged() => ChangedThisMin = true;
 
         private void loadCommentators()
         {
@@ -228,7 +225,6 @@ namespace ffrelaytoolv1
                     string[] split = lines[i].Split('|');
                     if (split.Length != teams.Length + 1)
                     {
-                        //TODO: Show warning message
                         warning PU = new warning();
                         PU.setWarning("WARN: line " + i + " did not match expected seperations.");
                         DialogResult dr = PU.ShowDialog();
@@ -245,6 +241,7 @@ namespace ffrelaytoolv1
 
         public VersusWrapper[] fetchOtherTeamInfo(TeamControl self)
         {
+            //teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
             VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
             int adjustedIndex = 0;
             for (int i = 0; i < teams.Length; i++)

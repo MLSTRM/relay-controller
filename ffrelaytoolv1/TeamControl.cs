@@ -126,15 +126,11 @@ namespace ffrelaytoolv1
             updateButtonText();
         }
 
-        private void teamTabGroup_Selected(object sender, TabControlEventArgs e)
-        {
-            parent.childTabChanged();
-        }
+        private void teamTabGroup_Selected(object sender, TabControlEventArgs e) => parent.childTabChanged();
+        
 
-        public void TeamSplitButton_Click(object sender, EventArgs e)
-        {
-            splitClick();
-        }
+        public void TeamSplitButton_Click(object sender, EventArgs e) => splitClick();
+        
 
         public void updateTimerEvent(string current, bool cycleInfo)
         {
@@ -155,10 +151,7 @@ namespace ffrelaytoolv1
             }
         }
 
-        public string getSplit(int i)
-        {
-            return teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
-        }
+        public string getSplit(int i) => teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
 
         public void setSplit(string split, int i)
         {
@@ -208,10 +201,7 @@ namespace ffrelaytoolv1
             }
         }
 
-        private void updateButtonText()
-        {
-            cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
-        }
+        private void updateButtonText() => cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
 
         private void cycleIcon()
         {
@@ -289,7 +279,7 @@ namespace ffrelaytoolv1
         private void updateSplits(VersusWrapper[] otherTeams)
         {
 
-            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
+            int i = Util.clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
             for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
             {
                 teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
@@ -313,7 +303,6 @@ namespace ffrelaytoolv1
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
             }
-            string lefttimes = teamInfo.teamGameEnd[0] + "\n";
             gameEndsL[0].Text = teamInfo.teamGameEnd[0];
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             for (int j = 1; j < context.numberOfGames; j++)
