@@ -72,11 +72,13 @@ namespace ffrelaytoolv1
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
             int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / (context.splitsToShow + context.numberOfTeams);
+            int timerWidth = context.layout.splitTimerWidth;
+            int haMargin = context.layout.boxMargin / 2;
             for (int i = 0; i < context.splitsToShow; i++)
             {
-                teamSplitNames[i] = Util.createBaseLabel(3, splitLabelHeight * i + context.layout.boxMargin, 256, splitLabelHeight, "test+" + i);
+                teamSplitNames[i] = Util.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.boxWidth - timerWidth - context.layout.boxMargin, splitLabelHeight, "test+" + i);
                 tabPageSplits.Controls.Add(teamSplitNames[i]);
-                teamSplitTimes[i] = Util.createBaseLabel(265, splitLabelHeight * i + context.layout.boxMargin, 117, splitLabelHeight, "00:00:00");
+                teamSplitTimes[i] = Util.createBaseLabel(context.layout.boxWidth - timerWidth - haMargin, splitLabelHeight * i + context.layout.boxMargin, timerWidth, splitLabelHeight, "00:00:00");
                 tabPageSplits.Controls.Add(teamSplitTimes[i]);
             }
             vsLabelNames = new Label[context.numberOfTeams - 1];
@@ -86,9 +88,9 @@ namespace ffrelaytoolv1
             {
                 if (context.teamNames[i].Equals(info.teamName)) { continue; }
                 int height = adjustedIndex + context.splitsToShow + 1;
-                vsLabelNames[adjustedIndex] = Util.createBaseLabel(3, splitLabelHeight * height + context.layout.boxMargin, 230, splitLabelHeight, "Vs Team " + context.teamNames[i]);
+                vsLabelNames[adjustedIndex] = Util.createBaseLabel(haMargin, splitLabelHeight * height + context.layout.boxMargin, context.layout.boxWidth - timerWidth - context.layout.boxMargin, splitLabelHeight, "Vs Team " + context.teamNames[i]);
                 tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
-                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(265, splitLabelHeight * height + context.layout.boxMargin, 140, splitLabelHeight, "00:00:00");
+                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth - timerWidth - haMargin, splitLabelHeight * height + context.layout.boxMargin, timerWidth, splitLabelHeight, "00:00:00");
                 tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                 adjustedIndex++;
             }
