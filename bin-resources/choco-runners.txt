@@ -1,55 +1,55 @@
-Crisis Core: FF7
-PSP - Any%
+Final Fantasy XIII
+PC - Any%
 Runner: desa3579
 
-FF Crystal Chronicles
-GCN - Any% (JP)
+Final Fantasy VIII
+PSX - Any%
 Runner: VerySydney
 
-Final Fantasy X-2
-PS2 - Any%
+Final Fantasy IV
+SNES - Any% No 64
 Runner: TranceQuina
-
-World of Final Fantasy
-PC - Any%
-Runner: FellVisage
 
 Final Fantasy II
 PSP - Any%
 Runner: Qazplm
 
-FF Fables: Chocobo Tales
-DS - Any%
+Final Fantasy V
+SNES - Any%
 Runner: Kaeldori
 
-Dissidia: Final Fantasy
-PSP - Any%
+Final Fantasy III
+NES - No Glitched Jobs
 Runner: Leonis07
 
-Lightning Returns: FF13
-PC - Any%
+Final Fantasy Tactics
+PSX - Glitchless No Math
 Runner: SephorianBlue
+
+Final Fantasy X
+PS2 - Any%
+Runner: Muttski
+
+Final Fantasy I
+GBA - Any%
+Runner: Sent
+
+Final Fantasy XII
+PS2 - Any%
+Runner: Crrool
+
+Final Fantasy XV
+PS4 - Royal Edition No Ring
+Runner: ricyosma
 
 Final Fantasy IX
 PSX - Any%
-Runner: Muttski
-
-Final Fantasy Type-0 HD
-PC - Any%
-Runner: Sent
-
-Final Fantasy I
-PSP - Any%
-Runner: Crrool
-
-Final Fantasy XIII-2
-PC - Any%
-Runner: ricyosma
-
-Dirge of Cerberus: FF7
-PS2 - Any%
 Runner: GocuComeBack
 
-Final Fantasy XII
-PS2 - 122333%
+Final Fantasy VII
+PSX - No Slots
+Runner: zer0skar_i
+
+Final Fantasy VI
+SNES - Glitchless
 Runner: zer0skar_i
