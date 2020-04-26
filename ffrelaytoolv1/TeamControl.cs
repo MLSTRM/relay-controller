@@ -84,13 +84,14 @@ namespace ffrelaytoolv1
             vsLabelNames = new Label[context.numberOfTeams - 1];
             vsLabelTimes = new Label[context.numberOfTeams - 1];
             int adjustedIndex = 0;
+            int vsTimerWidth = timerWidth + 13;
             for (int i = 0; i < context.numberOfTeams; i++)
             {
                 if (context.teamNames[i].Equals(info.teamName)) { continue; }
                 int height = adjustedIndex + context.splitsToShow + 1;
-                vsLabelNames[adjustedIndex] = Util.createBaseLabel(haMargin, splitLabelHeight * height + context.layout.boxMargin, context.layout.boxWidth - timerWidth - context.layout.boxMargin, splitLabelHeight, "Vs Team " + context.teamNames[i]);
+                vsLabelNames[adjustedIndex] = Util.createBaseLabel(haMargin, splitLabelHeight * height + context.layout.boxMargin, context.layout.boxWidth - vsTimerWidth - context.layout.boxMargin, splitLabelHeight, "Vs Team " + context.teamNames[i]);
                 tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
-                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth - timerWidth - haMargin, splitLabelHeight * height + context.layout.boxMargin, timerWidth, splitLabelHeight, "00:00:00");
+                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth - vsTimerWidth - haMargin, splitLabelHeight * height + context.layout.boxMargin, vsTimerWidth, splitLabelHeight, " 00:00:00");
                 tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                 adjustedIndex++;
             }

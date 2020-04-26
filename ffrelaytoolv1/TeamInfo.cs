@@ -60,7 +60,7 @@ namespace ffrelaytoolv1
                 teamRunners = File.ReadAllLines(runnerFileName);
             } else
             {
-                throw new Exception("Unable to find file with name"+runnerFileName);
+                throw new Exception("Unable to find file with name "+runnerFileName);
             }
             teamGameEnd = new string[numberOfGames];
             teamGameEndArchive = new string[numberOfGames];
