@@ -75,7 +75,7 @@ namespace ffrelaytoolv1
                 teams[i].Location = new Point(15 + (i % metaFile.teamsPerRow) * (teamSize.Width + 10), 120 + (teamSize.Height + 10) * row);
                 MetaFile.Team team = metaFile.teams[i];
                 teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta, teamSize);
+                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image), team.splitKey), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
             loadCommentators();
@@ -97,26 +97,9 @@ namespace ffrelaytoolv1
             File.WriteAllLines("capture-info.txt", captureLines);
         }
 
-        private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
-        {
-            int i = -1;
-            switch (e.Key)
-            {
-                case Keys.F1:
-                    i = 0;
-                    break;
-                case Keys.F2:
-                    i = 1;
-                    break;
-                case Keys.F3:
-                    i = 2;
-                    break;
-            }
-            if (i > -1 && i < teams.Length)
-            {
-                teams[i].TeamSplitButton_Click(this, EventArgs.Empty);
-            }
-        }
+        private void hook_KeyPressed(object sender, KeyPressedEventArgs e) =>
+            teams.ToList().FindAll(t=>t.teamInfo.teamSplitKey == (int)e.Key)
+                .ForEach(t => t.TeamSplitButton_Click(this, EventArgs.Empty));
 
         private void button1_Click(object sender, EventArgs e)
         {

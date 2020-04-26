@@ -43,7 +43,9 @@ namespace ffrelaytoolv1
 
         private readonly string runnerFileName;
 
-        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg)
+        public int teamSplitKey { get; }
+
+        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg, int splitKey)
         {
             tabBackground = bg;
             this.color = color;
@@ -56,6 +58,7 @@ namespace ffrelaytoolv1
             teamTab = 0;
             this.teamName = teamName;
             this.runnerFileName = runnerFileName;
+            this.teamSplitKey = splitKey;
             if(File.Exists(runnerFileName)){
                 teamRunners = File.ReadAllLines(runnerFileName);
             } else
