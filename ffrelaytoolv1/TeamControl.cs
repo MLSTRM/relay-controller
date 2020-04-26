@@ -272,8 +272,12 @@ namespace ffrelaytoolv1
 
         private void cycleIcon()
         {
-            teamInfo.teamIcon++;
-            teamInfo.cycleTeamIcon(updateButtonText);
+            parent.cycleMainBG();
+            if (context.features.teamGameIcons)
+            {
+                teamInfo.teamIcon++;
+                teamInfo.cycleTeamIcon(updateButtonText);
+            }
             reloadCategoryTab();
         }
 
