@@ -81,6 +81,7 @@ namespace ffrelaytoolv1
             loadCommentators();
             this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
             outputCaptureInformation();
+            cycleMainBG();
         }
 
         private void outputCaptureInformation()
@@ -229,7 +230,7 @@ namespace ffrelaytoolv1
         public void cycleMainBG()
         {
             if (meta.features.mainLayoutBackground) { 
-                int bgnum = teams.Max(t => t.teamInfo.teamGame);
+                int bgnum = teams.Max(t => t.teamInfo.teamIcon);
                 if (File.Exists("background_" + bgnum + ".png"))
                 {
                     File.Copy("background_" + bgnum + ".png", "background.png", true);

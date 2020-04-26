@@ -77,6 +77,7 @@ namespace ffrelaytoolv1
             {
                 teamSplits[i] = "00:00:00";
             }
+            cycleTeamIcon(() => { });
         }
 
         public void reloadRunnerInfo() {
