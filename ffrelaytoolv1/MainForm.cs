@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 namespace ffrelaytoolv1
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
         /*
          * Boxes have gone 228->166
@@ -39,7 +39,7 @@ namespace ffrelaytoolv1
 
         TeamControl[] teams;
 
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
             tick = new Timer();
@@ -64,20 +64,36 @@ namespace ffrelaytoolv1
             meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits, teamNames, metaFile.games, metaFile.layout);
             teams = new TeamControl[metaFile.teams.Length];
             //Create team controls based on the meta file.
-            int wide = metaFile.teamsPerRow;
-            int height = (metaFile.teams.Length / metaFile.teamsPerRow);
+            int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
+            double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
+            Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(400, meta.layout.boxHeight + meta.layout.timerHeight + 106));
             for(int i = 0; i<metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
                 int row = i / metaFile.teamsPerRow;
-                teams[i].Location = new Point(15 + i*440,120+440*row);
+                teams[i].Location = new Point(15 + (i%metaFile.teamsPerRow)*(teamSize.Width+10), 120+(teamSize.Height+10)* row);
                 MetaFile.Team team = metaFile.teams[i];
-                teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta);
+                teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
+                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image)), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
             loadCommentators();
-            this.Size = new Size(30 + wide * 440, 150 + 440 * height);
+            this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
+            outputCaptureInformation();
+        }
+
+        private void outputCaptureInformation()
+        {
+            List<String> captureLines = new List<string>();
+            captureLines.Add("Program Size: ");
+            captureLines.Add(Util.outputCaptureInfo(this, this));
+            captureLines.Add("Main timer:");
+            captureLines.Add(Util.outputCaptureInfo(MainTimer, this));
+            foreach(TeamControl team in teams)
+            {
+                captureLines.AddRange(team.outputCaptureInfo(this));
+            }
+            File.WriteAllLines("capture-info.txt", captureLines);
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e)
@@ -168,10 +184,7 @@ namespace ffrelaytoolv1
             PU.Dispose();
         }
 
-        public void childTabChanged()
-        {
-            ChangedThisMin = true;
-        }
+        public void childTabChanged() => ChangedThisMin = true;
 
         private void loadCommentators()
         {
@@ -228,7 +241,6 @@ namespace ffrelaytoolv1
                     string[] split = lines[i].Split('|');
                     if (split.Length != teams.Length + 1)
                     {
-                        //TODO: Show warning message
                         warning PU = new warning();
                         PU.setWarning("WARN: line " + i + " did not match expected seperations.");
                         DialogResult dr = PU.ShowDialog();
@@ -245,6 +257,7 @@ namespace ffrelaytoolv1
 
         public VersusWrapper[] fetchOtherTeamInfo(TeamControl self)
         {
+            //teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
             VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
             int adjustedIndex = 0;
             for (int i = 0; i < teams.Length; i++)

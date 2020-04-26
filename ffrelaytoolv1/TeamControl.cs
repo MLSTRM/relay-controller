@@ -14,7 +14,7 @@ namespace ffrelaytoolv1
     {
         public TeamInfo teamInfo;
 
-        Form1 parent;
+        MainForm parent;
 
         MetaContext context;
 
@@ -36,13 +36,15 @@ namespace ffrelaytoolv1
             InitializeComponent();
         }
 
-        public void setupTeamControl(Form1 parent, TeamInfo info, MetaContext context)
+        public void setupTeamControl(MainForm parent, TeamInfo info, MetaContext context, Size teamSize)
         {
             //TODO: Make base layout more configurable for sizes
             this.parent = parent;
             this.teamInfo = info;
             this.context = context;
-            TimerLabel.Size = new System.Drawing.Size(context.layout.timerWidth, context.layout.timerHeight);
+            this.Size = teamSize;
+
+            TimerLabel.Size = new Size(context.layout.timerWidth, context.layout.timerHeight);
             TeamSplitButton.BackColor = teamInfo.color;
             if (teamInfo.color.GetBrightness() < 0.5f)
             {
@@ -62,6 +64,7 @@ namespace ffrelaytoolv1
                 page.BackgroundImage = teamInfo.tabBackground;
                 page.Size = new Size(context.layout.boxWidth, context.layout.boxHeight);
             }
+            teamTabGroup.Size = new Size(context.layout.boxWidth+8, context.layout.boxHeight+26);
 
             teamTabGroup.Selected += teamTabGroup_Selected;
 
@@ -69,23 +72,26 @@ namespace ffrelaytoolv1
             teamSplitTimes = new Label[context.splitsToShow];
             teamSplitNames = new Label[context.splitsToShow];
             int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / (context.splitsToShow + context.numberOfTeams);
+            int timerWidth = context.layout.splitTimerWidth;
+            int haMargin = context.layout.boxMargin / 2;
             for (int i = 0; i < context.splitsToShow; i++)
             {
-                teamSplitNames[i] = Util.createBaseLabel(3, splitLabelHeight * i + context.layout.boxMargin, 256, splitLabelHeight, "test+" + i);
+                teamSplitNames[i] = Util.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.boxWidth - timerWidth - context.layout.boxMargin, splitLabelHeight, "test+" + i);
                 tabPageSplits.Controls.Add(teamSplitNames[i]);
-                teamSplitTimes[i] = Util.createBaseLabel(265, splitLabelHeight * i + context.layout.boxMargin, 117, splitLabelHeight, "00:00:00");
+                teamSplitTimes[i] = Util.createBaseLabel(context.layout.boxWidth - timerWidth - haMargin, splitLabelHeight * i + context.layout.boxMargin, timerWidth, splitLabelHeight, "00:00:00");
                 tabPageSplits.Controls.Add(teamSplitTimes[i]);
             }
             vsLabelNames = new Label[context.numberOfTeams - 1];
             vsLabelTimes = new Label[context.numberOfTeams - 1];
             int adjustedIndex = 0;
+            int vsTimerWidth = timerWidth + 13;
             for (int i = 0; i < context.numberOfTeams; i++)
             {
                 if (context.teamNames[i].Equals(info.teamName)) { continue; }
                 int height = adjustedIndex + context.splitsToShow + 1;
-                vsLabelNames[adjustedIndex] = Util.createBaseLabel(3, splitLabelHeight * height + context.layout.boxMargin, 230, splitLabelHeight, "Vs Team " + context.teamNames[i]);
+                vsLabelNames[adjustedIndex] = Util.createBaseLabel(haMargin, splitLabelHeight * height + context.layout.boxMargin, context.layout.boxWidth - vsTimerWidth - context.layout.boxMargin, splitLabelHeight, "Vs Team " + context.teamNames[i]);
                 tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
-                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(265, splitLabelHeight * height + context.layout.boxMargin, 140, splitLabelHeight, "00:00:00");
+                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth - vsTimerWidth - haMargin, splitLabelHeight * height + context.layout.boxMargin, vsTimerWidth, splitLabelHeight, " 00:00:00");
                 tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                 adjustedIndex++;
             }
@@ -126,15 +132,11 @@ namespace ffrelaytoolv1
             updateButtonText();
         }
 
-        private void teamTabGroup_Selected(object sender, TabControlEventArgs e)
-        {
-            parent.childTabChanged();
-        }
+        private void teamTabGroup_Selected(object sender, TabControlEventArgs e) => parent.childTabChanged();
+        
 
-        public void TeamSplitButton_Click(object sender, EventArgs e)
-        {
-            splitClick();
-        }
+        public void TeamSplitButton_Click(object sender, EventArgs e) => splitClick();
+        
 
         public void updateTimerEvent(string current, bool cycleInfo)
         {
@@ -155,10 +157,7 @@ namespace ffrelaytoolv1
             }
         }
 
-        public string getSplit(int i)
-        {
-            return teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
-        }
+        public string getSplit(int i) => teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
 
         public void setSplit(string split, int i)
         {
@@ -208,10 +207,7 @@ namespace ffrelaytoolv1
             }
         }
 
-        private void updateButtonText()
-        {
-            cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
-        }
+        private void updateButtonText() => cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
 
         private void cycleIcon()
         {
@@ -289,7 +285,7 @@ namespace ffrelaytoolv1
         private void updateSplits(VersusWrapper[] otherTeams)
         {
 
-            int i = Util.Clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
+            int i = Util.clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
             for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
             {
                 teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[i - (context.splitFocusOffset - offsetSplit)]);
@@ -313,7 +309,6 @@ namespace ffrelaytoolv1
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
             }
-            string lefttimes = teamInfo.teamGameEnd[0] + "\n";
             gameEndsL[0].Text = teamInfo.teamGameEnd[0];
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             for (int j = 1; j < context.numberOfGames; j++)
@@ -342,6 +337,18 @@ namespace ffrelaytoolv1
         private void button1_Click(object sender, EventArgs e)
         {
             cycleIcon();
+        }
+
+        public List<String> outputCaptureInfo(Control parent)
+        {
+            List<String> captureLines = new List<string>();
+            captureLines.Add("");
+            captureLines.Add("Team " + teamInfo.teamName);
+            captureLines.Add("Timer: ");
+            captureLines.Add(Util.outputCaptureInfoRelative(TimerLabel, parent, this));
+            captureLines.Add("Info box: ");
+            captureLines.Add(Util.outputCaptureInfoRelative(teamTabGroup.TabPages[0], parent, teamTabGroup, this));
+            return captureLines;
         }
 
     }

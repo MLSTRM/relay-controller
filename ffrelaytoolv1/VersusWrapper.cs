@@ -15,9 +15,9 @@ namespace ffrelaytoolv1
 
         public string[] splits;
 
-        public VersusWrapper(int num, string[] splits, bool finished)
+        public VersusWrapper(int splitNum, string[] splits, bool finished)
         {
-            this.splitNum = num;
+            this.splitNum = splitNum;
             this.splits = splits;
             this.finished = finished;
         }

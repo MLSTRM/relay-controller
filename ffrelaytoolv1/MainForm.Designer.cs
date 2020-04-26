@@ -1,6 +1,6 @@
 ﻿namespace ffrelaytoolv1
 {
-    partial class Form1
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -410,7 +410,7 @@
             this.MogSplitName7.Text = "Team Tonberry:";
             this.MogSplitName7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // Form1
+            // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -422,8 +422,8 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.MainTimer);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.Name = "Form1";
-            this.Text = "Form1";
+            this.Name = "MainForm";
+            this.Text = "ffrelaytool";
             this.ResumeLayout(false);
             this.PerformLayout();
 

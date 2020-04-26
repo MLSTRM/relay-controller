@@ -35,6 +35,7 @@ namespace ffrelaytoolv1
             public int timerTickInterval = 250;
             public int infoCycleTicks = 40;
             public int splitButtonCooldown = 5000;
+            public int splitTimerWidth = 120;
         }
     }
 }

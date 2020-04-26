@@ -34,9 +34,9 @@ namespace ffrelaytoolv1
             this.splitFocusOffset = splitFocusOffset;
             this.splits = splits;
             this.teamNames = teamNames;
-            this.numberOfTeams = teamNames.Length;
+            numberOfTeams = teamNames.Length;
             this.games = games;
-            this.numberOfGames = games.Length;
+            numberOfGames = games.Length;
             this.layout = layout;
         }
     }

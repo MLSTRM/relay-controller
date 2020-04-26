@@ -41,11 +41,11 @@ namespace ffrelaytoolv1
 
         public Image tabBackground { get; set; }
 
-        private string runnerFileName;
+        private readonly string runnerFileName;
 
         public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg)
         {
-            this.tabBackground = bg;
+            tabBackground = bg;
             this.color = color;
             teamIcon = 1;
             teamCooldown = new Timer();
@@ -58,6 +58,9 @@ namespace ffrelaytoolv1
             this.runnerFileName = runnerFileName;
             if(File.Exists(runnerFileName)){
                 teamRunners = File.ReadAllLines(runnerFileName);
+            } else
+            {
+                throw new Exception("Unable to find file with name "+runnerFileName);
             }
             teamGameEnd = new string[numberOfGames];
             teamGameEndArchive = new string[numberOfGames];
