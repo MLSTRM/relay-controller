@@ -86,6 +86,7 @@ namespace ffrelaytoolv1
 
             updateSplits(new VersusWrapper[] { });
             updateButtonText();
+            teamInfo.cycleTeamIcon(()=> { });
         }
 
         private TabPage createSplitsPage(MetaContext context, TeamInfo info, int tabCounter)
