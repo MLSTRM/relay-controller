@@ -26,7 +26,7 @@ Final Fantasy XIII-2
 PC - Any%
 Runner: HawkSnow
 
-Final Fantasy Crystal Chronicles
+FF Crystal Chronicles
 GCN - Any%
 Runner: VerySydney
 
@@ -50,8 +50,8 @@ Final Fantasy IX
 PSX - Any%
 Runner: Trancequina
 
-Lightning Returns: Final Fantasy XIII
-PSX - Any%
+Lightning Returns: FF XIII
+PSC/PS3 - Any%
 Runner: D_Winds
 
 Final Fantasy VII
