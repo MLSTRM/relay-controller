@@ -1,55 +1,63 @@
 Final Fantasy XIII
 PC - Any%
-Runner: desa3579
+Runner: LewdDolphin
 
 Final Fantasy VIII
 PSX - Any%
-Runner: VerySydney
+Runner: Luzbelheim
 
 Final Fantasy IV
 SNES - Any% No 64
-Runner: TranceQuina
+Runner: Aexoden
 
 Final Fantasy II
 PSP - Any%
-Runner: Qazplm
+Runner: Poorscythe
 
 Final Fantasy V
 SNES - Any%
-Runner: Kaeldori
+Runner: Mrzwanzig
 
 Final Fantasy III
 NES - No Glitched Jobs
-Runner: Leonis07
+Runner: Metako
 
-Final Fantasy Tactics
-PSX - Glitchless No Math
-Runner: SephorianBlue
+Final Fantasy XIII-2
+PC - Any%
+Runner: Kanri
+
+Final Fantasy Crystal Chronicles
+GCN - Any%
+Runner: trsLinitaa
 
 Final Fantasy X
 PS2 - Any%
-Runner: Muttski
+Runner: Closetowar
 
 Final Fantasy I
 GBA - Any%
-Runner: Sent
+Runner: Dragondarch
 
 Final Fantasy XII
 PS2 - Any%
-Runner: Crrool
+Runner: Roosta
 
 Final Fantasy XV
 PS4 - Royal Edition No Ring
-Runner: ricyosma
+Runner: Kyoslilmonster
 
 Final Fantasy IX
 PSX - Any%
-Runner: GocuComeBack
+Runner: Muttski
+
+Lightning Returns: Final Fantasy XIII
+PSX - Any%
+Runner: KingSPI
 
 Final Fantasy VII
 PSX - No Slots
-Runner: zer0skar_i
+Runner: Zheal
 
 Final Fantasy VI
 SNES - Glitchless
-Runner: zer0skar_i
+Runner: TheLCC

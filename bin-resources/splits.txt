@@ -45,16 +45,17 @@ Medusa
 Goldor
 Enter Sylx Tower
 !Final Fantasy III
-Mandalia Plains
-Slums of Dorter
-Fort Zeakden
-Bariaus Hill
-Queklain
-Wiegraf
-Riovanes Rooftop
-Bethla Sluice
-Adramelk
-!FF Tactics
+Atlas
+Royal Ripeness
+Caius
+Zenobia
+Gogmagog
+!Final Fantasy XIII-2
+Goblin King
+Cave Worm
+Iron Giant
+Meteor Parasite
+!Crystal Chronicles
 Tros
 Kimahri
 Kilika Woods
@@ -110,6 +111,10 @@ Earth Guardian
 Kuja
 Tiamat
 !Final Fantasy IX
+Noel Kreiss
+Slaughterhouse
+Parandus
+!Lightning Returns
 Aps
 Sample: H0512
 Motorball

@@ -1,5 +1,5 @@
 {
-  "games": ["XIII","VIII","IV","II","V","III","T","X","I","XII","XV","IX","VII","VI"],
+  "games": ["XIII","VIII","IV","II","V","III","XIII-2","CC","X","I","XII","XV","IX","LR","VII","VI"],
   "splitsToShow": 5,
   "splitFocusOffset": 2,
   "teamsPerRow": 3,
