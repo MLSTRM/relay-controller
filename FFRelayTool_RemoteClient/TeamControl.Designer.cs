@@ -37,33 +37,36 @@
             // TeamLabel
             // 
             this.TeamLabel.AutoSize = true;
+            this.TeamLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 16F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.TeamLabel.Location = new System.Drawing.Point(3, 0);
             this.TeamLabel.Name = "TeamLabel";
-            this.TeamLabel.Size = new System.Drawing.Size(40, 13);
+            this.TeamLabel.Size = new System.Drawing.Size(79, 26);
             this.TeamLabel.TabIndex = 0;
             this.TeamLabel.Text = "Team: ";
             // 
             // Current
             // 
             this.Current.AutoSize = true;
-            this.Current.Location = new System.Drawing.Point(4, 17);
+            this.Current.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.Current.Location = new System.Drawing.Point(3, 41);
             this.Current.Name = "Current";
-            this.Current.Size = new System.Drawing.Size(65, 13);
+            this.Current.Size = new System.Drawing.Size(98, 20);
             this.Current.TabIndex = 1;
             this.Current.Text = "Current split:";
             // 
             // splitLabel
             // 
             this.splitLabel.AutoSize = true;
-            this.splitLabel.Location = new System.Drawing.Point(7, 34);
+            this.splitLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.splitLabel.Location = new System.Drawing.Point(4, 67);
             this.splitLabel.Name = "splitLabel";
-            this.splitLabel.Size = new System.Drawing.Size(27, 13);
+            this.splitLabel.Size = new System.Drawing.Size(35, 20);
             this.splitLabel.TabIndex = 2;
             this.splitLabel.Text = "N/A";
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 56);
+            this.button1.Location = new System.Drawing.Point(6, 92);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(141, 55);
             this.button1.TabIndex = 3;
@@ -80,6 +83,7 @@
             this.Controls.Add(this.Current);
             this.Controls.Add(this.TeamLabel);
             this.Name = "TeamControl";
+            this.Size = new System.Drawing.Size(200, 150);
             this.ResumeLayout(false);
             this.PerformLayout();
 

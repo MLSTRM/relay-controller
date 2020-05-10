@@ -108,5 +108,11 @@
     <Analyzer Include="..\packages\AWSSDK.SimpleNotificationService.3.3.101.165\analyzers\dotnet\cs\AWSSDK.SimpleNotificationService.CodeAnalysis.dll" />
     <Analyzer Include="..\packages\AWSSDK.SimpleSystemsManagement.3.3.123.2\analyzers\dotnet\cs\AWSSDK.SimpleSystemsManagement.CodeAnalysis.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FFRelayTool_Model\FFRelayTool_Model.csproj">
+      <Project>{44C1811A-BA2B-4F1D-B522-69926F9D96CD}</Project>
+      <Name>FFRelayTool_Model</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

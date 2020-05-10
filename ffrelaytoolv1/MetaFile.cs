@@ -48,6 +48,7 @@ namespace ffrelaytoolv1
             public bool syncInfoCycling = false;
             public bool teamGameIcons = true;
             public bool mainLayoutBackground = true;
+            public bool enableRemoteSplitting = false;
         }
     }
 }

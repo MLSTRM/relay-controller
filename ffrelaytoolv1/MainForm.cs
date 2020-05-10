@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
+using ffrelaytoolv1.Cloud;
+using FFRelayTool_Model;
 
 namespace ffrelaytoolv1
 {
@@ -38,6 +40,12 @@ namespace ffrelaytoolv1
         MetaContext meta;
 
         TeamControl[] teams;
+
+        private SSMUpdater updater;
+
+        private SQSReader reader;
+
+        private Timer sqsTimer;
 
         public MainForm()
         {
@@ -82,6 +90,75 @@ namespace ffrelaytoolv1
             this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
             outputCaptureInformation();
             cycleMainBG();
+
+            if (meta.features.enableRemoteSplitting)
+            {
+                updater = new SSMUpdater();
+                reader = new SQSReader();
+                sqsTimer = new Timer();
+                sqsTimer.Enabled = true;
+                sqsTimer.Interval = 10 * 1000; //10 second poll
+                sqsTimer.Tick += new EventHandler((o, e) => { handleOutboundMessages(reader.consume()); });
+                sqsTimer.Start();
+                //broadcastState();
+                this.FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
+            }
+        }
+
+        public void handleOutboundMessages(List<OutboundMessage> messages)
+        {
+            if(messages.Count == 0)
+            {
+                return;
+            }
+            foreach(OutboundMessage m in messages)
+            {
+                TeamControl team = teams.ToList().Find(t => t.teamInfo.teamName == m.team);
+                if (!team.teamInfo.teamFinished)
+                {
+                    TimeSpan lastSplit;
+                    if (team.teamInfo.teamSplitNum > 0)
+                    {
+                        lastSplit = Util.parseTimeSpan(team.teamInfo.teamSplits[team.teamInfo.teamSplitNum - 1]);
+                    } else
+                    {
+                        lastSplit = new TimeSpan(0);
+                    }
+                    double diff = (m.time - lastSplit.Ticks)/10_000;
+                    if (diff > 5 * 60 * 1000)
+                    {
+                        //Only split if it's 5 minutes after the most recent one (to prevent duplication)
+                        team.splitClick();
+                        TimeSpan d = new TimeSpan(m.time);
+                        team.setSplit(string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d), team.teamInfo.teamSplitNum - 1);
+                    }
+                }
+            }
+            broadcastState();
+        }
+
+        public void broadcastState()
+        {
+            SSMStructure structure = new SSMStructure();
+            if (MainTimerRunning)
+            {
+                structure.timestamp = TimerStart.Ticks;
+            }
+            structure.teams = teams.ToList().Select(t =>
+            {
+                SSMStructure.SSMTeam team = new SSMStructure.SSMTeam();
+                team.name = t.teamInfo.teamName;
+                team.color = ColorTranslator.ToHtml(t.teamInfo.color);
+                team.activeSplit = meta.splits[t.teamInfo.teamSplitNum];
+                return team;
+            }).ToArray();
+            updater.updateValue(structure);
+        }
+
+        public void teardownState()
+        {
+            SSMStructure structure = new SSMStructure();
+            updater.updateValue(structure);
         }
 
         private void outputCaptureInformation()
@@ -115,6 +192,7 @@ namespace ffrelaytoolv1
                 tick.Tick += new EventHandler(TimerEventProcessor);
                 tick.Interval = timerTickInterval;
                 ChangedThisMin = true;
+                broadcastState();
             }
             else
             {
@@ -169,6 +247,7 @@ namespace ffrelaytoolv1
                     TimerStart = new DateTime(0);
                     MainTimerRunning = false;
                     tick.Stop();
+                    teardownState();
                     //Reset time?
                 }
             }
@@ -225,6 +304,10 @@ namespace ffrelaytoolv1
                 }
             }
             File.WriteAllLines("splits_output.txt", lines);
+            if (meta.features.enableRemoteSplitting)
+            {
+                broadcastState();
+            }
         }
 
         public void cycleMainBG()

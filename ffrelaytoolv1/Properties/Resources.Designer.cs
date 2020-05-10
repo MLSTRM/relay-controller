@@ -61,6 +61,15 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to.
+        /// </summary>
+        internal static string accessKey {
+            get {
+                return ResourceManager.GetString("accessKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap choco_box {
@@ -71,12 +80,39 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to.
+        /// </summary>
+        internal static string inboundQueue {
+            get {
+                return ResourceManager.GetString("inboundQueue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap mog_box {
             get {
                 object obj = ResourceManager.GetObject("mog_box", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to.
+        /// </summary>
+        internal static string secretKey {
+            get {
+                return ResourceManager.GetString("secretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+		/// </summary>
+        internal static string ssmParameter {
+            get {
+                return ResourceManager.GetString("ssmParameter", resourceCulture);
             }
         }
         

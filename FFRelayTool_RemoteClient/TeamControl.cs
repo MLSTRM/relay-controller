@@ -36,6 +36,10 @@ namespace FFRelayTool_RemoteClient
             TeamLabel.Text = "Team " + teamName;
             splitLabel.Text = activeSplit;
             button1.BackColor = buttonColour;
+            if (buttonColour.GetBrightness() < 0.5f)
+            {
+                button1.ForeColor = Color.White;
+            }
         }
 
         public void refreshSplit(string activeSplit)

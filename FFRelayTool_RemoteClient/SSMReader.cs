@@ -1,5 +1,6 @@
 ﻿using Amazon.SimpleSystemsManagement;
 using Amazon.SimpleSystemsManagement.Model;
+using FFRelayTool_Model;
 using FFRelayTool_RemoteClient.Properties;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -26,19 +27,6 @@ namespace FFRelayTool_RemoteClient
             string result = client.GetParameter(request).Parameter.Value;
             SSMStructure structure = JsonConvert.DeserializeObject<SSMStructure>(result);
             return structure;
-        }
-    }
-
-    public class SSMStructure
-    {
-        public SSMTeam[] teams;
-        public long timestamp;
-
-        public class SSMTeam
-        {
-            public string name;
-            public string activeSplit;
-            public string color;
         }
     }
 }

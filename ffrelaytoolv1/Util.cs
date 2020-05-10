@@ -28,6 +28,11 @@ namespace ffrelaytoolv1
             return seg;
         }
 
+        public static TimeSpan parseTimeSpan(string a)
+        {
+            return new TimeSpan(int.Parse(a.Split(':')[0]), int.Parse(a.Split(':')[1]), int.Parse(a.Split(':')[2]));
+        }
+
         public static String stripGameIndicator(String s) => s.Replace(gameSep, "");
 
         public static void updateDifferenceDisplay(Label label, TimeSpan seg)

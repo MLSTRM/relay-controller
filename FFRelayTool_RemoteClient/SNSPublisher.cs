@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Amazon;
 using Amazon.SimpleNotificationService;
+using FFRelayTool_Model;
 using FFRelayTool_RemoteClient.Properties;
 using Newtonsoft.Json;
 
@@ -23,14 +24,8 @@ namespace FFRelayTool_RemoteClient
             OutboundMessage message = new OutboundMessage();
             message.team = team;
             TimeSpan d = DateTime.Now - timestamp;
-            message.time = d.Ticks.ToString();
+            message.time = d.Ticks;
             client.Publish(Resources.topicARN, JsonConvert.SerializeObject(message));
         }
-    }
-
-    struct OutboundMessage
-    {
-        public string team { get; set; }
-        public string time { get; set; }
     }
 }

@@ -229,7 +229,7 @@ namespace ffrelaytoolv1
             }
         }
 
-        private void splitClick()
+        public void splitClick()
         {
             //Activate Cooldown
             if (!teamInfo.teamWaiting)
