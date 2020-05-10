@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ffrelaytoolv1", "ffrelaytoo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFRelayToolV1_Tests", "FFRelayToolV1_Tests\FFRelayToolV1_Tests.csproj", "{3F484D86-A467-4088-B1E2-46CA514E024B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFRelayTool_RemoteClient", "FFRelayTool_RemoteClient\FFRelayTool_RemoteClient.csproj", "{5FE7559D-F181-4224-A238-F89DD6E1546A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{3F484D86-A467-4088-B1E2-46CA514E024B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F484D86-A467-4088-B1E2-46CA514E024B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F484D86-A467-4088-B1E2-46CA514E024B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5FE7559D-F181-4224-A238-F89DD6E1546A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5FE7559D-F181-4224-A238-F89DD6E1546A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5FE7559D-F181-4224-A238-F89DD6E1546A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5FE7559D-F181-4224-A238-F89DD6E1546A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
