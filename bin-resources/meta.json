@@ -40,6 +40,7 @@
 	  "showGameTimes": true,
 	  "syncInfoCycling": true,
 	  "teamGameIcons": true,
-	  "mainLayoutBackground": true
+	  "mainLayoutBackground": true,
+	  "enableRemoteSplitting": true
   }
 }

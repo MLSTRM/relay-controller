@@ -4,43 +4,43 @@ Runner: Kayarune
 
 Final Fantasy VIII
 PSX - Any%
-Runner: wqqqwrt
+Runner: WQ
 
 Final Fantasy IV
 SNES - Any% No 64
-Runner: Penguin8r
+Runner: Riversmccown
 
 Final Fantasy II
 PSP - Any%
-Runner: Seri17723
+Runner: Poorscythe
 
 Final Fantasy V
 SNES - Any%
-Runner: Misut0
+Runner: Twirlin'Curtis
 
 Final Fantasy III
 NES - No Glitched Jobs
-Runner: Kakkun
+Runner: Kakkkun
 
 Final Fantasy XIII-2
 PC - Any%
-Runner: HawkSnow
+Runner: Kanri
 
 FF Crystal Chronicles
 GCN - Any%
-Runner: VerySydney
+Runner: Manaclaw
 
 Final Fantasy X
 PS2 - Any%
-Runner: Camp4r
+Runner: Madhyama
 
 Final Fantasy I
 GBA - Any%
-Runner: TokuHer0
+Runner: Kibetha
 
 Final Fantasy XII
 PS2 - Any%
-Runner: zer0skar_i
+Runner: BlueHarvey
 
 Final Fantasy XV
 PS4 - Royal Edition No Ring
@@ -48,7 +48,7 @@ Runner: Yidamoda
 
 Final Fantasy IX
 PSX - Any%
-Runner: Trancequina
+Runner: TranceQuina
 
 Lightning Returns: FF XIII
 PSC/PS3 - Any%
@@ -60,4 +60,4 @@ Runner: Davesterio
 
 Final Fantasy VI
 SNES - Glitchless
-Runner: Dyne_Nuitari
+Runner: LCC
