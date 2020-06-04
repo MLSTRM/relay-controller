@@ -23,7 +23,7 @@ namespace FFRelayTool_RemoteClient
         {
             OutboundMessage message = new OutboundMessage();
             message.team = team;
-            TimeSpan d = DateTime.Now - timestamp;
+            TimeSpan d = DateTime.Now.ToUniversalTime() - timestamp;
             message.time = d.Ticks;
             client.Publish(Resources.topicARN, JsonConvert.SerializeObject(message));
         }

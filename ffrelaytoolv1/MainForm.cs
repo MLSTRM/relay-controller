@@ -185,7 +185,7 @@ namespace ffrelaytoolv1
             {
                 //Start the timer, do some stuff
                 MainTimerRunning = true;
-                TimerStart = DateTime.Now;
+                TimerStart = DateTime.Now.ToUniversalTime();
                 tick.Enabled = true;
                 tick.Interval = 1;
                 tick.Start();
@@ -202,7 +202,7 @@ namespace ffrelaytoolv1
 
         void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
-            TimeSpan d = DateTime.Now - TimerStart;
+            TimeSpan d = DateTime.Now.ToUniversalTime() - TimerStart;
             //TimeSpan d = DateTime.Now - TimerStart + TimeSpan.FromHours(60);
             //TimeSpan f = d.Add(TimeSpan.FromSeconds(1));
             string current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);

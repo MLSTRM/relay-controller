@@ -40,7 +40,7 @@ namespace FFRelayTool_RemoteClient
 
         public void publishMessage(string teamName)
         {
-            publisher.publish(teamName, new DateTime(state.timestamp));
+            publisher.publish(teamName, new DateTime(state.timestamp,DateTimeKind.Utc));
         }
 
         private void refreshComponents()
