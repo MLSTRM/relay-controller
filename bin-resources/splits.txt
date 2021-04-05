@@ -1,11 +1,11 @@
-Manasvin Warmech 3
+Manasvin Warmech 2
 Odin
 Aster Protoflorian
 Havoc Skytank
 Barthandelus
 Hecatoncheir
 Dahaka
-Proudclad II
+Proudclad 2
 !Final Fantasy XIII
 Anacondaur
 Diablos
@@ -35,7 +35,7 @@ Emperor
 !Final Fantasy II
 Magisa
 Byblos
-Soul Canon
+Soul Cannon
 Big Bridge
 Big Boat
 Exdeath
@@ -51,10 +51,10 @@ Caius
 Zenobia
 Gogmagog
 !Final Fantasy XIII-2
-Goblin King
-Cave Worm
+Orc King
+Golem 1
 Iron Giant
-Meteor Parasite
+Mount Vellenge
 !Crystal Chronicles
 Tros
 Kimahri

@@ -4,11 +4,11 @@ Runner: Olson
 
 Final Fantasy VIII
 PSX - Any%
-Runner: Shug_ssb
+Runner: Luzbelheim
 
 Final Fantasy IV
 SNES - Any% No 64
-Runner: Riversmccown
+Runner: Penguin8r
 
 Final Fantasy II
 PSP - Any%
@@ -16,11 +16,11 @@ Runner: Nickynoel
 
 Final Fantasy V
 SNES - Any%
-Runner: TwirlinCurtis
+Runner: Mrzwanzig
 
 Final Fantasy III
 NES - No Glitched Jobs
-Runner: Yogidamonk
+Runner: Metako
 
 Final Fantasy XIII-2
 PC - Any%
@@ -28,19 +28,19 @@ Runner: ricyosma
 
 FF Crystal Chronicles
 GCN - Any%
-Runner: Manaclaw
+Runner: TRS
 
 Final Fantasy X
 PS2 - Any%
-Runner: Madhyama
+Runner: Camp4r
 
 Final Fantasy I
 GBA - Any%
-Runner: Kibetha
+Runner: Dragondarch
 
 Final Fantasy XII
 PS2 - Any%
-Runner: BlueHarvey
+Runner: Roosta
 
 Final Fantasy XV
 PS4 - Royal Edition No Ring
@@ -48,7 +48,7 @@ Runner: Barbatos
 
 Final Fantasy IX
 PSX - Any%
-Runner: Fhelwanger
+Runner: Muttski
 
 Lightning Returns: FF XIII
 PC/PS3 - Any%
@@ -56,8 +56,8 @@ Runner: xShonnen
 
 Final Fantasy VII
 PSX - No Slots
-Runner: Rupan
+Runner: Zheal
 
 Final Fantasy VI
 SNES - Glitchless
-Runner: Takaze
+Runner: Dyne

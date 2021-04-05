@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace ffrelaytoolv1.Properties {
+namespace FFRelayTool_RemoteClient.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace ffrelaytoolv1.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("ffrelaytoolv1.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FFRelayTool_RemoteClient.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,7 +61,7 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to.
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string accessKey {
             get {
@@ -70,36 +70,7 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap choco_box {
-            get {
-                object obj = ResourceManager.GetObject("choco_box", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to.
-        /// </summary>
-        internal static string inboundQueue {
-            get {
-                return ResourceManager.GetString("inboundQueue", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        internal static System.Drawing.Bitmap mog_box {
-            get {
-                object obj = ResourceManager.GetObject("mog_box", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to.
+        ///   Looks up a localized string similar to .
         /// </summary>
         internal static string secretKey {
             get {
@@ -108,21 +79,20 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to 
-		/// </summary>
-        internal static string ssmParameter {
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string SSMParam {
             get {
-                return ResourceManager.GetString("ssmParameter", resourceCulture);
+                return ResourceManager.GetString("SSMParam", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized string similar to .
         /// </summary>
-        internal static System.Drawing.Bitmap tonb_box {
+        internal static string topicARN {
             get {
-                object obj = ResourceManager.GetObject("tonb_box", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
+                return ResourceManager.GetString("topicARN", resourceCulture);
             }
         }
     }
