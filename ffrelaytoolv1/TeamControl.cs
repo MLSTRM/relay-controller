@@ -86,6 +86,7 @@ namespace ffrelaytoolv1
 
             updateSplits(new VersusWrapper[] { });
             updateButtonText();
+            teamInfo.cycleTeamIcon(()=> { });
         }
 
         private TabPage createSplitsPage(MetaContext context, TeamInfo info, int tabCounter)
@@ -211,7 +212,7 @@ namespace ffrelaytoolv1
                 if (targetTab > -1)
                 {
                     teamTabGroup.SelectedIndex = Util.clamp(targetTab, teamTabGroup.TabCount, 0);
-                } else if (teamTabGroup.SelectedIndex == teamTabGroup.TabCount)
+                } else if (teamTabGroup.SelectedIndex == teamTabGroup.TabCount - 1)
                 { teamTabGroup.SelectedIndex = 0; }
                 else { teamTabGroup.SelectedIndex++; }
             }

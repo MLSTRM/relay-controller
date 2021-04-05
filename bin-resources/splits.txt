@@ -1,51 +1,106 @@
-Ifrit
-Bahamut
-Machine Trio
-Bahamut Fury
-Angeal Penance
-Guard Scorpion
-Nibelheim
-Sephiroth
-Hollander
-!Crisis Core: FF7
-Golbin Wall 1
-Daemon's Court
-Holy Element
-Mt. Vellenge
-!Crystal Chronicles
-Flame Dragon
-Ormi Logos Leblanc
-Dark Ixion
-Dark Magus Sisters
-!Final Fantasy X-2
-Giant Goblin
-Mega Red Dragon
-Vivi
-Vampire Prime
-Brandelis
-King of Bahamut
-!World of FF
+Manasvin Warmech 3
+Odin
+Aster Protoflorian
+Havoc Skytank
+Barthandelus
+Hecatoncheir
+Dahaka
+Proudclad II
+!Final Fantasy XIII
+Anacondaur
+Diablos
+Gerogero
+Laguna Dream 2
+Edea
+GIM52A
+NORG
+Fujin + Raijin
+Edea + Seifer
+Abadon
+Esthar Invasion
+Propagators
+Seifer
+!Final Fantasy VIII
+MomBomb
+Milon Z.
+Magus Sisters
+Dr. Lugae
+Four Fiends
+!Final Fantasy IV
 Sergeant
 Red Soul
 Lamia Queen
 Round Worm
-Emperor I
+Emperor
 !Final Fantasy II
-Fire Crystal
-Earth Crystal
-Water Crystal
-!FFF: Chocobo Tales
-Kuja / Jecht
-The Emperor
-!Dissidia
-Noel Kreiss
-Snow Villiers
-Parandus
-!Lightning Returns
+Magisa
+Byblos
+Soul Canon
+Big Bridge
+Big Boat
+Exdeath
+Merugene
+!Final Fantasy V
+Medusa
+Goldor
+Enter Sylx Tower
+!Final Fantasy III
+Atlas
+Royal Ripeness
+Caius
+Zenobia
+Gogmagog
+!Final Fantasy XIII-2
+Goblin King
+Cave Worm
+Iron Giant
+Meteor Parasite
+!Crystal Chronicles
+Tros
+Kimahri
+Kilika Woods
+Blitzball Tournament
+Chocobo Eater
+Sinspawn Gui
+Extractor
+Spherimorph
+Wendigo
+Evrae
+Seymour Natus
+Seymour Flux
+Yunalesca
+Overdrive Sin
+!Final Fantasy X
+Astos
+Lich
+Airship
+Kraken
+Enter Chaos Shrine
+!Final Fantasy I
+Firemane
+Dustia Farming
+Judge Ghis
+Vossler
+Tiamat
+Jelly Farming
+Judge Bergan
+Ahriman
+Doctor Cid
+Shemhazai
+Fenrir
+!Final Fantasy XII
+Loqi
+Titan
+Aranea
+Leviathan
+Deathclaw
+Ravus
+!Final Fantasy XV
 Plant Brain
 Black Waltz 3
 Gizamaluke
 Ralvurahva
+Beatrix at Cleyra
 Ralvuimago
 Hilgigars
 Amarant
@@ -56,30 +111,33 @@ Earth Guardian
 Kuja
 Tiamat
 !Final Fantasy IX
-Major Odilon
-Vajra
-Gilgamesh
-!FF Type-0 HD
-Lich
-Marilith
-Tiamat
-!Final Fantasy I
-Aloeidai
-Caius Ballad
-Proto fal'Cie Adam
-!Final Fantasy 13-2
-Black Widow
-Arch Azul
-!Dirge of Cerberus
-Thextera
-Mimic Queen
-Judge Ghis
-Vossler
-Tiamat
-Judge Bergan
-Mandragoras
-Cid 1
-Shemhazai
-Pandaemonium
-Hashmal
-!Final Fantasy XII
+Noel Kreiss
+Slaughterhouse
+Parandus
+!Lightning Returns
+Aps
+Sample: H0512
+Motorball
+Bottomswell
+Jenova-BIRTH
+Dyne
+Palmer
+Demons Gate
+Disc 1
+Jenova-DEATH
+Ultimate Weapon
+Carry Armor
+Diamond Weapon
+!Final Fantasy VII
+Vargas
+Phantom Train
+Kefka at Narshe
+Ultros at Opera
+Cranes
+Sealed Gate
+Flame Eater
+Atma Weapon
+Dullahan
+Enter Kefkas Tower
+Goddess
+!Final Fantasy VI
