@@ -139,6 +139,10 @@ namespace ffrelaytoolv1
 
         public void broadcastState()
         {
+            if (!meta.features.enableRemoteSplitting)
+            {
+                return;
+            }
             SSMStructure structure = new SSMStructure();
             if (MainTimerRunning)
             {
@@ -157,6 +161,10 @@ namespace ffrelaytoolv1
 
         public void teardownState()
         {
+            if (!meta.features.enableRemoteSplitting)
+            {
+                return;
+            }
             SSMStructure structure = new SSMStructure();
             updater.updateValue(structure);
         }
