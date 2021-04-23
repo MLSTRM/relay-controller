@@ -22,6 +22,7 @@ namespace ffrelaytoolv1
         Label[] teamSplitTimes;
         Label[] vsLabelNames;
         Label[] vsLabelTimes;
+        Label vsLabelSingle;
 
         Label[] gameEndsL;
         Label[] gameEndsR;
@@ -139,18 +140,26 @@ namespace ffrelaytoolv1
             commentaryLabel = Util.createBaseLabel(3, context.layout.boxHeight / 2, context.layout.boxWidth, context.layout.boxHeight / 2, "Commentators: ");
             tabPageCategories.Controls.Add(commentaryLabel);
 
-            vsLabelNames = new Label[context.numberOfTeams - 1];
-            vsLabelTimes = new Label[context.numberOfTeams - 1];
-            int adjustedIndex = 0;
-            int comparisonHeight = context.layout.boxHeight / (2 * (context.numberOfTeams - 1));
-            for (int i = 0; i < context.numberOfTeams; i++)
+            if (context.features.showAllVs)
             {
-                if (context.teamNames[i].Equals(info.teamName)) { continue; }
-                vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
-                tabPageCategories.Controls.Add(vsLabelNames[adjustedIndex]);
-                vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
-                tabPageCategories.Controls.Add(vsLabelTimes[adjustedIndex]);
-                adjustedIndex++;
+                vsLabelNames = new Label[context.numberOfTeams - 1];
+                vsLabelTimes = new Label[context.numberOfTeams - 1];
+                int adjustedIndex = 0;
+                int comparisonHeight = context.layout.boxHeight / (2 * (context.numberOfTeams - 1));
+                for (int i = 0; i < context.numberOfTeams; i++)
+                {
+                    if (context.teamNames[i].Equals(info.teamName)) { continue; }
+                    vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
+                    tabPageCategories.Controls.Add(vsLabelNames[adjustedIndex]);
+                    vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
+                    tabPageCategories.Controls.Add(vsLabelTimes[adjustedIndex]);
+                    adjustedIndex++;
+                }
+            }
+            else
+            {
+                vsLabelSingle = Util.createBaseLabel(context.layout.boxWidth / 2, context.layout.boxHeight / 12, context.layout.boxWidth / 2, context.layout.boxHeight / 3, "");
+                tabPageCategories.Controls.Add(vsLabelSingle);
             }
             return tabPageCategories;
         }
@@ -302,6 +311,7 @@ namespace ffrelaytoolv1
             //Split comparisons, since this works even on FF1 it needs to be here
             int offset = 0;
             bool[] vs = new bool[otherTeams.Length];
+            TimeSpan maxSeg = new TimeSpan(0, 0, 0);
             while (offset <= teamInfo.teamSplitNum)
             {
                 for (int team = 0; team < otherTeams.Length; team++)
@@ -321,7 +331,10 @@ namespace ffrelaytoolv1
                                 otherTeams[team].splits[teamInfo.teamSplitNum - notFinished]);
                             if (context.features.showSplits)
                             {
-                                Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                                if (context.features.showAllVs)
+                                { Util.updateDifferenceDisplay(vsLabelTimes[team], seg); }
+                                else if (seg > maxSeg)
+                                { maxSeg = seg; }
                             }
                         }
                     }
@@ -342,7 +355,10 @@ namespace ffrelaytoolv1
                         }
                         if (context.features.showSplits)
                         {
-                            Util.updateDifferenceDisplay(vsLabelTimes[team], seg);
+                            if (context.features.showAllVs)
+                            { Util.updateDifferenceDisplay(vsLabelTimes[team], seg); }
+                            else if (seg > maxSeg)
+                            { maxSeg = seg; }
                         }
                         vs[team] = true;
                     }
@@ -352,6 +368,10 @@ namespace ffrelaytoolv1
                     offset = teamInfo.teamSplitNum;
                 }
                 offset++;
+            }
+            if (!context.features.showAllVs)
+            {
+                Util.updateSingleDifferenceDisplay(vsLabelSingle, maxSeg);
             }
         }
 

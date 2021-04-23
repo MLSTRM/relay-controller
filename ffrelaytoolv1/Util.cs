@@ -44,6 +44,14 @@ namespace ffrelaytoolv1
             label.Text = current;
         }
 
+        public static void updateSingleDifferenceDisplay(Label label, TimeSpan seg)
+        {
+            if (seg.TotalHours == 0)
+            { label.Text = ""; }
+            else
+            { label.Text = string.Format("+{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg); }
+        }
+
         public static T clamp<T>(T target, T upper, T lower) where T : IComparable{
             if (target.CompareTo(lower) < 0)
             {
