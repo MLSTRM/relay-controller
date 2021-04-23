@@ -37,9 +37,9 @@
             // TeamSplitButton
             // 
             this.TeamSplitButton.BackColor = System.Drawing.Color.CornflowerBlue;
-            this.TeamSplitButton.Location = new System.Drawing.Point(12, 86);
+            this.TeamSplitButton.Location = new System.Drawing.Point(384, 8);
             this.TeamSplitButton.Name = "TeamSplitButton";
-            this.TeamSplitButton.Size = new System.Drawing.Size(400, 54);
+            this.TeamSplitButton.Size = new System.Drawing.Size(400, 64);
             this.TeamSplitButton.TabIndex = 17;
             this.TeamSplitButton.Text = "Team Mog Split";
             this.TeamSplitButton.UseVisualStyleBackColor = false;
@@ -59,15 +59,15 @@
             // 
             // teamTabGroup
             // 
-            this.teamTabGroup.Location = new System.Drawing.Point(8, 170);
+            this.teamTabGroup.Location = new System.Drawing.Point(8, 100);
             this.teamTabGroup.Name = "teamTabGroup";
             this.teamTabGroup.SelectedIndex = 0;
-            this.teamTabGroup.Size = new System.Drawing.Size(408, 254);
+            this.teamTabGroup.Size = new System.Drawing.Size(813, 192);
             this.teamTabGroup.TabIndex = 16;
             // 
             // cycleIconButton
             // 
-            this.cycleIconButton.Location = new System.Drawing.Point(348, 8);
+            this.cycleIconButton.Location = new System.Drawing.Point(296, 8);
             this.cycleIconButton.Name = "cycleIconButton";
             this.cycleIconButton.Size = new System.Drawing.Size(64, 64);
             this.cycleIconButton.TabIndex = 19;
@@ -84,7 +84,7 @@
             this.Controls.Add(this.TeamSplitButton);
             this.Controls.Add(this.teamTabGroup);
             this.Name = "TeamControl";
-            this.Size = new System.Drawing.Size(430, 430);
+            this.Size = new System.Drawing.Size(827, 302);
             this.ResumeLayout(false);
 
         }
