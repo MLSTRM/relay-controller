@@ -370,15 +370,21 @@ namespace ffrelaytoolv1
                 offset++;
             }
             if (!context.features.showAllVs)
-            {
-                Util.updateSingleDifferenceDisplay(vsLabelSingle, maxSeg);
-            }
+            { Util.updateSingleDifferenceDisplay(vsLabelSingle, maxSeg); }
         }
 
         private void updateSplits(VersusWrapper[] otherTeams)
         {
-
             int i = Util.clamp(teamInfo.teamSplitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
+            if (context.features.syncSplits)
+            {
+                for (int team = 0; team < otherTeams.Length; team++)
+                {
+                    int j = Util.clamp(otherTeams[team].splitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
+                    if (j > i)
+                    { i = j; }
+                }
+            }
             if (context.features.showSplits) { 
                 for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
                 {
