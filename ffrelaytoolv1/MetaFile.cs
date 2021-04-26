@@ -45,6 +45,7 @@ namespace ffrelaytoolv1
             public bool showRunners = true;
             public bool showGameTimes = true;
             public bool syncInfoCycling = false;
+            public bool syncSplits = true;
             public bool showAllVs = false;
             public bool teamGameIcons = true;
             public bool mainLayoutBackground = true;
