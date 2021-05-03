@@ -75,7 +75,7 @@ namespace ffrelaytoolv1
             //Create team controls based on the meta file.
             int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
             double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
-            Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(400, meta.layout.boxHeight + meta.layout.timerHeight + 106));
+            Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(350, meta.layout.boxHeight + meta.layout.timerHeight + 56));
             for (int i = 0; i < metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();

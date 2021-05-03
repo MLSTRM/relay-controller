@@ -26,8 +26,8 @@ namespace ffrelaytoolv1
 
         public class Layout
         {
-            public int boxHeight = 228;
-            public int boxWidth = 400;
+            public int boxHeight = 192;
+            public int boxWidth = 893;
             public int timerWidth = 254;
             public int timerHeight = 64;
             public bool showSplits = true;
@@ -37,7 +37,6 @@ namespace ffrelaytoolv1
             public int timerTickInterval = 250;
             public int infoCycleTicks = 40;
             public int splitButtonCooldown = 5000;
-            public int splitTimerWidth = 120;
         }
 
         public class Features
