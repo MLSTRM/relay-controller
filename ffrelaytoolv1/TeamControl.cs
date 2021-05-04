@@ -114,6 +114,30 @@ namespace ffrelaytoolv1
                 teamSplitTimes[i] = Util.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, haMargin, splitLabelWidth, context.layout.boxHeight / 2 - context.layout.boxMargin, "00:00:00", ContentAlignment.MiddleCenter);
                 tabPageSplits.Controls.Add(teamSplitTimes[i]);
             }
+            if (context.features.vsLabelsOnSplitsPage)
+            {
+                if (context.features.showAllVs)
+                {
+                    vsLabelNames = new Label[context.numberOfTeams - 1];
+                    vsLabelTimes = new Label[context.numberOfTeams - 1];
+                    int adjustedIndex = 0;
+                    int comparisonHeight = context.layout.boxHeight / (2 * (context.numberOfTeams - 1));
+                    for (int i = 0; i < context.numberOfTeams; i++)
+                    {
+                        if (context.teamNames[i].Equals(info.teamName)) { continue; }
+                        vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
+                        tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
+                        vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
+                        tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
+                        adjustedIndex++;
+                    }
+                }
+                else
+                {
+                    vsLabelSingle = Util.createBaseLabel(context.layout.boxWidth / 2, context.layout.boxHeight / 12, context.layout.boxWidth / 2, context.layout.boxHeight / 3, "");
+                    tabPageSplits.Controls.Add(vsLabelSingle);
+                }
+            }
             return tabPageSplits;
         }
 
@@ -139,27 +163,29 @@ namespace ffrelaytoolv1
             }
             commentaryLabel = Util.createBaseLabel(3, context.layout.boxHeight / 2, context.layout.boxWidth, context.layout.boxHeight / 2, "Commentators: ");
             tabPageCategories.Controls.Add(commentaryLabel);
-
-            if (context.features.showAllVs)
+            if (!context.features.vsLabelsOnSplitsPage)
             {
-                vsLabelNames = new Label[context.numberOfTeams - 1];
-                vsLabelTimes = new Label[context.numberOfTeams - 1];
-                int adjustedIndex = 0;
-                int comparisonHeight = context.layout.boxHeight / (2 * (context.numberOfTeams - 1));
-                for (int i = 0; i < context.numberOfTeams; i++)
+                if (context.features.showAllVs)
                 {
-                    if (context.teamNames[i].Equals(info.teamName)) { continue; }
-                    vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
-                    tabPageCategories.Controls.Add(vsLabelNames[adjustedIndex]);
-                    vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
-                    tabPageCategories.Controls.Add(vsLabelTimes[adjustedIndex]);
-                    adjustedIndex++;
+                    vsLabelNames = new Label[context.numberOfTeams - 1];
+                    vsLabelTimes = new Label[context.numberOfTeams - 1];
+                    int adjustedIndex = 0;
+                    int comparisonHeight = context.layout.boxHeight / (2 * (context.numberOfTeams - 1));
+                    for (int i = 0; i < context.numberOfTeams; i++)
+                    {
+                        if (context.teamNames[i].Equals(info.teamName)) { continue; }
+                        vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
+                        tabPageCategories.Controls.Add(vsLabelNames[adjustedIndex]);
+                        vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
+                        tabPageCategories.Controls.Add(vsLabelTimes[adjustedIndex]);
+                        adjustedIndex++;
+                    }
                 }
-            }
-            else
-            {
-                vsLabelSingle = Util.createBaseLabel(context.layout.boxWidth / 2, context.layout.boxHeight / 12, context.layout.boxWidth / 2, context.layout.boxHeight / 3, "");
-                tabPageCategories.Controls.Add(vsLabelSingle);
+                else
+                {
+                    vsLabelSingle = Util.createBaseLabel(context.layout.boxWidth / 2, context.layout.boxHeight / 12, context.layout.boxWidth / 2, context.layout.boxHeight / 3, "");
+                    tabPageCategories.Controls.Add(vsLabelSingle);
+                }
             }
             return tabPageCategories;
         }
@@ -370,7 +396,7 @@ namespace ffrelaytoolv1
                 offset++;
             }
             if (!context.features.showAllVs)
-            { Util.updateSingleDifferenceDisplay(vsLabelSingle, maxSeg); }
+            { Util.updatePositiveDifferenceDisplay(vsLabelSingle, maxSeg); }
         }
 
         private void updateSplits(VersusWrapper[] otherTeams)
@@ -379,11 +405,7 @@ namespace ffrelaytoolv1
             if (context.features.syncSplits)
             {
                 for (int team = 0; team < otherTeams.Length; team++)
-                {
-                    int j = Util.clamp(otherTeams[team].splitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset);
-                    if (j > i)
-                    { i = j; }
-                }
+                { i = Math.Max(i, Util.clamp(otherTeams[team].splitNum, context.splits.Length - (context.splitsToShow - context.splitFocusOffset), context.splitFocusOffset)); }
             }
             if (context.features.showSplits) { 
                 for (int offsetSplit = 0; offsetSplit < context.splitsToShow; offsetSplit++)
