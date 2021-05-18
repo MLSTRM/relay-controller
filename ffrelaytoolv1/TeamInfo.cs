@@ -45,7 +45,9 @@ namespace ffrelaytoolv1
 
         public int teamSplitKey { get; }
 
-        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg, int splitKey)
+        private bool useIcons;
+
+        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg, int splitKey, bool useIcons)
         {
             tabBackground = bg;
             this.color = color;
@@ -77,6 +79,7 @@ namespace ffrelaytoolv1
             {
                 teamSplits[i] = "00:00:00";
             }
+            this.useIcons = useIcons;
             cycleTeamIcon(() => { });
         }
 
@@ -88,17 +91,19 @@ namespace ffrelaytoolv1
 
         public void cycleTeamIcon(Action buttonCallback)
         {
-            if (File.Exists("icon_" + teamIcon + ".png"))
+            if (useIcons)
             {
-                File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
-                buttonCallback();
+                if (File.Exists("icon_" + teamIcon + ".png"))
+                {
+                    File.Copy("icon_" + teamIcon + ".png", teamName + "-Icon.png", true);
+                }
+                else
+                {
+                    File.Copy("icon_1.png", teamName + "-Icon.png", true);
+                    teamIcon = 1;
+                }
             }
-            else
-            {
-                File.Copy("icon_1.png", teamName + "-Icon.png", true);
-                teamIcon = 1;
-                buttonCallback();
-            }
+            buttonCallback();
         }
     }
 }

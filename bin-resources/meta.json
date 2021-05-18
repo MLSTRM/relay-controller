@@ -1,5 +1,5 @@
 {
-	"games": [ "XIII", "VIII", "IV", "II", "V", "III", "13-2", "CC", "X", "I", "XII", "XV", "IX", "LR", "VII", "VI" ],
+	"games": [ "VIII", "MQ", "X", "XIII", "CC", "WoFF", "XV", "VI", "13-2", "XII", "II", "IV", "VIIR", "V", "I", "LR", "III", "IX" ],
 	"splitsToShow": 4,
 	"splitFocusOffset": 3,
 	"teamsPerRow": 2,
@@ -7,25 +7,25 @@
 		{
 			"name": "Mog",
 			"color": "#3030CC",
-			"image": "mog-box.png",
+			"image": "white.png",
 			"splitKey": 112
 		},
 		{
 			"name": "Choco",
-			"color": "#DC41AB",
-			"image": "choco-box.png",
+			"color": "#d92e9f",
+			"image": "white.png",
 			"splitKey": 113
 		},
 		{
 			"name": "Tonberry",
 			"color": "#3BA730",
-			"image": "tonberry-box.png",
+			"image": "white.png",
 			"splitKey": 114
 		}
 	],
 	"layout": {
 		"boxHeight": 192,
-		"boxWidth": 893,
+		"boxWidth": 813,
 		"timerWidth": 254,
 		"timerHeight": 64,
 		"boxMargin": 6,
@@ -41,8 +41,8 @@
 		"syncSplits": true,
 		"showAllVs": false,
 		"vsLabelsOnSplitsPage": false,
-		"teamGameIcons": true,
+		"teamGameIcons": false,
 		"mainLayoutBackground": true,
-		"enableRemoteSplitting": false
+		"enableRemoteSplitting": true
 	}
 }

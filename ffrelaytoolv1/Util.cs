@@ -35,6 +35,8 @@ namespace ffrelaytoolv1
 
         public static String stripGameIndicator(String s) => s.Replace(gameSep, "");
 
+        public static String hideUnsetSplit(String s) => s.Equals("00:00:00") ? "" : s;
+
         public static void updateDifferenceDisplay(Label label, TimeSpan seg)
         {
             string current = "";
@@ -66,15 +68,25 @@ namespace ffrelaytoolv1
 
         public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
         {
+            return createBaseLabel(x, y, w, h, text, textAlign, Color.Black, 16);
+        }
+
+        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, int fontSize)
+        {
+            return createBaseLabel(x, y, w, h, text, textAlign, Color.Black, fontSize);
+        }
+
+        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, int fontSize)
+        {
             System.Console.WriteLine("creating label at " + x + ", " + y);
             return new Label
             {
                 Location = new Point(x, y),
                 Size = new Size(w, h),
-                ForeColor = Color.White,
+                ForeColor = color,
                 TextAlign = textAlign,
                 BackColor = Color.Transparent,
-                Font = Util.lucidaFont,
+                Font = lucidaFontSized(fontSize),
                 Text = text
             };
         }
