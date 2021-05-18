@@ -21,9 +21,6 @@ namespace FFRelayTool_RemoteClient
             Amazon.SimpleSystemsManagement.Model.GetParameterRequest request = new Amazon.SimpleSystemsManagement.Model.GetParameterRequest();
             request.Name = Resources.SSMParam;
             request.WithDecryption = false;
-            Amazon.SimpleSystemsManagement.Model.GetParametersRequest paramR = new Amazon.SimpleSystemsManagement.Model.GetParametersRequest();
-            paramR.Names = new List<string>(){ "*"};
-            GetParametersResponse parameters = client.GetParameters(paramR);
             string result = client.GetParameter(request).Parameter.Value;
             SSMStructure structure = JsonConvert.DeserializeObject<SSMStructure>(result);
             return structure;

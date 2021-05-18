@@ -82,8 +82,9 @@ namespace ffrelaytoolv1
                 int row = i / metaFile.teamsPerRow;
                 teams[i].Location = new Point(15 + (i % metaFile.teamsPerRow) * (teamSize.Width + 10), 120 + (teamSize.Height + 10) * row);
                 MetaFile.Team team = metaFile.teams[i];
+                var backImage = team.image != null ? Image.FromFile(team.image) : null;
                 teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), Image.FromFile(team.image), team.splitKey), meta, teamSize);
+                    ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
             loadCommentators();

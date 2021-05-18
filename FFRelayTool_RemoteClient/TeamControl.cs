@@ -56,13 +56,13 @@ namespace FFRelayTool_RemoteClient
 
         private void button1_Click(object sender, EventArgs e)
         {
-            button1.Text = "Team " + teamName + " split - DISABLED";
+            button1.Text = "SENDING - DISABLED FOR 30s";
             button1.Enabled = false;
             button1.BackColor = Color.Gray;
             parent.publishMessage(this.teamName);
             cooldown.Start();
             cooldown.Enabled = true;
-            cooldown.Interval = 10 * 1000; //10 seconds
+            cooldown.Interval = 30 * 1000; //30 seconds
             cooldown.Tick += new EventHandler((o, ev) => { 
                 cooldown.Stop(); 
                 button1.Text = "Team "+teamName+" Split"; 

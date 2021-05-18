@@ -1,12 +1,3 @@
-Manasvin Warmech 2
-Odin
-Aster Protoflorian
-Havoc Skytank
-Barthandelus
-Hecatoncheir
-Dahaka
-Proudclad 2
-!Final Fantasy XIII
 Anacondaur
 Diablos
 Gerogero
@@ -21,41 +12,10 @@ Esthar Invasion
 Propagators
 Seifer
 !Final Fantasy VIII
-MomBomb
-Milon Z.
-Magus Sisters
-Dr. Lugae
-Four Fiends
-!Final Fantasy IV
-Sergeant
-Red Soul
-Lamia Queen
-Round Worm
-Emperor
-!Final Fantasy II
-Magisa
-Byblos
-Soul Cannon
-Big Bridge
-Big Boat
-Exdeath
-Merugene
-!Final Fantasy V
-Medusa
-Goldor
-Enter Sylx Tower
-!Final Fantasy III
-Atlas
-Royal Ripeness
-Caius
-Zenobia
-Gogmagog
-!Final Fantasy XIII-2
-Orc King
-Golem 1
-Iron Giant
-Mount Vellenge
-!Crystal Chronicles
+Ice Golem
+Gidrah
+Pazuzu
+!FF Mystic Quest
 Tros
 Kimahri
 Kilika Woods
@@ -71,24 +31,26 @@ Seymour Flux
 Yunalesca
 Overdrive Sin
 !Final Fantasy X
-Astos
-Lich
-Airship
-Kraken
-Enter Chaos Shrine
-!Final Fantasy I
-Firemane
-Dustia Farming
-Judge Ghis
-Vossler
-Tiamat
-Jelly Farming
-Judge Bergan
-Ahriman
-Doctor Cid
-Shemhazai
-Fenrir
-!Final Fantasy XII
+Manasvin Warmech 2
+Odin
+Aster Protoflorian
+Havoc Skytank
+Barthandelus
+Hecatoncheir
+Dahaka
+Proudclad 2
+!Final Fantasy XIII
+Goblin King
+Giant Crab
+Golem
+Meteor Parasite
+!FF Crystal Chronicles
+Giant Goblin
+Mega Red Dragon
+Gilgamesh
+Brandelis
+King of Bahamut
+!World of Final Fantasy
 Loqi
 Titan
 Aranea
@@ -96,6 +58,77 @@ Leviathan
 Deathclaw
 Ravus
 !Final Fantasy XV
+Vargas
+Phantom Train
+Kefka at Narshe
+Ultros at Opera
+Cranes
+Sealed Gate
+Flame Eater
+Atma Weapon
+Dullahan
+Enter Kefka Tower
+Goddess
+!Final Fantasy VI
+Atlas
+Royal Ripeness
+Caius
+Zenobia
+Gogmagog
+!Final Fantasy XIII-2
+Mimic Queen
+Belias
+Tiamat
+Ahriman
+Shemhazai
+!FFXII: The Zodiac Age
+Sergeant
+Red Soul
+Lamia Queen
+Round Worm
+Emperor
+!Final Fantasy II
+Antlion
+Paladin
+Valvalis
+!Final Fantasy IV
+Huntsman
+Roche
+Crab Warden
+Air Buster
+Rude
+Hell House
+Ghoul
+Reno + Rude
+Failed Experiment
+Aps
+Valkyrie
+Specimen H0512
+Jenova
+!FFVII Remake
+Magisa
+Byblos
+Soul Cannon
+Big Bridge
+Big Boat
+Exdeath
+Merugene
+!Final Fantasy V
+Lich
+Kraken
+!Final Fantasy
+Noel Kreiss
+Slaughterhouse
+Caius
+!Lightning Returns
+Giant Rat
+Salamander
+Garuda
+Temple of Time
+Hecatoncheir
+Xande
+Cerberus
+!Final Fantasy III
 Plant Brain
 Black Waltz 3
 Gizamaluke
@@ -111,33 +144,3 @@ Earth Guardian
 Kuja
 Tiamat
 !Final Fantasy IX
-Noel Kreiss
-Slaughterhouse
-Parandus
-!Lightning Returns
-Aps
-Sample: H0512
-Motorball
-Bottomswell
-Jenova-BIRTH
-Dyne
-Palmer
-Demons Gate
-Disc 1
-Jenova-DEATH
-Ultimate Weapon
-Carry Armor
-Diamond Weapon
-!Final Fantasy VII
-Vargas
-Phantom Train
-Kefka at Narshe
-Ultros at Opera
-Cranes
-Sealed Gate
-Flame Eater
-Atma Weapon
-Dullahan
-Enter Kefkas Tower
-Goddess
-!Final Fantasy VI

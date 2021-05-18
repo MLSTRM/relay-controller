@@ -1,63 +1,71 @@
-Final Fantasy XIII
-PC - Any%
-Runner: Olson
-
 Final Fantasy VIII
-PSX - Any%
-Runner: Luzbelheim
-
-Final Fantasy IV
-SNES - Any% No 64
-Runner: Penguin8r
-
-Final Fantasy II
-PSP - Any%
-Runner: Nickynoel
-
-Final Fantasy V
-SNES - Any%
-Runner: Mrzwanzig
-
-Final Fantasy III
-NES - No Glitched Jobs
-Runner: Metako
-
-Final Fantasy XIII-2
-PC - Any%
-Runner: ricyosma
-
-FF Crystal Chronicles
-GCN - Any%
-Runner: TRS
-
-Final Fantasy X
-PS2 - Any%
-Runner: Camp4r
-
-Final Fantasy I
-GBA - Any%
-Runner: Dragondarch
-
-Final Fantasy XII
-PS2 - Any%
-Runner: Roosta
-
-Final Fantasy XV
-PS4 - Royal Edition No Ring
-Runner: Barbatos
-
-Final Fantasy IX
 PSX - Any%
 Runner: Muttski
 
-Lightning Returns: FF XIII
-PC/PS3 - Any%
-Runner: xShonnen
+Final Fantasy Mystic Quest
+SNES - Any%
+Runner: R-0109
 
-Final Fantasy VII
-PSX - No Slots
-Runner: Zheal
+Final Fantasy X
+PC - Any%
+Runner: Wolverine023
+
+Final Fantasy XIII
+PC - Any%
+Runner: Ossy3126
+
+Crystal Chronicles: Remastered
+Any% No DLC
+Runner: VerySydney
+
+World of Final Fantasy
+PC - Any%
+Runner: BrainBugged
+
+Final Fantasy XV: Royal Edition
+PC - Any% No Ring
+Runner: Ranmaru
 
 Final Fantasy VI
 SNES - Glitchless
-Runner: Dyne
+Runner: DyneNuitari
+
+Final Fantasy XIII-2
+PC - Any%
+Runner: zer0skar_i
+
+Final Fantasy XII: The Zodiac Age
+PC - Any%
+Runner: BlueHarvey
+
+Final Fantasy II
+PSP - Any%
+Runner: Seri17723
+
+Final Fantasy IV
+SNES - No Credits Warp
+Runner: Yelsraek
+
+Final Fantasy VII: Remake
+PS4 - NMG Normal
+Runner: Goranaldo
+
+Final Fantasy V
+SNES - Glitchless
+Runner: rupan2525
+
+Final Fantasy I
+PSP - Any%
+Runner: Suikoboj
+
+Lightning Returns: FF XIII
+PC - Any%
+Runner: Daspharaoh
+
+Final Fantasy III
+PC - Any%
+Runner: Soll_Ashelia
+
+Final Fantasy IX
+PSX - Any%
+Runner: MythikdawnSC

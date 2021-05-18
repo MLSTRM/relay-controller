@@ -1,0 +1,46 @@
+{
+  "games": ["XIII","VIII","IV","II","V","III","13-2","CC","X","I","XII","XV","IX","LR","VII","VI"],
+  "splitsToShow": 5,
+  "splitFocusOffset": 2,
+  "teamsPerRow": 3,
+  "teams": [
+	{
+		"name": "Mog",
+		"color": "#3030CC",
+		"image": "mog-box.png",
+		"splitKey": 112
+	},
+	{
+		"name": "Choco",
+		"color": "#DC41AB",
+		"image": "choco-box.png",
+		"splitKey": 113
+	},
+	{
+		"name": "Tonberry",
+		"color": "#3BA730",
+		"image": "tonberry-box.png",
+		"splitKey": 114
+	}
+  ],
+  "layout": {
+	"boxHeight": 228,
+	"boxWidth": 400,
+	"timerWidth": 254,
+	"timerHeight": 64,
+	"boxMargin": 6,
+	"timerTickInterval": 200,
+    "infoCycleTicks": 150,
+	"splitButtonCooldown": 50,
+	"splitTimerWidth": 120
+  },
+  "features": {
+	  "showSplits": true,
+	  "showRunners": true,
+	  "showGameTimes": true,
+	  "syncInfoCycling": true,
+	  "teamGameIcons": true,
+	  "mainLayoutBackground": true,
+	  "enableRemoteSplitting": false
+  }
+}
