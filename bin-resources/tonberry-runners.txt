@@ -15,7 +15,7 @@ PC - Any%
 Runner: Ossy3126
 
 Crystal Chronicles: Remastered
-Any% No DLC
+Switch - Any% No DLC
 Runner: VerySydney
 
 World of Final Fantasy
@@ -44,15 +44,15 @@ Runner: Seri17723
 
 Final Fantasy IV
 SNES - No Credits Warp
-Runner: Yelsraek
+Runner: yelsraek
 
 Final Fantasy VII: Remake
-PS4 - NMG Normal
+PS5 - NMG Normal
 Runner: Goranaldo
 
 Final Fantasy V
 SNES - Glitchless
-Runner: rupan2525
+Runner: るぱん (rupan2525)
 
 Final Fantasy I
 PSP - Any%
