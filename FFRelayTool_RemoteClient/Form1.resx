@@ -122,10 +122,10 @@
 The program will fetch the most recent state of the event every 10 seconds.
 If the refresh stops happening, restart the program.
 To split, simply click the relevant button.
-After split, the button will be disabled for 10 seconds.
+After split, the button will be disabled for 30 seconds.
 It will take some time to synchronize the state, so please be patient.
 There is a 5 minute cooldown on remote splits per team on the master program.
-If you split early/late, just let an organiser know - we can fix it :)</value>
+If you split early/late, just let @Management know - we can fix it :)</value>
   </data>
   <metadata name="$this.Locked" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>

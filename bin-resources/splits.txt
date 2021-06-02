@@ -15,7 +15,7 @@ Seifer
 Ice Golem
 Gidrah
 Pazuzu
-!FF Mystic Quest
+!Final Fantasy Mystic Quest
 Tros
 Kimahri
 Kilika Woods
@@ -44,7 +44,7 @@ Goblin King
 Giant Crab
 Golem
 Meteor Parasite
-!FF Crystal Chronicles
+!Crystal Chronicles Remastered
 Giant Goblin
 Mega Red Dragon
 Gilgamesh
@@ -57,17 +57,17 @@ Aranea
 Leviathan
 Deathclaw
 Ravus
-!Final Fantasy XV
+!Final Fantasy XV: Royal Edition
 Vargas
 Phantom Train
 Kefka at Narshe
-Ultros at Opera
+Ultros at Opera House
 Cranes
 Sealed Gate
 Flame Eater
 Atma Weapon
 Dullahan
-Enter Kefka Tower
+Enter Kefka's Tower
 Goddess
 !Final Fantasy VI
 Atlas
@@ -81,7 +81,7 @@ Belias
 Tiamat
 Ahriman
 Shemhazai
-!FFXII: The Zodiac Age
+!Final Fantasy XII: The Zodiac Age
 Sergeant
 Red Soul
 Lamia Queen
@@ -105,22 +105,22 @@ Aps
 Valkyrie
 Specimen H0512
 Jenova
-!FFVII Remake
+!Final Fantasy VII: Remake
 Magisa
 Byblos
 Soul Cannon
-Big Bridge
-Big Boat
+Gilgamesh at Big Bridge
+Gilgamesh at Big Boat
 Exdeath
 Merugene
 !Final Fantasy V
 Lich
 Kraken
-!Final Fantasy
+!Final Fantasy I
 Noel Kreiss
 Slaughterhouse
 Caius
-!Lightning Returns
+!Lightning Returns: FF XIII
 Giant Rat
 Salamander
 Garuda

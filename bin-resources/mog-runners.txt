@@ -15,7 +15,7 @@ PC - Any%
 Runner: Kayarune
 
 Crystal Chronicles: Remastered
-Any% No DLC
+PS4 - Any% No DLC
 Runner: Littletonbi
 
 World of Final Fantasy
@@ -28,7 +28,7 @@ Runner: Kyoslilmonster
 
 Final Fantasy VI
 SNES - Glitchless
-Runner: 6chi8
+Runner: 6chi8 (Muchiha)
 
 Final Fantasy XIII-2
 PC - Any%
@@ -47,12 +47,12 @@ SNES - No Credits Warp
 Runner: Couch_23
 
 Final Fantasy VII: Remake
-PS4 - NMG Normal
+PS5 - NMG Normal
 Runner: Hello1nternet
 
 Final Fantasy V
 SNES - Glitchless
-Runner: Couch_23
+Runner: DarkLightBoco
 
 Final Fantasy I
 PSP - Any%
@@ -60,7 +60,7 @@ Runner: ThisGuyAreSick
 
 Lightning Returns: FF XIII
 PC - Any%
-Runner: enkwolf
+Runner: enk
 
 Final Fantasy III
 PC - Any%

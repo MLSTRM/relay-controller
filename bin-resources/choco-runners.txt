@@ -15,7 +15,7 @@ PC - Any%
 Runner: Olson
 
 Crystal Chronicles: Remastered
-Any% No DLC
+Switch - Any% No DLC
 Runner: Manaclaw
 
 World of Final Fantasy
@@ -31,7 +31,7 @@ SNES - Glitchless
 Runner: LionMusashi
 
 Final Fantasy XIII-2
-PC - Any%
+PS3 - Any%
 Runner: xShonnen
 
 Final Fantasy XII: The Zodiac Age
@@ -47,7 +47,7 @@ SNES - No Credits Warp
 Runner: Vanni_van
 
 Final Fantasy VII: Remake
-PS4 - NMG Normal
+PS5 - NMG Normal
 Runner: Fhelwanger
 
 Final Fantasy V
