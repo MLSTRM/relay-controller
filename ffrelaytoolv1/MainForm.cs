@@ -248,7 +248,16 @@ namespace ffrelaytoolv1
                 ChangedThisMin = false;
                 MinuteCount = 0;
             }
+        }
 
+        public void checkAllTeamsFinished()
+        {
+            var allFinished = teams.Select(team => team.teamInfo.teamFinished).All(b => b);
+            if (allFinished)
+            {
+                MainTimerRunning = false;
+                tick.Stop();
+            }
         }
 
         private void button1_Click_1(object sender, EventArgs e) //Stop click warning

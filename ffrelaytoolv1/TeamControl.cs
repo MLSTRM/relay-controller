@@ -291,6 +291,7 @@ namespace ffrelaytoolv1
                         teamInfo.teamGameEnd[teamInfo.teamGame] = teamInfo.teamFinish;
                         teamSplitTimes[context.splitsToShow - 1].Text = teamInfo.teamFinish;
                         teamInfo.teamFinished = true;
+                        parent.checkAllTeamsFinished();
                     }
                     return;
                 }
