@@ -35,8 +35,6 @@ namespace ffrelaytoolv1
 
         public int teamTab { get; set; }
 
-        public string[] teamGameEndArchive { get; set; }
-
         public Color color { get; set; }
 
         public Image tabBackground { get; set; }
@@ -68,16 +66,14 @@ namespace ffrelaytoolv1
                 throw new Exception("Unable to find file with name "+runnerFileName);
             }
             teamGameEnd = new string[numberOfGames];
-            teamGameEndArchive = new string[numberOfGames];
             for (int i = 0; i < numberOfGames; i++)
             {
-                teamGameEnd[i] = "00:00:00";
-                teamGameEndArchive[i] = "00:00:00";
+                teamGameEnd[i] = Util.emptyTime;
             }
             teamSplits = new string[numberOfSplits];
             for (int i = 0; i < numberOfSplits; i++)
             {
-                teamSplits[i] = "00:00:00";
+                teamSplits[i] = Util.emptyTime;
             }
             this.useIcons = useIcons;
             cycleTeamIcon(() => { });

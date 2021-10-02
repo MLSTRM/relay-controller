@@ -57,6 +57,7 @@
             this.MogSplitVs2 = new System.Windows.Forms.Label();
             this.MogSplitName6 = new System.Windows.Forms.Label();
             this.MogSplitName7 = new System.Windows.Forms.Label();
+            this.ResumeButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MainTimer
@@ -410,12 +411,23 @@
             this.MogSplitName7.Text = "Team Tonberry:";
             this.MogSplitName7.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // ResumeButton
+            // 
+            this.ResumeButton.Location = new System.Drawing.Point(620, 22);
+            this.ResumeButton.Name = "ResumeButton";
+            this.ResumeButton.Size = new System.Drawing.Size(60, 90);
+            this.ResumeButton.TabIndex = 21;
+            this.ResumeButton.Text = "Resume Timer";
+            this.ResumeButton.UseVisualStyleBackColor = true;
+            this.ResumeButton.Click += new System.EventHandler(this.button1_Click_2);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(614, 131);
+            this.ClientSize = new System.Drawing.Size(726, 131);
+            this.Controls.Add(this.ResumeButton);
             this.Controls.Add(this.CommUpdate);
             this.Controls.Add(this.stopbutton);
             this.Controls.Add(this.startbutton);
@@ -460,6 +472,7 @@
         private System.Windows.Forms.Label MogSplitVs2;
         private System.Windows.Forms.Label MogSplitName6;
         private System.Windows.Forms.Label MogSplitName7;
+        private System.Windows.Forms.Button ResumeButton;
     }
 }
 
