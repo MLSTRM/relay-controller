@@ -32,6 +32,7 @@
             this.TimerLabel = new System.Windows.Forms.Label();
             this.teamTabGroup = new System.Windows.Forms.TabControl();
             this.cycleIconButton = new System.Windows.Forms.Button();
+            this.undoButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // TeamSplitButton
@@ -39,7 +40,7 @@
             this.TeamSplitButton.BackColor = System.Drawing.Color.CornflowerBlue;
             this.TeamSplitButton.Location = new System.Drawing.Point(384, 8);
             this.TeamSplitButton.Name = "TeamSplitButton";
-            this.TeamSplitButton.Size = new System.Drawing.Size(400, 64);
+            this.TeamSplitButton.Size = new System.Drawing.Size(357, 64);
             this.TeamSplitButton.TabIndex = 17;
             this.TeamSplitButton.Text = "Team Mog Split";
             this.TeamSplitButton.UseVisualStyleBackColor = false;
@@ -75,10 +76,21 @@
             this.cycleIconButton.UseVisualStyleBackColor = true;
             this.cycleIconButton.Click += new System.EventHandler(this.button1_Click);
             // 
+            // undoButton
+            // 
+            this.undoButton.Location = new System.Drawing.Point(758, 8);
+            this.undoButton.Name = "undoButton";
+            this.undoButton.Size = new System.Drawing.Size(59, 63);
+            this.undoButton.TabIndex = 20;
+            this.undoButton.Text = "Undo";
+            this.undoButton.UseVisualStyleBackColor = true;
+            this.undoButton.Click += new System.EventHandler(this.undoButton_Click);
+            // 
             // TeamControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.undoButton);
             this.Controls.Add(this.cycleIconButton);
             this.Controls.Add(this.TimerLabel);
             this.Controls.Add(this.TeamSplitButton);
@@ -95,7 +107,6 @@
         private System.Windows.Forms.Label TimerLabel;
         private System.Windows.Forms.TabControl teamTabGroup;
         private System.Windows.Forms.Button cycleIconButton;
-
-
+        private System.Windows.Forms.Button undoButton;
     }
 }

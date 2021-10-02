@@ -58,8 +58,11 @@ namespace ffrelaytoolv1
             cycleIconButton.Location = new Point(20 + context.layout.timerWidth, 8);
             cycleIconButton.BackColor = teamInfo.color;
             TeamSplitButton.Location = new Point(160 + context.layout.timerWidth, 8);
-            TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth + 72, 408), context.layout.timerHeight);
+            TeamSplitButton.Size = new Size(Math.Max(context.layout.timerWidth, 408 - 72), context.layout.timerHeight);
             TeamSplitButton.Text = "Team " + teamInfo.teamName + " Split";
+            undoButton.Size = new Size(60, context.layout.timerHeight);
+            undoButton.Text = "Undo";
+            undoButton.Location = new Point(TeamSplitButton.Size.Width + 12 + TeamSplitButton.Location.X, 8);
             
             teamTabGroup.Location = new Point(8, 20 + context.layout.timerHeight);
             teamTabGroup.Size = new Size(context.layout.boxWidth+8, context.layout.boxHeight+26);
@@ -217,9 +220,9 @@ namespace ffrelaytoolv1
 
             for (int i = 0; i < gamesOnEach; i++)
             {
-                gameEndsL[i] = Util.createBaseLabel(76, offset * i, 117, offset, "00:00:00", ContentAlignment.MiddleCenter);
+                gameEndsL[i] = Util.createBaseLabel(76, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
                 tabPageTimes.Controls.Add(gameEndsL[i]);
-                gameEndsR[i] = Util.createBaseLabel(200, offset * i, 117, offset, "00:00:00", ContentAlignment.MiddleCenter);
+                gameEndsR[i] = Util.createBaseLabel(200, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
                 tabPageTimes.Controls.Add(gameEndsR[i]);
                 gameShortL[i] = Util.createBaseLabel(3, offset * i, 90, offset, context.games[i].PadLeft(4, ' ') + ": ", ContentAlignment.MiddleRight);
                 tabPageTimes.Controls.Add(gameShortL[i]);
@@ -260,11 +263,18 @@ namespace ffrelaytoolv1
 
         public string getSplit(int i) => teamInfo.teamSplitNum > i ? teamInfo.teamSplits[i] : Util.emptyTime;
 
-        public void setSplit(string split, int i)
+        public void setSplit(string split, int i, bool force = false)
         {
-            if (teamInfo.teamSplitNum > i)
+            if ((teamInfo.teamSplitNum > i || force) && split != teamInfo.teamSplits[i])
             {
                 teamInfo.teamSplits[i] = split;
+                if (context.splits[i].Contains(Util.gameSep))
+                {
+                    //find game index
+                    // minus 2 because 1 due to 1-indexing on take, 1 so that we get the game BEFORE including the current separator
+                    var gameidx = Util.getGameIndexForSplit(context.splits, i-2);
+                    teamInfo.teamGameEnd[gameidx] = teamInfo.teamSplits[i];
+                }
             }
         }
 
@@ -294,7 +304,7 @@ namespace ffrelaytoolv1
                     //Move the current game along for tracking
                     teamInfo.teamGame++;
                     //Move onto the next game using the hand / icons
-                    cycleIcon();
+                    cycleIcon(1);
                 }
                 teamInfo.teamSplitNum++;
                 //updateSplits(parent.fetchOtherTeamInfo(this));
@@ -308,13 +318,46 @@ namespace ffrelaytoolv1
             }
         }
 
+        public void undoSplitClick()
+        {
+            if(teamInfo.teamSplitNum == 0)
+            {
+                //Can't go into negative splits
+                return;
+            }
+            if (teamInfo.teamFinished)
+            {
+                teamInfo.teamFinish = Util.emptyTime;
+                teamInfo.teamGameEnd[teamInfo.teamGame] = Util.emptyTime;
+                teamSplitTimes[context.splitsToShow - 1].Text = Util.emptyTime;
+                teamInfo.teamFinished = false;
+            }
+            teamInfo.teamSplits[teamInfo.teamSplitNum] = Util.emptyTime;
+            teamInfo.teamSplitNum--;
+            if (context.splits[teamInfo.teamSplitNum].Contains(Util.gameSep))
+            {
+                teamInfo.teamGame--;
+                teamInfo.teamGameEnd[teamInfo.teamGame] = Util.emptyTime;
+                cycleIcon(-1);
+            }
+            if (teamInfo.teamWaiting)
+            {
+                //Shortcircuit the wait if we undid a split
+                teamInfo.teamWaiting = false;
+                teamInfo.teamCooldown.Stop();
+                TeamSplitButton.BackColor = teamInfo.color;
+            }
+            parent.WriteSplitFiles();
+        }
+
         private void updateButtonText() => cycleIconButton.Text = "Update " + teamInfo.teamName + " Icon\n Cur: " + teamInfo.teamIcon;
 
-        private void cycleIcon()
+        private void cycleIcon(int amount)
         {
-            if (teamInfo.teamIcon < context.numberOfGames)
+            var newIcon = teamInfo.teamIcon + amount;
+            if (newIcon <= context.numberOfGames && newIcon > 0)
             {
-                teamInfo.teamIcon++;
+                teamInfo.teamIcon = newIcon;
             }
             teamInfo.cycleTeamIcon(updateButtonText);
             parent.cycleMainBG();
@@ -370,7 +413,7 @@ namespace ffrelaytoolv1
                         }
                     }
                     //Otherwise update the value based on the live difference (Only if greater than static difference?)
-                    if (!vs[team] && otherTeams[team].splits[teamInfo.teamSplitNum - offset] != "00:00:00")
+                    if (!vs[team] && otherTeams[team].splits[teamInfo.teamSplitNum - offset] != Util.emptyTime)
                     {
                         TimeSpan seg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum - offset],
                             otherTeams[team].splits[teamInfo.teamSplitNum - offset]);
@@ -430,15 +473,14 @@ namespace ffrelaytoolv1
 
             //Per Game Splits
             //Since we're always at least on FF1, just include the time for it in here, removes the special case later
-            teamInfo.teamGameEndArchive = teamInfo.teamGameEnd;
             if (teamInfo.teamGame == 0)
             {
                 updateGameEndsL(0, teamInfo.teamSplits[teamInfo.teamSplitNum]);
-                updateGameEndsR(0, "00:00:00");
+                updateGameEndsR(0, Util.emptyTime);
                 for (int linesToFill = 1; linesToFill < context.numberOfGames / 2; linesToFill++)
                 {
-                    updateGameEndsL(linesToFill, "00:00:00");
-                    updateGameEndsL(linesToFill, "00:00:00");
+                    updateGameEndsL(linesToFill, Util.emptyTime);
+                    updateGameEndsL(linesToFill, Util.emptyTime);
                 }
                 TimerLabel.Text = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 return;
@@ -447,7 +489,7 @@ namespace ffrelaytoolv1
             int gamesOnEach = (context.numberOfGames + 1) / 2;
             for (int j = 1; j < context.numberOfGames; j++)
             {
-                string current = "00:00:00";
+                string current = Util.emptyTime;
                 //If we're past the selected game, then subtract the previous one to get the segment time over split time
                 if (teamInfo.teamGame > j)
                 {
@@ -459,13 +501,34 @@ namespace ffrelaytoolv1
                     TimeSpan seg = Util.resolveTimeSpan(teamInfo.teamSplits[teamInfo.teamSplitNum], teamInfo.teamGameEnd[j - 1]);
                     current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
                     TimerLabel.Text = current;
-                    teamInfo.teamGameEndArchive[teamInfo.teamGame] = teamInfo.teamSplits[teamInfo.teamSplitNum];
                 }
                 if (j < gamesOnEach)
                 { updateGameEndsL(j, current); }
                 else
                 { updateGameEndsR(j - gamesOnEach, current); }
             }
+        }
+
+        public void reconstructSplitMetadata()
+        {
+            teamInfo.teamSplitNum = Array.IndexOf(teamInfo.teamSplits, "00:00:00");
+            teamInfo.teamGame = Util.getGameIndexForSplit(context.splits, teamInfo.teamSplitNum);
+            var splitMapping = Util.extractGameEndsFromSplits(context.splits);
+            int gamesOnEach = (context.numberOfGames + 1) / 2;
+            for (var i = 0; i<teamInfo.teamGame; i++)
+            {
+                var (gameEndSplit, gameEndIndex) = splitMapping[i];
+                var endSplit = teamInfo.teamSplits[gameEndIndex];
+                teamInfo.teamGameEnd[i] = endSplit;
+                if(i < gamesOnEach)
+                {
+                    updateGameEndsL(i, endSplit);
+                } else
+                {
+                    updateGameEndsR(i - gamesOnEach, endSplit);
+                }
+            }
+            cycleIcon(teamInfo.teamGame);
         }
 
         private void updateGameEndsL(int index, String text)
@@ -486,7 +549,7 @@ namespace ffrelaytoolv1
 
         private void button1_Click(object sender, EventArgs e)
         {
-            cycleIcon();
+            cycleIcon(1);
         }
 
         public List<String> outputCaptureInfo(Control parent)
@@ -501,5 +564,9 @@ namespace ffrelaytoolv1
             return captureLines;
         }
 
+        private void undoButton_Click(object sender, EventArgs e)
+        {
+            undoSplitClick();
+        }
     }
 }

@@ -109,5 +109,15 @@ namespace ffrelaytoolv1
                 ", r: " + (parent.ClientSize.Width - outer.Sum(c => c.Location.X) - control.Location.X - control.Size.Width) +
                 ", b: " + (parent.ClientSize.Height - outer.Sum(c => c.Location.Y) - control.Location.Y - control.Size.Height);
         }
+
+        public static int getGameIndexForSplit(string[] splits, int index)
+        {
+            return splits.Take(index).Aggregate(0, (game, split) => split.StartsWith(gameSep) ? game+1 : game);
+        }
+
+        public static (string,int)[] extractGameEndsFromSplits(string[] splits)
+        {
+            return splits.Select((split, index) => (split, index)).Where(pair => pair.split.StartsWith(gameSep)).ToArray();
+        }
     }
 }

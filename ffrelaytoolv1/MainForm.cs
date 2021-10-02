@@ -26,7 +26,7 @@ namespace ffrelaytoolv1
         Timer tick;
         KeyboardHook hook = new KeyboardHook();
         bool MainTimerRunning = false;
-        public DateTime TimerStart;
+        public DateTime TimerStart = new DateTime(0);
 
         int timerTickInterval = 250;
 
@@ -102,7 +102,7 @@ namespace ffrelaytoolv1
                 sqsTimer.Tick += new EventHandler((o, e) => { handleOutboundMessages(reader.consume()); });
                 sqsTimer.Start();
                 //broadcastState();
-                this.FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
+                FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
             }
         }
 
@@ -190,11 +190,16 @@ namespace ffrelaytoolv1
 
         private void button1_Click(object sender, EventArgs e)
         {
+            TimerStart = DateTime.Now.ToUniversalTime();
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
             if (!MainTimerRunning)
             {
                 //Start the timer, do some stuff
                 MainTimerRunning = true;
-                TimerStart = DateTime.Now.ToUniversalTime();
                 tick.Enabled = true;
                 tick.Interval = 1;
                 tick.Start();
@@ -207,6 +212,8 @@ namespace ffrelaytoolv1
             {
                 //Not sure if we want to stop the timer, give a dialog box?
             }
+            ResumeButton.Enabled = false;
+            ResumeButton.Visible = false;
         }
 
         void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
@@ -294,22 +301,23 @@ namespace ffrelaytoolv1
             {
                 File.Delete("splits_output.txt");
             }
-            string[] lines = new string[Splits.Length + 1];
+            string[] lines = new string[Splits.Length + 2];
             //line[0] = "Time   | Mog   | Choco | Tonb  ";
             //Parameterised
+            lines[0] = TimerStart.ToUniversalTime().ToString("u");
             int timePad = Splits.Select(str => str.Length).Max();
-            lines[0] = "Time".PadRight(timePad, ' ');
+            lines[1] = "Time".PadRight(timePad, ' ');
             for (int i = 0; i < Splits.Length; i++)
             {
-                lines[i + 1] = Splits[i].PadRight(timePad, ' ');
+                lines[i + 2] = Splits[i].PadRight(timePad, ' ');
             }
             for (int i = 0; i < teams.Length; i++)
             {
                 TeamControl team = teams[i];
-                lines[0] += sep + team.teamInfo.teamName.PadRight(8, ' ');
+                lines[1] += sep + team.teamInfo.teamName.PadRight(8, ' ');
                 for (int j = 0; j < Splits.Length; j++)
                 {
-                    lines[j + 1] += sep + team.getSplit(j);
+                    lines[j + 2] += sep + team.getSplit(j);
                 }
             }
             File.WriteAllLines("splits_output.txt", lines);
@@ -335,9 +343,14 @@ namespace ffrelaytoolv1
             if (File.Exists("splits_output.txt"))
             {
                 string[] lines = File.ReadAllLines("splits_output.txt");
-                for (int i = 1; i < lines.Length; i++)
+                if(TimerStart == null || TimerStart.Ticks == 0)
                 {
-                    string[] split = lines[i].Split('|');
+                    TimerStart = DateTime.Parse(lines[0]).ToUniversalTime();
+                }
+                for (int line = 2; line < lines.Length; line++)
+                {
+                    string[] split = lines[line].Split('|');
+                    var i = line - 1;
                     if (split.Length != teams.Length + 1)
                     {
                         warning PU = new warning();
@@ -348,7 +361,7 @@ namespace ffrelaytoolv1
                     }
                     for (var j = 1; j < split.Length; j++)
                     {
-                        teams[j - 1].setSplit(split[j], i - 1);
+                        teams[j - 1].setSplit(split[j], i - 1, true);
                     }
                 }
             }
@@ -366,6 +379,14 @@ namespace ffrelaytoolv1
                 adjustedIndex++;
             }
             return wrapperArray;
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            //need to post process timer indicies for teams here to do it properly?
+            ReadSplitFiles();
+            Array.ForEach(teams,team => team.reconstructSplitMetadata());
+            StartTimer();
         }
     }
 }

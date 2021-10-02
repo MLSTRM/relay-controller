@@ -43,6 +43,6 @@
 		"vsLabelsOnSplitsPage": false,
 		"teamGameIcons": false,
 		"mainLayoutBackground": true,
-		"enableRemoteSplitting": true
+		"enableRemoteSplitting": false
 	}
 }
