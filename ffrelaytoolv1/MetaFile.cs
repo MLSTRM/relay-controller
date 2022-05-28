@@ -26,10 +26,12 @@ namespace ffrelaytoolv1
 
         public class Layout
         {
+            public int rowHeight = 96;
             public int boxHeight = 192;
             public int boxWidth = 893;
             public int timerWidth = 254;
             public int timerHeight = 64;
+            public int vsLabelMin = 150;
             public bool showSplits = true;
             public bool showCategory = true;
             public bool showGameTimes = true;
@@ -51,6 +53,26 @@ namespace ffrelaytoolv1
             public bool teamGameIcons = true;
             public bool mainLayoutBackground = true;
             public bool enableRemoteSplitting = false;
+            public bool showMetaControl = false;
+            public bool showGraph = false;
+            public MetaControlFeatures metaControl = new MetaControlFeatures();
+        }
+
+        public class MetaControlFeatures
+        {
+            public int width = 813;
+            public int height = 192;
+            public int margin = 6;
+            public string color = "#FFFFFF";
+            public bool splits = false;
+            public bool commentators = false;
+            public MetaControlGraph graph = new MetaControlGraph();
+        }
+
+        public class MetaControlGraph
+        {
+            public int splitsToShow = 6;
+            public int splitFocusOffset = 5;
         }
     }
 }

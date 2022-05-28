@@ -91,6 +91,11 @@ namespace ffrelaytoolv1
             };
         }
 
+        public static Size calcLabelSize(int fontSize, string text)
+        {
+            return TextRenderer.MeasureText(text, lucidaFontSized(fontSize));
+        }
+
         public static Label createBaseLabel(int x, int y, int w, int h, string text) => 
             createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
 

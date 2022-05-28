@@ -40,6 +40,7 @@ namespace ffrelaytoolv1
         MetaContext meta;
 
         TeamControl[] teams;
+        MetaControl metaControl;
 
         private SSMUpdater updater;
 
@@ -75,7 +76,7 @@ namespace ffrelaytoolv1
             //Create team controls based on the meta file.
             int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
             double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
-            Size teamSize = new Size(Math.Max(430, meta.layout.boxWidth + 30), Math.Max(350, meta.layout.boxHeight + meta.layout.timerHeight + 56));
+            Size teamSize = new Size(meta.layout.boxWidth + 30, meta.layout.boxHeight + meta.layout.timerHeight + 56);
             for (int i = 0; i < metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
@@ -87,8 +88,22 @@ namespace ffrelaytoolv1
                     ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
+            if (metaFile.features.showMetaControl)
+            {
+                metaControl = new MetaControl();
+                int row = metaFile.teams.Length / metaFile.teamsPerRow;
+                metaControl.Location = new Point(15 + (metaFile.teams.Length % metaFile.teamsPerRow) * (teamSize.Width + 10), 120 + (teamSize.Height + 10) * row);
+                metaControl.setupMetaControl(this, meta);
+                Controls.Add(metaControl);
+            }
             loadCommentators();
-            this.Size = new Size(30 + wide * (teamSize.Width + 10), 150 + (teamSize.Height + 10) * (int)height);
+            var windowWidth = 30 + wide * (teamSize.Width + 10);
+            var windowHeight = 150 + (teamSize.Height + 10) * (int)height;
+            if (meta.features.showMetaControl)
+            {
+                windowHeight += -teamSize.Height + meta.features.metaControl.height + + meta.features.metaControl.margin + 5;
+            }
+            this.Size = new Size(windowWidth, windowHeight);
             outputCaptureInformation();
             cycleMainBG();
 
@@ -232,6 +247,10 @@ namespace ffrelaytoolv1
                 {
                     team.updateTimerEvent(current, toCycle);
                 }
+                if (meta.features.showMetaControl)
+                {
+                    metaControl.updateTimerEvent(current, toCycle);
+                }
             }
             else
             {
@@ -239,6 +258,10 @@ namespace ffrelaytoolv1
                 if (!toCycle) { targetTab = -1; }
                 teams.Except(new TeamControl[] { teams[0] }).ToList()
                     .ForEach(t => t.updateTimerEvent(current, toCycle, targetTab));
+                if (meta.features.showMetaControl)
+                {
+                    metaControl.updateTimerEvent(current, toCycle, targetTab);
+                }
             }
 
             //This section auto cycles
@@ -295,6 +318,10 @@ namespace ffrelaytoolv1
             {
                 team.reloadRunnerInfo();
             }
+            if (meta.features.showMetaControl)
+            {
+                metaControl.RefreshGame();
+            }
         }
 
         private void CommUpdate_Click(object sender, EventArgs e)
@@ -338,13 +365,22 @@ namespace ffrelaytoolv1
 
         public void cycleMainBG()
         {
-            if (meta.features.mainLayoutBackground) { 
-                int bgnum = teams.Max(t => t.teamInfo.teamIcon);
+            if (meta.features.mainLayoutBackground) {
+                int bgnum = getMaxIcon();
                 if (File.Exists("background_" + bgnum + ".png"))
                 {
                     File.Copy("background_" + bgnum + ".png", "background.png", true);
                 }
             }
+            if (meta.features.showMetaControl)
+            {
+                metaControl.RefreshGame();
+            }
+        }
+
+        public int getMaxIcon()
+        {
+            return teams.Max(t => t.teamInfo.teamIcon);
         }
 
         private void ReadSplitFiles()
@@ -379,7 +415,12 @@ namespace ffrelaytoolv1
         public VersusWrapper[] fetchOtherTeamInfo(TeamControl self)
         {
             //return teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
-            VersusWrapper[] wrapperArray = new VersusWrapper[teams.Length - 1];
+            var len = teams.Length;
+            if(self != null)
+            {
+                len--;
+            }
+            VersusWrapper[] wrapperArray = new VersusWrapper[len];
             int adjustedIndex = 0;
             for (int i = 0; i < teams.Length; i++)
             {
@@ -388,6 +429,11 @@ namespace ffrelaytoolv1
                 adjustedIndex++;
             }
             return wrapperArray;
+        }
+
+        public TeamInfo[] fetchTeamInfo()
+        {
+            return teams.Select(t => t.teamInfo).ToArray();
         }
 
         private void button1_Click_2(object sender, EventArgs e)
