@@ -47,6 +47,7 @@ namespace ffrelaytoolv1
             public bool showRunners = true;
             public bool showGameTimes = true;
             public bool syncInfoCycling = false;
+            public int[] infoCyclingPattern = new int[] { };
             public bool syncSplits = true;
             public bool showAllVs = false;
             public bool vsLabelsOnSplitsPage = false;
@@ -55,6 +56,7 @@ namespace ffrelaytoolv1
             public bool enableRemoteSplitting = false;
             public bool showMetaControl = false;
             public bool showGraph = false;
+            public int graphThreshold = 0;
             public MetaControlFeatures metaControl = new MetaControlFeatures();
         }
 

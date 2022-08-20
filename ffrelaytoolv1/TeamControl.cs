@@ -65,7 +65,7 @@ namespace ffrelaytoolv1
             undoButton.Location = new Point(TeamSplitButton.Size.Width + 12 + TeamSplitButton.Location.X, 8);
             
             teamTabGroup.Location = new Point(8, 20 + context.layout.timerHeight);
-            teamTabGroup.Size = new Size(context.layout.boxWidth+8, context.layout.boxHeight+26);
+            teamTabGroup.Size = new Size(context.layout.boxWidth, context.layout.boxHeight + 26);
             teamTabGroup.Selected += teamTabGroup_Selected;
 
             //TODO: Only contruct tabs if they're setup in the layout config?
@@ -89,6 +89,11 @@ namespace ffrelaytoolv1
                 //Construct game times tab
                 //TODO: Need to solve/configure the middle case for an odd number of games. Right now it just appends that to the left side.
                 teamTabGroup.Controls.Add(createTimesPage(context, info, ++tabCount));
+            }
+
+            if (context.features.showGraph)
+            {
+                teamTabGroup.Controls.Add(createGraphPage(context, info, ++tabCount));
             }
 
             updateSplits(new VersusWrapper[] { });
@@ -237,6 +242,22 @@ namespace ffrelaytoolv1
             return tabPageTimes;
         }
 
+        private TabPage createGraphPage(MetaContext context, TeamInfo info, int tabCounter)
+        {
+            TabPage tabPageGraph = new TabPage()
+            {
+                BackColor = info.color,
+                Location = new Point(4, 22),
+                Name = "tabPageGraph",
+                Padding = new Padding(3),
+                BackgroundImage = info.tabBackground,
+                Size = new Size(context.layout.boxWidth, context.layout.boxHeight),
+                TabIndex = tabCounter,
+                Text = "Graph",
+            };
+            return tabPageGraph;
+        }
+
         private void teamTabGroup_Selected(object sender, TabControlEventArgs e) => parent.childTabChanged();
         
 
@@ -260,8 +281,11 @@ namespace ffrelaytoolv1
                 {
                     teamTabGroup.SelectedIndex = Util.clamp(targetTab, teamTabGroup.TabCount, 0);
                 } else if (teamTabGroup.SelectedIndex == teamTabGroup.TabCount - 1)
-                { teamTabGroup.SelectedIndex = 0; }
-                else { teamTabGroup.SelectedIndex++; }
+                {
+                    teamTabGroup.SelectedIndex = 0;
+                } else {
+                    teamTabGroup.SelectedIndex++;
+                }
             }
             return teamTabGroup.SelectedIndex;
         }

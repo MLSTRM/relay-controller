@@ -38,7 +38,7 @@ namespace ffrelaytoolv1
             this.Size = new Size(features.width + features.margin * 2, features.height + features.margin * 2);
 
             metaTabGroup.Location = new Point(features.margin, features.margin);
-            metaTabGroup.Size = new Size(features.width, features.height);
+            metaTabGroup.Size = new Size(features.width, features.height + 26);
             metaTabGroup.Selected += metaTabGroup_Selected;
 
             int tabCount = 0;
@@ -80,7 +80,7 @@ namespace ffrelaytoolv1
             int haMargin = features.margin / 2;
             for (int i = 0; i < context.splitsToShow; i++)
             {
-                splitNames[i] = Util.createBaseLabel(splitLabelWidth * i + features.margin, features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                splitNames[i] = Util.createBaseLabel(splitLabelWidth * i + features.margin, features.height - context.layout.rowHeight - features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
                 tabPageSplits.Controls.Add(splitNames[i]);
             }
             return tabPageSplits;
@@ -101,9 +101,16 @@ namespace ffrelaytoolv1
             };
             graph = new Chart();
             graph.Location = new Point(features.margin, features.margin);
-            graph.Size = new Size(features.width - features.margin*2, features.height - features.margin*2 - 50);
+            graph.Size = new Size(features.width - features.margin*2, features.height - features.margin*2);
             graph.ChartAreas.Add(new ChartArea()
             {
+                Position =
+                {
+                    X = 0f,
+                    Y = 0f,
+                    Height = 100,
+                    Width = 100
+                },
                 AxisY = new Axis()
                 {
                     Maximum = 1,
@@ -119,6 +126,7 @@ namespace ffrelaytoolv1
                         TruncatedLabels = true,
                         Format = "F",
                         Interval = 1,
+                        Font = Util.lucidaFontSized(12),
                     },
                     MajorTickMark = new TickMark()
                     {
@@ -131,7 +139,8 @@ namespace ffrelaytoolv1
                     Minimum = 0,
                     LabelStyle = new LabelStyle()
                     {
-                        Enabled = true
+                        Enabled = true,
+                        Font = Util.lucidaFontSized(10)
                     },
                     MajorGrid = new Grid()
                     {
@@ -141,7 +150,7 @@ namespace ffrelaytoolv1
                 },
             });
             for (var i = 0; i < context.splits.Length; i++) {
-                graph.ChartAreas[0].AxisX.CustomLabels.Add(0.5 + i,1.5 + i,context.splits[i]);
+                graph.ChartAreas[0].AxisX.CustomLabels.Add(0.5 + i,1.5 + i, Util.stripGameIndicator(context.splits[i]));
             }
             tabPageGraph.Controls.Add(graph);
             return tabPageGraph;
@@ -153,8 +162,8 @@ namespace ffrelaytoolv1
             int currentSplit = resolveSplit(teams, context.features.metaControl.graph.splitsToShow, context.features.metaControl.graph.splitFocusOffset);
             graph.Series.Clear();
             var teamData = parent.fetchTeamInfo();
-            var splitData = new (string, double[])[context.features.metaControl.graph.splitsToShow];
-            for (int offsetSplit = 0; offsetSplit < context.features.metaControl.graph.splitsToShow; offsetSplit++)
+            var splitData = new (string, double[])[context.features.metaControl.graph.splitsToShow + 1];
+            for (int offsetSplit = 0; offsetSplit < context.features.metaControl.graph.splitsToShow + 1; offsetSplit++)
             {
                 int adjustedIndex = currentSplit - (context.features.metaControl.graph.splitFocusOffset - offsetSplit) - 1;
                 if(adjustedIndex == -1)
@@ -181,23 +190,63 @@ namespace ffrelaytoolv1
                     series.MarkerSize = 8;
                     for (var j = 0; j < diffsToAverage.Length; j++)
                     {
+                        int adjustedIndex = currentSplit - (context.features.metaControl.graph.splitFocusOffset - j);
                         var row = diffsToAverage[j];
-                        series.Points.AddXY(j, row.Item2[teamIdx]);
+                        series.Points.AddXY(adjustedIndex, row.Item2[teamIdx]);
                     }
                     graph.Series.Add(series);
                 }
-                var height = Math.Max(diffsToAverage.Select(row => row.Item2.Select(a => Math.Abs(a)).Max()).Max(), 1);
-                // Potentially round up height to the nearest 10s
-                height = ((int)(height / 10) + 1) * 10;
+                var (height, interval) = ResolveChartScale(diffsToAverage);
                 var startingIndex = Math.Max(0, currentSplit - context.features.metaControl.graph.splitsToShow + 1);
+                var oldMax = graph.ChartAreas[0].AxisY.Minimum;
                 graph.ChartAreas[0].AxisY.Maximum = height;
                 graph.ChartAreas[0].AxisY.Minimum = -height;
-                graph.ChartAreas[0].AxisY.MajorGrid.Interval = height / 2;
-                graph.ChartAreas[0].AxisY.LabelStyle.Interval = height / 2;
+                graph.ChartAreas[0].AxisY.MajorGrid.Interval = interval;
+                graph.ChartAreas[0].AxisY.MinorGrid.Enabled = false;
+                graph.ChartAreas[0].AxisY.LabelStyle.Interval = interval;
+                graph.ChartAreas[0].AxisY.Interval = interval;
+                if (height != oldMax)
+                {
+                    //Only recalc labels if its changed
+                    graph.ChartAreas[0].AxisY.CustomLabels.Clear();
+                    var hainterval = interval / 2;
+                    graph.ChartAreas[0].AxisY.CustomLabels.Add(-hainterval,hainterval, TimeSpan.FromSeconds(0).ToString(@"mm\:ss"));
+                    for (double i = interval; i <= height; i+= interval)
+                    {
+                        var spanString = TimeSpan.FromSeconds(i).ToString(@"mm\:ss");
+                        if(height > 3600)
+                        {
+                            spanString = TimeSpan.FromSeconds(i).ToString(@"h\:mm\:ss");
+                        }
+                        graph.ChartAreas[0].AxisY.CustomLabels.Add(i - hainterval, i + hainterval, spanString);
+                        graph.ChartAreas[0].AxisY.CustomLabels.Add(-(i - hainterval), -(i + hainterval), "-" + spanString);
+                    }
+                }
                 graph.ChartAreas[0].AxisX.Maximum = startingIndex + context.features.metaControl.graph.splitsToShow;
                 graph.ChartAreas[0].AxisX.Minimum = startingIndex;
+                graph.ChartAreas[0].AxisX.LabelAutoFitStyle = LabelAutoFitStyles.WordWrap;
                 graph.ChartAreas[0].RecalculateAxesScale();
             }
+        }
+
+        private (double, double) ResolveChartScale((string, double[])[] diffsToAverage)
+        {
+            //Values all in seconds.
+            var height = Math.Max(diffsToAverage.Select(row => row.Item2.Select(a => Math.Abs(a)).Max()).Max(), 1);
+            if(height < 60)
+            {
+                return (60, 15);
+            }
+            if(height < 120)
+            {
+                //Special case for narrower view if we somehow have a <2 minute spread (wild)
+                return (120, 30);
+            }
+            // Potentially round up height to the nearest 4 minutes
+            height = ((int)(height / 240) + 1) * 240;
+            // Have 4 lines either side
+            var interval = height / 4;
+            return (height, interval);
         }
 
         private TabPage createCommentaryPage(MetaContext context, MetaControlFeatures features, int tabCounter)
@@ -213,9 +262,9 @@ namespace ffrelaytoolv1
                 TabIndex = tabCounter,
                 Text = "Category & Runner",
             };
-            commentaryHeader = Util.createBaseLabel(3, features.margin, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
+            commentaryHeader = Util.createBaseLabel(3, features.height - context.layout.rowHeight - features.margin, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
             tabPageCategories.Controls.Add(commentaryHeader);
-            commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, features.margin, features.width - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
+            commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - context.layout.rowHeight - features.margin, features.width - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
             tabPageCategories.Controls.Add(commentaryLabel);
             return tabPageCategories;
         }
@@ -234,6 +283,21 @@ namespace ffrelaytoolv1
         public int updateTimerEvent(string current, bool cycleInfo, int targetTab = -1)
         {
             updateSplits();
+            if (cycleInfo)
+            {
+                if (targetTab > -1)
+                {
+                    metaTabGroup.SelectedIndex = Util.clamp(targetTab, metaTabGroup.TabCount, 0);
+                }
+                else if (metaTabGroup.SelectedIndex == metaTabGroup.TabCount - 1)
+                {
+                    metaTabGroup.SelectedIndex = 0;
+                }
+                else
+                {
+                    metaTabGroup.SelectedIndex++;
+                }
+            }
             return metaTabGroup.SelectedIndex;
         }
 
