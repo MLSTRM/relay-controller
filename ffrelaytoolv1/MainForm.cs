@@ -34,6 +34,8 @@ namespace ffrelaytoolv1
 
         int MinuteCount = 0;
         bool ChangedThisMin = false;
+        bool EnableAutoCycle = true;
+        private int infoCyclingIndex = 0;
 
         string[] Splits;
 
@@ -69,6 +71,9 @@ namespace ffrelaytoolv1
             timerTickInterval = metaFile.layout.timerTickInterval;
             infoCycleTicks = metaFile.layout.infoCycleTicks;
 
+            var enableString = EnableAutoCycle ? "enabled" : "disabled";
+            autoCycleToggle.Text = $"Auto cycle ({enableString})";
+
             //Programmatic stuff
             meta = new MetaContext(metaFile.splitsToShow, metaFile.splitFocusOffset, Splits,
                 teamNames, metaFile.games, metaFile.layout, metaFile.features);
@@ -98,10 +103,10 @@ namespace ffrelaytoolv1
             }
             loadCommentators();
             var windowWidth = 30 + wide * (teamSize.Width + 10);
-            var windowHeight = 150 + (teamSize.Height + 10) * (int)height;
+            var windowHeight = 150 + (teamSize.Height + 10 + 26) * (int)height;
             if (meta.features.showMetaControl)
             {
-                windowHeight += -teamSize.Height + meta.features.metaControl.height + + meta.features.metaControl.margin + 5;
+                windowHeight += -teamSize.Height - 10 + meta.features.metaControl.height + meta.features.metaControl.margin;
             }
             this.Size = new Size(windowWidth, windowHeight);
             outputCaptureInformation();
@@ -231,6 +236,16 @@ namespace ffrelaytoolv1
             ResumeButton.Visible = false;
         }
 
+        int getTeamSplitOffset()
+        {
+            var teams = fetchOtherTeamInfo(null);
+            int i = 0;
+            var maxOffset = meta.splits.Length - (meta.splitsToShow - meta.splitFocusOffset);
+            for (int team = 0; team < teams.Length; team++)
+            { i = Math.Max(i, Util.clamp(teams[team].splitNum, maxOffset, meta.splitFocusOffset)); }
+            return i;
+        }
+
         void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
             TimeSpan d = DateTime.Now.ToUniversalTime() - TimerStart;
@@ -239,7 +254,7 @@ namespace ffrelaytoolv1
             string current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
             //string current = d.ToString(@"hh\:mm\:ss");
             MainTimer.Text = current;
-            bool toCycle = !ChangedThisMin;
+            bool toCycle = !ChangedThisMin && EnableAutoCycle;
 
             if (!meta.features.syncInfoCycling)
             {
@@ -254,13 +269,38 @@ namespace ffrelaytoolv1
             }
             else
             {
-                int targetTab = teams[0].updateTimerEvent(current, toCycle);
-                if (!toCycle) { targetTab = -1; }
-                teams.Except(new TeamControl[] { teams[0] }).ToList()
-                    .ForEach(t => t.updateTimerEvent(current, toCycle, targetTab));
-                if (meta.features.showMetaControl)
+                if (meta.features.infoCyclingPattern.Length > 0)
                 {
-                    metaControl.updateTimerEvent(current, toCycle, targetTab);
+                    int targetTab = -1;
+                    if (toCycle)
+                    {
+                        infoCyclingIndex++;
+                        if (infoCyclingIndex == meta.features.infoCyclingPattern.Length)
+                        {
+                            infoCyclingIndex = 0;
+                        }
+                        targetTab = meta.features.infoCyclingPattern[infoCyclingIndex];
+                        if(targetTab == 2 && meta.features.graphThreshold < getTeamSplitOffset())
+                        {
+                            targetTab = 0; // Show splits if the graph is not yet full of enough data to show meaningful info
+                        }
+                    }
+                    teams.ToList().ForEach(t => t.updateTimerEvent(current, toCycle, targetTab));
+                    if (meta.features.showMetaControl)
+                    {
+                        metaControl.updateTimerEvent(current, toCycle, targetTab);
+                    }
+                }
+                else
+                {
+                    int targetTab = teams[0].updateTimerEvent(current, toCycle);
+                    if (!toCycle) { targetTab = -1; }
+                    teams.Except(new TeamControl[] { teams[0] }).ToList()
+                        .ForEach(t => t.updateTimerEvent(current, toCycle, targetTab));
+                    if (meta.features.showMetaControl)
+                    {
+                        metaControl.updateTimerEvent(current, toCycle, targetTab);
+                    }
                 }
             }
 
@@ -442,6 +482,13 @@ namespace ffrelaytoolv1
             ReadSplitFiles();
             Array.ForEach(teams,team => team.reconstructSplitMetadata());
             StartTimer();
+        }
+
+        private void autoCycleToggle_Click(object sender, EventArgs e)
+        {
+            EnableAutoCycle = !EnableAutoCycle;
+            var enableString = EnableAutoCycle ? "enabled" : "disabled";
+            autoCycleToggle.Text = $"Auto cycle ({enableString})";
         }
     }
 }

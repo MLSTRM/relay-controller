@@ -58,6 +58,7 @@
             this.MogSplitName6 = new System.Windows.Forms.Label();
             this.MogSplitName7 = new System.Windows.Forms.Label();
             this.ResumeButton = new System.Windows.Forms.Button();
+            this.autoCycleToggle = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // MainTimer
@@ -421,12 +422,23 @@
             this.ResumeButton.UseVisualStyleBackColor = true;
             this.ResumeButton.Click += new System.EventHandler(this.button1_Click_2);
             // 
+            // autoCycleToggle
+            // 
+            this.autoCycleToggle.Location = new System.Drawing.Point(697, 22);
+            this.autoCycleToggle.Name = "autoCycleToggle";
+            this.autoCycleToggle.Size = new System.Drawing.Size(60, 90);
+            this.autoCycleToggle.TabIndex = 22;
+            this.autoCycleToggle.Text = "Auto cycle (..)";
+            this.autoCycleToggle.UseVisualStyleBackColor = true;
+            this.autoCycleToggle.Click += new System.EventHandler(this.autoCycleToggle_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(726, 131);
+            this.ClientSize = new System.Drawing.Size(769, 131);
+            this.Controls.Add(this.autoCycleToggle);
             this.Controls.Add(this.ResumeButton);
             this.Controls.Add(this.CommUpdate);
             this.Controls.Add(this.stopbutton);
@@ -473,6 +485,7 @@
         private System.Windows.Forms.Label MogSplitName6;
         private System.Windows.Forms.Label MogSplitName7;
         private System.Windows.Forms.Button ResumeButton;
+        private System.Windows.Forms.Button autoCycleToggle;
     }
 }
 
