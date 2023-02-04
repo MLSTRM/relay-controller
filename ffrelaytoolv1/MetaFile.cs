@@ -22,11 +22,14 @@ namespace ffrelaytoolv1
             public string color;
             public string image;
             public int splitKey;
+            public bool leftAlign = true;
         }
 
         public class Layout
         {
+            public bool horizontalDisplay = true;
             public int rowHeight = 96;
+            public int rowWidth = 320;
             public int boxHeight = 192;
             public int boxWidth = 893;
             public int timerWidth = 254;
@@ -35,10 +38,14 @@ namespace ffrelaytoolv1
             public bool showSplits = true;
             public bool showCategory = true;
             public bool showGameTimes = true;
+            public bool splitLabelsOnSplitsPage = true;
             public int boxMargin = 6;
             public int timerTickInterval = 250;
             public int infoCycleTicks = 40;
-            public int splitButtonCooldown = 5000;
+            public int splitButtonCooldown = 5000; // 5 seconds
+            public int remoteSplitCooldown = 300000; // 5 minutes
+            public int gameTimeLayout = 0; // 0 = opposing columns
+            public double vsLabelRow = 1f;
         }
 
         public class Features
@@ -51,6 +58,7 @@ namespace ffrelaytoolv1
             public bool syncSplits = true;
             public bool showAllVs = false;
             public bool vsLabelsOnSplitsPage = false;
+            public bool commentatorsOnRunnerPage = true;
             public bool teamGameIcons = true;
             public bool mainLayoutBackground = true;
             public bool enableRemoteSplitting = false;
@@ -68,6 +76,7 @@ namespace ffrelaytoolv1
             public string color = "#FFFFFF";
             public bool splits = false;
             public bool commentators = false;
+            public int commentaryHeight = -1;
             public MetaControlGraph graph = new MetaControlGraph();
         }
 

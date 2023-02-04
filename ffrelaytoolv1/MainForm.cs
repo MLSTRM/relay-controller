@@ -81,7 +81,9 @@ namespace ffrelaytoolv1
             //Create team controls based on the meta file.
             int wide = Math.Min(metaFile.teamsPerRow, metaFile.teams.Length);
             double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
-            Size teamSize = new Size(meta.layout.boxWidth + 30, meta.layout.boxHeight + meta.layout.timerHeight + 56);
+            var teamWidth = Math.Max((meta.layout.boxWidth + 30), (meta.layout.timerWidth + 80));
+            var teamHeight = (meta.layout.boxWidth + 30) > (2 * meta.layout.timerWidth + 80) ? meta.layout.boxHeight + meta.layout.timerHeight + 56 : meta.layout.boxHeight + meta.layout.timerHeight * 2 + 60;
+            Size teamSize = new Size(teamWidth, teamHeight);
             for (int i = 0; i < metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
@@ -90,7 +92,7 @@ namespace ffrelaytoolv1
                 MetaFile.Team team = metaFile.teams[i];
                 var backImage = team.image != null ? Image.FromFile(team.image) : null;
                 teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons), meta, teamSize);
+                    ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons, team.leftAlign), meta, teamSize);
                 this.Controls.Add(teams[i]);
             }
             if (metaFile.features.showMetaControl)
@@ -106,7 +108,24 @@ namespace ffrelaytoolv1
             var windowHeight = 150 + (teamSize.Height + 10 + 26) * (int)height;
             if (meta.features.showMetaControl)
             {
-                windowHeight += -teamSize.Height - 10 + meta.features.metaControl.height + meta.features.metaControl.margin;
+                var offset = 0;
+                if (metaFile.teams.Length < metaFile.teamsPerRow)
+                {
+                    windowWidth += meta.features.metaControl.width + meta.features.metaControl.margin + 10;
+                    if(meta.features.metaControl.height > teamSize.Height)
+                    {
+                        offset = meta.features.metaControl.height - teamSize.Height;
+                        windowHeight += offset;
+                    }
+                }
+                else
+                {
+                    if (metaFile.teams.Length > metaFile.teamsPerRow && metaFile.teams.Length % metaFile.teamsPerRow != 0)
+                    {
+                        offset = -teamSize.Height - 10;
+                    }
+                    windowHeight += offset + meta.features.metaControl.height + meta.features.metaControl.margin;
+                }
             }
             this.Size = new Size(windowWidth, windowHeight);
             outputCaptureInformation();
@@ -128,12 +147,17 @@ namespace ffrelaytoolv1
 
         public void handleOutboundMessages(List<OutboundMessage> messages)
         {
+            //TODO add some kind of debug pane to the main form to see this in action
             if(messages.Count == 0)
             {
                 return;
             }
+            string consumptionLog = $"{getCurrentTimeString()}: Consuming {messages.Count} messages";
             foreach(OutboundMessage m in messages)
             {
+                TimeSpan d = new TimeSpan(m.time);
+                string messageTimeString = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
+                string messageInfo = $"message for {m.team} with time {messageTimeString} - ";
                 TeamControl team = teams.ToList().Find(t => t.teamInfo.teamName == m.team);
                 if (!team.teamInfo.teamFinished)
                 {
@@ -145,16 +169,22 @@ namespace ffrelaytoolv1
                     {
                         lastSplit = new TimeSpan(0);
                     }
-                    double diff = (m.time - lastSplit.Ticks)/10_000;
-                    if (diff > 5 * 60 * 1000)
+                    double diffMillis = (m.time - lastSplit.Ticks)/10_000;
+                    if (diffMillis > meta.layout.remoteSplitCooldown)
                     {
                         //Only split if it's 5 minutes after the most recent one (to prevent duplication)
                         team.splitClick();
-                        TimeSpan d = new TimeSpan(m.time);
-                        team.setSplit(string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d), team.teamInfo.teamSplitNum - 1);
+                        
+                        team.setSplit(messageTimeString, team.teamInfo.teamSplitNum - 1);
+                        messageInfo += $"Split Accepted";
+                    } else
+                    {
+                        messageInfo += $"Ignored due to cooldown {diffMillis} / {meta.layout.remoteSplitCooldown}";
                     }
                 }
+                consumptionLog += "\r\n" + messageInfo;
             }
+            LastPollLabel.Text = consumptionLog;
             broadcastState();
         }
 
@@ -246,12 +276,22 @@ namespace ffrelaytoolv1
             return i;
         }
 
-        void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        int getTeamSplitMinOffset()
+        {
+            var teams = fetchOtherTeamInfo(null);
+            return teams.Min(t => t.splitNum);
+        }
+
+        string getCurrentTimeString()
         {
             TimeSpan d = DateTime.Now.ToUniversalTime() - TimerStart;
-            //TimeSpan d = DateTime.Now - TimerStart + TimeSpan.FromHours(60);
-            //TimeSpan f = d.Add(TimeSpan.FromSeconds(1));
             string current = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
+            return current;
+        }
+
+        void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
+        {
+            string current = getCurrentTimeString();
             //string current = d.ToString(@"hh\:mm\:ss");
             MainTimer.Text = current;
             bool toCycle = !ChangedThisMin && EnableAutoCycle;
@@ -280,7 +320,7 @@ namespace ffrelaytoolv1
                             infoCyclingIndex = 0;
                         }
                         targetTab = meta.features.infoCyclingPattern[infoCyclingIndex];
-                        if(targetTab == 2 && meta.features.graphThreshold < getTeamSplitOffset())
+                        if(targetTab == 2 && getTeamSplitMinOffset() < meta.features.graphThreshold)
                         {
                             targetTab = 0; // Show splits if the graph is not yet full of enough data to show meaningful info
                         }

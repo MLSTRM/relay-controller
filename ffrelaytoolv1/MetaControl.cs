@@ -76,12 +76,22 @@ namespace ffrelaytoolv1
                 Text = "Splits",
             };
             splitNames = new Label[context.splitsToShow];
-            int splitLabelWidth = (features.width - (2 * features.margin)) / context.splitsToShow;
-            int haMargin = features.margin / 2;
-            for (int i = 0; i < context.splitsToShow; i++)
+            if (context.layout.horizontalDisplay)
             {
-                splitNames[i] = Util.createBaseLabel(splitLabelWidth * i + features.margin, features.height - context.layout.rowHeight - features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
-                tabPageSplits.Controls.Add(splitNames[i]);
+                int splitLabelWidth = (features.width - (2 * features.margin)) / context.splitsToShow;
+                for (int i = 0; i < context.splitsToShow; i++)
+                {
+                    splitNames[i] = Util.createBaseLabel(splitLabelWidth * i + features.margin, features.height - context.layout.rowHeight - features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                    tabPageSplits.Controls.Add(splitNames[i]);
+                }
+            } else
+            {
+                int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / context.splitsToShow;
+                for (int i = 0; i < context.splitsToShow; i++)
+                {
+                    splitNames[i] = Util.createBaseLabel((features.width - context.layout.rowWidth)/2, context.layout.boxMargin + splitLabelHeight * i, context.layout.rowWidth, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                    tabPageSplits.Controls.Add(splitNames[i]);
+                }
             }
             return tabPageSplits;
         }
@@ -149,6 +159,7 @@ namespace ffrelaytoolv1
                     }
                 },
             });
+            graph.ChartAreas[0].AxisX.CustomLabels.Add(-0.5, 0.5, "Start");
             for (var i = 0; i < context.splits.Length; i++) {
                 graph.ChartAreas[0].AxisX.CustomLabels.Add(0.5 + i,1.5 + i, Util.stripGameIndicator(context.splits[i]));
             }
@@ -262,9 +273,10 @@ namespace ffrelaytoolv1
                 TabIndex = tabCounter,
                 Text = "Category & Runner",
             };
-            commentaryHeader = Util.createBaseLabel(3, features.height - context.layout.rowHeight - features.margin, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
+            var height = features.commentaryHeight < 0 ? context.layout.rowHeight : features.commentaryHeight;
+            commentaryHeader = Util.createBaseLabel(3, features.height - height - features.margin, 160, height, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
             tabPageCategories.Controls.Add(commentaryHeader);
-            commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - context.layout.rowHeight - features.margin, features.width - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
+            commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - height - features.margin, features.width - commentaryHeader.Width - 3 - features.margin, height, "", ContentAlignment.MiddleLeft);
             tabPageCategories.Controls.Add(commentaryLabel);
             return tabPageCategories;
         }
@@ -313,10 +325,10 @@ namespace ffrelaytoolv1
                     splitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[adjustedIndex]);
                 }
             }
-            //if (metaTabGroup.SelectedIndex == 2)
-            //{
+            if (context.features.showGraph)
+            {
                 refreshGraphData();
-            //}
+            }
         }
 
         public void RefreshGame()
