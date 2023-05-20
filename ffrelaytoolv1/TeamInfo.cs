@@ -39,13 +39,15 @@ namespace ffrelaytoolv1
 
         public Image tabBackground { get; set; }
 
+        public bool leftAlign { get; set; }
+
         private readonly string runnerFileName;
 
         public int teamSplitKey { get; }
 
         private bool useIcons;
 
-        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg, int splitKey, bool useIcons)
+        public TeamInfo(int numberOfGames, int numberOfSplits, string teamName, string runnerFileName, Color color, Image bg, int splitKey, bool useIcons, bool leftAlign)
         {
             tabBackground = bg;
             this.color = color;
@@ -56,6 +58,7 @@ namespace ffrelaytoolv1
             teamSplitNum = 0;
             teamFinished = false;
             teamTab = 0;
+            this.leftAlign = leftAlign;
             this.teamName = teamName;
             this.runnerFileName = runnerFileName;
             this.teamSplitKey = splitKey;
