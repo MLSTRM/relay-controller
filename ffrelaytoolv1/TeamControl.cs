@@ -52,7 +52,7 @@ namespace ffrelaytoolv1
             TimerLabel.Size = new Size(context.layout.timerWidth, context.layout.timerHeight);
             TimerLabel.BackColor = info.color;
             TimerLabel.ForeColor = ColorTranslator.FromHtml(context.layout.timerTextColor);
-            TimerLabel.Font = labelUtil.activeFontSized(context.layout.teamTimerFontSize);
+            TimerLabel.Font = labelUtil.activeTimerFontSized(context.layout.teamTimerFontSize);
 
             TeamSplitButton.BackColor = teamInfo.color;
             if (teamInfo.color.GetBrightness() < 0.5f)

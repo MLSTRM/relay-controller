@@ -70,9 +70,10 @@ namespace ffrelaytoolv1
 
             string[] teamNames = metaFile.teams.Select(team => team.name).ToArray();
 
-            LabelUtil labelUtil = new LabelUtil(metaFile.layout.fontFamily, metaFile.layout.defaultTimerFontSize, ColorTranslator.FromHtml(metaFile.layout.textColour));
+            LabelUtil labelUtil = new LabelUtil(metaFile.layout.fontFamily, metaFile.layout.timerFontFamily, metaFile.layout.defaultTimerFontSize, ColorTranslator.FromHtml(metaFile.layout.textColour));
 
-            MainTimer.Font = labelUtil.activeFontSized(metaFile.layout.mainTimerFontSize);
+
+            MainTimer.Font = labelUtil.activeTimerFontSized(metaFile.layout.mainTimerFontSize);
             MainTimer.ForeColor = ColorTranslator.FromHtml(metaFile.layout.timerForeColor);
             MainTimer.BackColor = ColorTranslator.FromHtml(metaFile.layout.timerBackColor);
 
@@ -150,6 +151,12 @@ namespace ffrelaytoolv1
                 sqsTimer.Start();
                 //broadcastState();
                 FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
+            }
+            if (meta.features.enableDiscordIntegration)
+            {
+                var discordIntegration = new DiscordVoiceIntegration();
+                var discordWorker = discordIntegration.GenerateThread();
+                discordWorker.RunWorkerAsync();
             }
         }
 

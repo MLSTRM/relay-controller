@@ -11,12 +11,14 @@ namespace ffrelaytoolv1
     public class LabelUtil
     {
         public readonly FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
+        public readonly FontFamily sans = new FontFamily("Microsoft Sans Serif");
 
         private FontFamily active;
+        private FontFamily activeTimer;
         private float defaultSize;
         public Color defaultColour { get; private set; }
 
-        public LabelUtil(string fontName, float defaultSize, Color defaultColour)
+        public LabelUtil(string fontName, string timerFontName, float defaultSize, Color defaultColour)
         {
             try
             {
@@ -25,11 +27,19 @@ namespace ffrelaytoolv1
             {
                 active = lucida;
             }
+            try
+            {
+                activeTimer = new FontFamily(timerFontName);
+            } catch
+            {
+                activeTimer = sans;
+            }
             this.defaultSize = defaultSize;
             this.defaultColour = defaultColour;
         }
         public Font activeFontSized(float size) => new Font(active ?? lucida, size);
 
+        public Font activeTimerFontSized(float size) => new Font(activeTimer ?? sans, size);
 
         public Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
         {
@@ -75,7 +85,7 @@ namespace ffrelaytoolv1
         public readonly static FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
         public readonly static FontFamily bookman = new FontFamily("Bookman Old Style");
 
-        public static Font lucidaFontSized(int size) => new Font(bookman, size);
+        public static Font lucidaFontSized(int size) => new Font(lucida, size);
 
         public static TimeSpan resolveTimeSpan(string a, string b)
         {

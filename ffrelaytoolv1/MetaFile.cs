@@ -46,7 +46,7 @@ namespace ffrelaytoolv1
             public int remoteSplitCooldown = 300000; // 5 minutes
             public int gameTimeLayout = 0; // 0 = opposing columns
             public double vsLabelRow = 1f;
-            public string fontFamily = null;
+            public string fontFamily = "Lucida Sans Typewriter";
             public float mainTimerFontSize = 60;
             public float teamTimerFontSize = 40;
             public float splitTimerFontSize = 20;
@@ -56,6 +56,7 @@ namespace ffrelaytoolv1
             public string timerForeColor = "#000000";
             public string timerBackColor = "#FFFFFF";
             public string timerFadeColor = "#464646";
+            public string timerFontFamily = "Microsoft Sans Serif";
         }
 
         public class Features
