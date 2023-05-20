@@ -152,12 +152,7 @@ namespace ffrelaytoolv1
                 //broadcastState();
                 FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
             }
-            if (meta.features.enableDiscordIntegration)
-            {
-                var discordIntegration = new DiscordVoiceIntegration();
-                var discordWorker = discordIntegration.GenerateThread();
-                discordWorker.RunWorkerAsync();
-            }
+     
         }
 
         public void handleOutboundMessages(List<OutboundMessage> messages)
