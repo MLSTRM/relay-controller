@@ -46,6 +46,16 @@ namespace ffrelaytoolv1
             public int remoteSplitCooldown = 300000; // 5 minutes
             public int gameTimeLayout = 0; // 0 = opposing columns
             public double vsLabelRow = 1f;
+            public string fontFamily = null;
+            public float mainTimerFontSize = 60;
+            public float teamTimerFontSize = 40;
+            public float splitTimerFontSize = 20;
+            public float defaultTimerFontSize = 16;
+            public string textColour = "#000000";
+            public string timerTextColor = "#FFFFFF";
+            public string timerForeColor = "#000000";
+            public string timerBackColor = "#FFFFFF";
+            public string timerFadeColor = "#464646";
         }
 
         public class Features
@@ -62,6 +72,7 @@ namespace ffrelaytoolv1
             public bool teamGameIcons = true;
             public bool mainLayoutBackground = true;
             public bool enableRemoteSplitting = false;
+            public bool enableDiscordIntegration = false;
             public bool showMetaControl = false;
             public bool showGraph = false;
             public int graphThreshold = 0;

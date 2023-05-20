@@ -33,13 +33,16 @@ namespace ffrelaytoolv1
         Label commentaryLabel;
         Label commentaryHeader;
 
+        LabelUtil labelUtil;
+
         public TeamControl()
         {
             InitializeComponent();
         }
 
-        public void setupTeamControl(MainForm parent, TeamInfo info, MetaContext context, Size teamSize)
+        public void setupTeamControl(MainForm parent, TeamInfo info, MetaContext context, Size teamSize, LabelUtil labelUtil)
         {
+            this.labelUtil = labelUtil;
             //TODO: Make base layout more configurable for sizes
             this.parent = parent;
             this.teamInfo = info;
@@ -48,7 +51,9 @@ namespace ffrelaytoolv1
 
             TimerLabel.Size = new Size(context.layout.timerWidth, context.layout.timerHeight);
             TimerLabel.BackColor = info.color;
-            TimerLabel.ForeColor = Color.White;
+            TimerLabel.ForeColor = ColorTranslator.FromHtml(context.layout.timerTextColor);
+            TimerLabel.Font = labelUtil.activeFontSized(context.layout.teamTimerFontSize);
+
             TeamSplitButton.BackColor = teamInfo.color;
             if (teamInfo.color.GetBrightness() < 0.5f)
             {
@@ -136,10 +141,10 @@ namespace ffrelaytoolv1
                     int splitLabelWidth = (context.layout.boxWidth - (2 * context.layout.boxMargin)) / context.splitsToShow;
                     if (context.layout.splitLabelsOnSplitsPage)
                     {
-                        teamSplitNames[i] = Util.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, context.layout.rowHeight, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "test+" + i, ContentAlignment.MiddleCenter);
+                        teamSplitNames[i] = labelUtil.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, context.layout.rowHeight, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "test+" + i, ContentAlignment.MiddleCenter);
                         tabPageSplits.Controls.Add(teamSplitNames[i]);
                     }
-                    teamSplitTimes[i] = Util.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, haMargin, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                    teamSplitTimes[i] = labelUtil.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, haMargin, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "00:00:00", ContentAlignment.MiddleCenter, 20);
                     tabPageSplits.Controls.Add(teamSplitTimes[i]);
                 } else
                 {
@@ -150,20 +155,20 @@ namespace ffrelaytoolv1
                     {
                         if (context.layout.splitLabelsOnSplitsPage)
                         {
-                            teamSplitNames[i] = Util.createBaseLabel(context.layout.rowWidth, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                            teamSplitNames[i] = labelUtil.createBaseLabel(context.layout.rowWidth, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
                             tabPageSplits.Controls.Add(teamSplitNames[i]);
                         }
-                        teamSplitTimes[i] = Util.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                        teamSplitTimes[i] = labelUtil.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
                         tabPageSplits.Controls.Add(teamSplitTimes[i]);
                     } else
                     {
                         int w = context.layout.rowWidth - context.layout.boxMargin;
                         if (context.layout.splitLabelsOnSplitsPage)
                         {
-                            teamSplitNames[i] = Util.createBaseLabel(context.layout.boxWidth - context.layout.rowWidth - w, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                            teamSplitNames[i] = labelUtil.createBaseLabel(context.layout.boxWidth - context.layout.rowWidth - w, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
                             tabPageSplits.Controls.Add(teamSplitNames[i]);
                         }
-                        teamSplitTimes[i] = Util.createBaseLabel(context.layout.boxWidth - w - haMargin, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                        teamSplitTimes[i] = labelUtil.createBaseLabel(context.layout.boxWidth - w - haMargin, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
                         tabPageSplits.Controls.Add(teamSplitTimes[i]);
                     }
                 }
@@ -179,16 +184,16 @@ namespace ffrelaytoolv1
                     for (int i = 0; i < context.numberOfTeams; i++)
                     {
                         if (context.teamNames[i].Equals(info.teamName)) { continue; }
-                        vsLabelNames[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
+                        vsLabelNames[adjustedIndex] = labelUtil.createBaseLabel(context.layout.boxWidth / 2, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i]);
                         tabPageSplits.Controls.Add(vsLabelNames[adjustedIndex]);
-                        vsLabelTimes[adjustedIndex] = Util.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
+                        vsLabelTimes[adjustedIndex] = labelUtil.createBaseLabel(context.layout.boxWidth * 3 / 4, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, " 00:00:00");
                         tabPageSplits.Controls.Add(vsLabelTimes[adjustedIndex]);
                         adjustedIndex++;
                     }
                 }
                 else
                 {
-                    vsLabelSingle = Util.createBaseLabel(context.layout.boxWidth / 2, context.layout.rowHeight / 6, context.layout.boxWidth / 2, context.layout.rowHeight, "");
+                    vsLabelSingle = labelUtil.createBaseLabel(context.layout.boxWidth / 2, context.layout.rowHeight / 6, context.layout.boxWidth / 2, context.layout.rowHeight, "");
                     tabPageSplits.Controls.Add(vsLabelSingle);
                 }
             }
@@ -214,14 +219,14 @@ namespace ffrelaytoolv1
             {
                 for (int i = 0; i < 3; i++)
                 {
-                    categoryLabels[i] = Util.createBaseLabel(3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i);
+                    categoryLabels[i] = labelUtil.createBaseLabel(3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i);
                     tabPageCategories.Controls.Add(categoryLabels[i]);
                 }
                 if (context.features.commentatorsOnRunnerPage)
                 {
-                    commentaryHeader = Util.createBaseLabel(3, context.layout.rowHeight, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
+                    commentaryHeader = labelUtil.createBaseLabel(3, context.layout.rowHeight, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, labelUtil.defaultColour, context.layout.defaultTimerFontSize);
                     tabPageCategories.Controls.Add(commentaryHeader);
-                    commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, context.layout.rowHeight, context.layout.boxWidth - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
+                    commentaryLabel = labelUtil.createBaseLabel(3 + commentaryHeader.Width + 3, context.layout.rowHeight, context.layout.boxWidth - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
                     tabPageCategories.Controls.Add(commentaryLabel);
                 }
             } else
@@ -229,21 +234,21 @@ namespace ffrelaytoolv1
                 int categoryW = (context.layout.boxWidth * 2) / 3;
                 for (int i = 0; i < 3; i++)
                 {
-                    categoryLabels[i] = Util.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i, ContentAlignment.MiddleRight);
+                    categoryLabels[i] = labelUtil.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i, ContentAlignment.MiddleRight);
                     tabPageCategories.Controls.Add(categoryLabels[i]);
                 }
                 if (context.features.commentatorsOnRunnerPage)
                 {
-                    commentaryHeader = Util.createBaseLabel(context.layout.boxWidth - 160 - 3, context.layout.rowHeight, 160, context.layout.rowHeight, ":Commentary", ContentAlignment.MiddleRight, Color.Black, 16);
+                    commentaryHeader = labelUtil.createBaseLabel(context.layout.boxWidth - 160 - 3, context.layout.rowHeight, 160, context.layout.rowHeight, ":Commentary", ContentAlignment.MiddleRight, labelUtil.defaultColour, context.layout.defaultTimerFontSize);
                     tabPageCategories.Controls.Add(commentaryHeader);
                     int commentaryW = context.layout.boxWidth - commentaryHeader.Width - 3;
-                    commentaryLabel = Util.createBaseLabel(context.layout.boxWidth - commentaryW - (3 + commentaryHeader.Width + 3), context.layout.rowHeight, commentaryW, context.layout.rowHeight, "", ContentAlignment.MiddleRight);
+                    commentaryLabel = labelUtil.createBaseLabel(context.layout.boxWidth - commentaryW - (3 + commentaryHeader.Width + 3), context.layout.rowHeight, commentaryW, context.layout.rowHeight, "", ContentAlignment.MiddleRight);
                     tabPageCategories.Controls.Add(commentaryLabel);
                 }
             }
             if (!context.features.vsLabelsOnSplitsPage)
             {
-                var labelSize = Util.calcLabelSize(20, "-00:00:00");
+                var labelSize = labelUtil.calcLabelSize(20, "-00:00:00");
                 var width = Math.Max(context.layout.vsLabelMin, labelSize.Width);
                 var vsLabelX = teamInfo.leftAlign ? context.layout.boxWidth / 2 : context.layout.boxWidth / 4;
                 var vsLabelTimeX = teamInfo.leftAlign ? context.layout.boxWidth - width - context.layout.boxMargin : context.layout.boxMargin;
@@ -258,17 +263,17 @@ namespace ffrelaytoolv1
                     for (int i = 0; i < context.numberOfTeams; i++)
                     {
                         if (context.teamNames[i].Equals(info.teamName)) { continue; }
-                        vsLabelNames[adjustedIndex] = Util.createBaseLabel(vsLabelX, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i], vsLabelAlign);
+                        vsLabelNames[adjustedIndex] = labelUtil.createBaseLabel(vsLabelX, comparisonHeight * adjustedIndex + 3, context.layout.boxWidth / 4, comparisonHeight, "Vs Team " + context.teamNames[i], vsLabelAlign);
                         tabPageCategories.Controls.Add(vsLabelNames[adjustedIndex]);
 
-                        vsLabelTimes[adjustedIndex] = Util.createBaseLabel(vsLabelTimeX, comparisonHeight * adjustedIndex + 3, width, comparisonHeight, " 00:00:00", vsLabelTimeAlign);
+                        vsLabelTimes[adjustedIndex] = labelUtil.createBaseLabel(vsLabelTimeX, comparisonHeight * adjustedIndex + 3, width, comparisonHeight, " 00:00:00", vsLabelTimeAlign);
                         tabPageCategories.Controls.Add(vsLabelTimes[adjustedIndex]);
                         adjustedIndex++;
                     }
                 }
                 else
                 {
-                    vsLabelSingle = Util.createBaseLabel(vsLabelTimeX, (int)(categoryHeight*context.layout.vsLabelRow), width, categoryHeight, "", vsLabelTimeAlign, 20);
+                    vsLabelSingle = labelUtil.createBaseLabel(vsLabelTimeX, (int)(categoryHeight*context.layout.vsLabelRow), width, categoryHeight, "", vsLabelTimeAlign, context.layout.splitTimerFontSize);
                     tabPageCategories.Controls.Add(vsLabelSingle);
                     vsLabelSingle.BringToFront();
                 }
@@ -303,16 +308,16 @@ namespace ffrelaytoolv1
                 for (int i = 0; i < gamesOnEach; i++)
                 {
                     // box center line - ~60
-                    gameEndsL[i] = Util.createBaseLabel(76, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
+                    gameEndsL[i] = labelUtil.createBaseLabel(76, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
                     tabPageTimes.Controls.Add(gameEndsL[i]);
                     // box center line + ~60
-                    gameEndsR[i] = Util.createBaseLabel(200, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
+                    gameEndsR[i] = labelUtil.createBaseLabel(200, offset * i, 117, offset, Util.emptyTime, ContentAlignment.MiddleCenter);
                     tabPageTimes.Controls.Add(gameEndsR[i]);
                     // box centre line - ~95?
-                    gameShortL[i] = Util.createBaseLabel(3, offset * i, 90, offset, context.games[i].PadLeft(4, ' ') + ": ", ContentAlignment.MiddleRight);
+                    gameShortL[i] = labelUtil.createBaseLabel(3, offset * i, 90, offset, context.games[i].PadLeft(4, ' ') + ": ", ContentAlignment.MiddleRight);
                     tabPageTimes.Controls.Add(gameShortL[i]);
                     // box centre line + ~95?
-                    gameShortR[i] = Util.createBaseLabel(295, offset * i, 90, offset, " :" + context.games[i + gamesOnEach].PadRight(4, ' '), ContentAlignment.MiddleLeft);
+                    gameShortR[i] = labelUtil.createBaseLabel(295, offset * i, 90, offset, " :" + context.games[i + gamesOnEach].PadRight(4, ' '), ContentAlignment.MiddleLeft);
                     tabPageTimes.Controls.Add(gameShortR[i]);
                 }
             } else
@@ -577,10 +582,10 @@ namespace ffrelaytoolv1
                         teamSplitNames[offsetSplit].Text = Util.stripGameIndicator(context.splits[adjustedIndex]);
                     }
                     teamSplitTimes[offsetSplit].Text = adjustedIndex == 0 ? teamInfo.teamSplits[adjustedIndex] : Util.hideUnsetSplit(teamInfo.teamSplits[adjustedIndex]);
-                    teamSplitTimes[offsetSplit].ForeColor = Color.Black;
+                    teamSplitTimes[offsetSplit].ForeColor = labelUtil.defaultColour;
                     if(adjustedIndex < teamInfo.teamSplitNum)
                     {
-                        teamSplitTimes[offsetSplit].ForeColor = Color.FromArgb(255, 70, 70, 70);
+                        teamSplitTimes[offsetSplit].ForeColor = ColorTranslator.FromHtml(context.layout.timerFadeColor);
                     }
                 }
             }

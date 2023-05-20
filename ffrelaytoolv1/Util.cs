@@ -8,6 +8,64 @@ using System.Drawing;
 
 namespace ffrelaytoolv1
 {
+    public class LabelUtil
+    {
+        public readonly FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
+
+        private FontFamily active;
+        private float defaultSize;
+        public Color defaultColour { get; private set; }
+
+        public LabelUtil(string fontName, float defaultSize, Color defaultColour)
+        {
+            try
+            {
+                active = new FontFamily(fontName);
+            } catch
+            {
+                active = lucida;
+            }
+            this.defaultSize = defaultSize;
+            this.defaultColour = defaultColour;
+        }
+        public Font activeFontSized(float size) => new Font(active ?? lucida, size);
+
+
+        public Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
+        {
+            return createBaseLabel(x, y, w, h, text, textAlign, defaultColour, defaultSize);
+        }
+
+        public Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, float fontSize)
+        {
+            return createBaseLabel(x, y, w, h, text, textAlign, defaultColour, fontSize);
+        }
+
+        public Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, float fontSize)
+        {
+            System.Console.WriteLine("creating label at " + x + ", " + y);
+            return new Label
+            {
+                Location = new Point(x, y),
+                Size = new Size(w, h),
+                ForeColor = color,
+                TextAlign = textAlign,
+                BackColor = Color.Transparent,
+                Font = activeFontSized(fontSize),
+                Text = text
+            };
+        }
+
+        public Size calcLabelSize(float fontSize, string text)
+        {
+            return TextRenderer.MeasureText(text, activeFontSized(fontSize));
+        }
+
+        public Label createBaseLabel(int x, int y, int w, int h, string text) =>
+            createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
+
+    }
+
     static class Util
     {
         public static string gameSep = "!";
@@ -15,10 +73,9 @@ namespace ffrelaytoolv1
         public static string emptyTime = "00:00:00";
 
         public readonly static FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
+        public readonly static FontFamily bookman = new FontFamily("Bookman Old Style");
 
-        public readonly static Font lucidaFont = new Font(lucida, 16);
-
-        public static Font lucidaFontSized(int size) => new Font(lucida, size);
+        public static Font lucidaFontSized(int size) => new Font(bookman, size);
 
         public static TimeSpan resolveTimeSpan(string a, string b)
         {
@@ -42,7 +99,7 @@ namespace ffrelaytoolv1
             string current = "";
             if (seg.TotalHours > -1)
             { if (seg.TotalSeconds < 0) { current += "-"; } else { current += "+"; } }
-            current += string.Format("{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
+            current += string.Format("{0:D1}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg);
             label.Text = current;
         }
 
@@ -51,7 +108,7 @@ namespace ffrelaytoolv1
             if (seg.TotalHours <= 0)
             { label.Text = ""; }
             else
-            { label.Text = string.Format("+{0:D2}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg); }
+            { label.Text = string.Format("+{0:D1}:{1:mm}:{1:ss}", (int)seg.TotalHours, seg); }
         }
 
         public static T clamp<T>(T target, T upper, T lower) where T : IComparable{
@@ -66,38 +123,6 @@ namespace ffrelaytoolv1
             return target;
         }
 
-        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
-        {
-            return createBaseLabel(x, y, w, h, text, textAlign, Color.Black, 16);
-        }
-
-        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, int fontSize)
-        {
-            return createBaseLabel(x, y, w, h, text, textAlign, Color.Black, fontSize);
-        }
-
-        public static Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, int fontSize)
-        {
-            System.Console.WriteLine("creating label at " + x + ", " + y);
-            return new Label
-            {
-                Location = new Point(x, y),
-                Size = new Size(w, h),
-                ForeColor = color,
-                TextAlign = textAlign,
-                BackColor = Color.Transparent,
-                Font = lucidaFontSized(fontSize),
-                Text = text
-            };
-        }
-
-        public static Size calcLabelSize(int fontSize, string text)
-        {
-            return TextRenderer.MeasureText(text, lucidaFontSized(fontSize));
-        }
-
-        public static Label createBaseLabel(int x, int y, int w, int h, string text) => 
-            createBaseLabel(x, y, w, h, text, ContentAlignment.MiddleLeft);
 
         public static String outputCaptureInfo(Control control, Control parent)
         {

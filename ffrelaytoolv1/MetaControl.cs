@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -25,13 +26,16 @@ namespace ffrelaytoolv1
 
         Chart graph;
 
+        LabelUtil labelUtil;
+
         public MetaControl()
         {
             InitializeComponent();
         }
 
-        public void setupMetaControl(MainForm parent, MetaContext context)
+        public void setupMetaControl(MainForm parent, MetaContext context, LabelUtil labelUtil)
         {
+            this.labelUtil = labelUtil;
             this.parent = parent;
             this.context = context;
             var features = context.features.metaControl;
@@ -81,7 +85,7 @@ namespace ffrelaytoolv1
                 int splitLabelWidth = (features.width - (2 * features.margin)) / context.splitsToShow;
                 for (int i = 0; i < context.splitsToShow; i++)
                 {
-                    splitNames[i] = Util.createBaseLabel(splitLabelWidth * i + features.margin, features.height - context.layout.rowHeight - features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                    splitNames[i] = labelUtil.createBaseLabel(splitLabelWidth * i + features.margin, features.height - context.layout.rowHeight - features.margin, splitLabelWidth, context.layout.rowHeight, "test+" + i, ContentAlignment.MiddleCenter);
                     tabPageSplits.Controls.Add(splitNames[i]);
                 }
             } else
@@ -89,7 +93,7 @@ namespace ffrelaytoolv1
                 int splitLabelHeight = (context.layout.boxHeight - (2 * context.layout.boxMargin)) / context.splitsToShow;
                 for (int i = 0; i < context.splitsToShow; i++)
                 {
-                    splitNames[i] = Util.createBaseLabel((features.width - context.layout.rowWidth)/2, context.layout.boxMargin + splitLabelHeight * i, context.layout.rowWidth, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
+                    splitNames[i] = labelUtil.createBaseLabel((features.width - context.layout.rowWidth)/2, context.layout.boxMargin + splitLabelHeight * i, context.layout.rowWidth, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
                     tabPageSplits.Controls.Add(splitNames[i]);
                 }
             }
@@ -274,9 +278,9 @@ namespace ffrelaytoolv1
                 Text = "Category & Runner",
             };
             var height = features.commentaryHeight < 0 ? context.layout.rowHeight : features.commentaryHeight;
-            commentaryHeader = Util.createBaseLabel(3, features.height - height - features.margin, 160, height, "Commentary:", ContentAlignment.MiddleLeft, Color.Black, 16);
+            commentaryHeader = labelUtil.createBaseLabel(3, features.height - height - features.margin, 160, height, "Commentary:", ContentAlignment.MiddleLeft, labelUtil.defaultColour, context.layout.defaultTimerFontSize);
             tabPageCategories.Controls.Add(commentaryHeader);
-            commentaryLabel = Util.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - height - features.margin, features.width - commentaryHeader.Width - 3 - features.margin, height, "", ContentAlignment.MiddleLeft);
+            commentaryLabel = labelUtil.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - height - features.margin, features.width - commentaryHeader.Width - 3 - features.margin, height, "", ContentAlignment.MiddleLeft);
             tabPageCategories.Controls.Add(commentaryLabel);
             return tabPageCategories;
         }
@@ -342,6 +346,15 @@ namespace ffrelaytoolv1
             {
                 commentaryLabel.Text = context.commentators[parent.getMaxIcon() - 1];
             }
+        }
+
+        public List<String> outputCaptureInfo(Control parent)
+        {
+            List<String> captureLines = new List<string>();
+            captureLines.Add("");
+            captureLines.Add("Meta info: ");
+            captureLines.Add(Util.outputCaptureInfoRelative(metaTabGroup.TabPages[0], parent, metaTabGroup, this));
+            return captureLines;
         }
     }
 }

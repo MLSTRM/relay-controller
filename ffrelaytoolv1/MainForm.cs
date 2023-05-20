@@ -11,6 +11,8 @@ using System.IO;
 using Newtonsoft.Json;
 using ffrelaytoolv1.Cloud;
 using FFRelayTool_Model;
+using static ffrelaytoolv1.MetaFile;
+using System.Runtime.Remoting.Contexts;
 
 namespace ffrelaytoolv1
 {
@@ -68,6 +70,12 @@ namespace ffrelaytoolv1
 
             string[] teamNames = metaFile.teams.Select(team => team.name).ToArray();
 
+            LabelUtil labelUtil = new LabelUtil(metaFile.layout.fontFamily, metaFile.layout.defaultTimerFontSize, ColorTranslator.FromHtml(metaFile.layout.textColour));
+
+            MainTimer.Font = labelUtil.activeFontSized(metaFile.layout.mainTimerFontSize);
+            MainTimer.ForeColor = ColorTranslator.FromHtml(metaFile.layout.timerForeColor);
+            MainTimer.BackColor = ColorTranslator.FromHtml(metaFile.layout.timerBackColor);
+
             timerTickInterval = metaFile.layout.timerTickInterval;
             infoCycleTicks = metaFile.layout.infoCycleTicks;
 
@@ -92,7 +100,7 @@ namespace ffrelaytoolv1
                 MetaFile.Team team = metaFile.teams[i];
                 var backImage = team.image != null ? Image.FromFile(team.image) : null;
                 teams[i].setupTeamControl(this, new TeamInfo(metaFile.games.Length, Splits.Length, team.name, team.name.ToLower() + "-runners.txt",
-                    ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons, team.leftAlign), meta, teamSize);
+                    ColorTranslator.FromHtml(team.color), backImage, team.splitKey, metaFile.features.teamGameIcons, team.leftAlign), meta, teamSize, labelUtil);
                 this.Controls.Add(teams[i]);
             }
             if (metaFile.features.showMetaControl)
@@ -100,7 +108,7 @@ namespace ffrelaytoolv1
                 metaControl = new MetaControl();
                 int row = metaFile.teams.Length / metaFile.teamsPerRow;
                 metaControl.Location = new Point(15 + (metaFile.teams.Length % metaFile.teamsPerRow) * (teamSize.Width + 10), 120 + (teamSize.Height + 10) * row);
-                metaControl.setupMetaControl(this, meta);
+                metaControl.setupMetaControl(this, meta, labelUtil);
                 Controls.Add(metaControl);
             }
             loadCommentators();
@@ -230,6 +238,10 @@ namespace ffrelaytoolv1
             foreach (TeamControl team in teams)
             {
                 captureLines.AddRange(team.outputCaptureInfo(this));
+            }
+            if (meta.features.showMetaControl)
+            {
+                captureLines.AddRange(metaControl.outputCaptureInfo(this));
             }
             File.WriteAllLines("capture-info.txt", captureLines);
         }
