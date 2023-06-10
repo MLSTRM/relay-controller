@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ffrelaytoolv1.MetaFile;
 
 namespace ffrelaytoolv1
 {
@@ -29,8 +30,13 @@ namespace ffrelaytoolv1
         Label[] gameShortL;
         Label[] gameShortR;
 
-        Label[] categoryLabels;
+        //TODO: refactor into <Game, Category, Runner> - Runner then embeds a RichNameControl also
+        Label gameLabel;
+        Label categoryLabel;
+        Label runnerLabel;
+        RichNameControl runnerRichNameLabel;
         Label commentaryLabel;
+        FlowLayoutPanel commentaryLayoutPanel;
         Label commentaryHeader;
 
         LabelUtil labelUtil;
@@ -213,29 +219,66 @@ namespace ffrelaytoolv1
                 TabIndex = tabCounter,
                 Text = "Category & Runner",
             };
-            categoryLabels = new Label[3];
             int categoryHeight = (context.layout.rowHeight - context.layout.boxMargin) / 3;
+            var runnerTextWidth = TextRenderer.MeasureText("Runner:", labelUtil.activeFontSized(context.layout.defaultTimerFontSize));
             if (teamInfo.leftAlign)
             {
-                for (int i = 0; i < 3; i++)
+                gameLabel = labelUtil.createBaseLabel(3, 3, (context.layout.boxWidth * 2) / 3, categoryHeight, "Final Fantasy");
+                categoryLabel = labelUtil.createBaseLabel(3, 3 + categoryHeight, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+1");
+                runnerLabel = labelUtil.createBaseLabel(3, 3 + categoryHeight * 2, (context.layout.boxWidth * 2) / 3, categoryHeight, "Runner: ");
+                tabPageCategories.Controls.Add(gameLabel);
+                tabPageCategories.Controls.Add(categoryLabel);
+                tabPageCategories.Controls.Add(runnerLabel);
+                runnerRichNameLabel = new RichNameControl
                 {
-                    categoryLabels[i] = labelUtil.createBaseLabel(3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i);
-                    tabPageCategories.Controls.Add(categoryLabels[i]);
+                    Location = new Point(3 + runnerTextWidth.Width + 3, 6 + categoryHeight * 2),
+                    BackColor = Color.Transparent
+                };
+                if (!context.layout.useBasicNameLayout)
+                {
+                    runnerLabel.Width = runnerTextWidth.Width;
+                    tabPageCategories.Controls.Add(runnerRichNameLabel);
                 }
                 if (context.features.commentatorsOnRunnerPage)
                 {
                     commentaryHeader = labelUtil.createBaseLabel(3, context.layout.rowHeight, 160, context.layout.rowHeight, "Commentary:", ContentAlignment.MiddleLeft, labelUtil.defaultColour, context.layout.defaultTimerFontSize);
                     tabPageCategories.Controls.Add(commentaryHeader);
                     commentaryLabel = labelUtil.createBaseLabel(3 + commentaryHeader.Width + 3, context.layout.rowHeight, context.layout.boxWidth - commentaryHeader.Width - 3, context.layout.rowHeight, "", ContentAlignment.MiddleLeft);
-                    tabPageCategories.Controls.Add(commentaryLabel);
+                    commentaryLayoutPanel = new FlowLayoutPanel
+                    {
+                        Location = new Point(3 + commentaryHeader.Width, context.layout.rowHeight),
+                        Size = new Size(context.layout.boxWidth - commentaryHeader.Width - 3, context.layout.rowHeight),
+                        FlowDirection = FlowDirection.LeftToRight,
+                        Padding = new Padding(3),
+                        Margin = new Padding(0),
+                    };
+                    if (context.layout.useBasicNameLayout)
+                    {
+                        tabPageCategories.Controls.Add(commentaryLabel);
+                    }
+                    else
+                    {
+                        tabPageCategories.Controls.Add(commentaryLayoutPanel);
+                    }
                 }
             } else
             {
                 int categoryW = (context.layout.boxWidth * 2) / 3;
-                for (int i = 0; i < 3; i++)
+                gameLabel = labelUtil.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+0", ContentAlignment.MiddleRight);
+                categoryLabel = labelUtil.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3 + categoryHeight, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+1", ContentAlignment.MiddleRight);
+                runnerLabel = labelUtil.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3 + categoryHeight * 2, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + 2, ContentAlignment.MiddleRight);
+                tabPageCategories.Controls.Add(gameLabel);
+                tabPageCategories.Controls.Add(categoryLabel);
+                tabPageCategories.Controls.Add(runnerLabel);
+                runnerRichNameLabel = new RichNameControl
                 {
-                    categoryLabels[i] = labelUtil.createBaseLabel(context.layout.boxWidth - categoryW - 3, 3 + categoryHeight * i, (context.layout.boxWidth * 2) / 3, categoryHeight, "test+" + i, ContentAlignment.MiddleRight);
-                    tabPageCategories.Controls.Add(categoryLabels[i]);
+                    Location = new Point(context.layout.boxWidth - categoryW - 3 + runnerTextWidth.Width, 6 + categoryHeight * 2),
+                    BackColor = Color.Transparent
+                };
+                if (!context.layout.useBasicNameLayout)
+                {
+                    runnerLabel.Width = runnerTextWidth.Width;
+                    tabPageCategories.Controls.Add(runnerRichNameLabel);
                 }
                 if (context.features.commentatorsOnRunnerPage)
                 {
@@ -243,7 +286,22 @@ namespace ffrelaytoolv1
                     tabPageCategories.Controls.Add(commentaryHeader);
                     int commentaryW = context.layout.boxWidth - commentaryHeader.Width - 3;
                     commentaryLabel = labelUtil.createBaseLabel(context.layout.boxWidth - commentaryW - (3 + commentaryHeader.Width + 3), context.layout.rowHeight, commentaryW, context.layout.rowHeight, "", ContentAlignment.MiddleRight);
-                    tabPageCategories.Controls.Add(commentaryLabel);
+                    commentaryLayoutPanel = new FlowLayoutPanel
+                    {
+                        Location = new Point(context.layout.boxWidth - commentaryW - (3 + commentaryHeader.Width + 3), context.layout.rowHeight),
+                        Size = new Size(commentaryW, context.layout.rowHeight),
+                        FlowDirection = FlowDirection.LeftToRight,
+                        Padding = new Padding(3),
+                        Margin = new Padding(0),
+                    };
+                    if (context.layout.useBasicNameLayout)
+                    {
+                        tabPageCategories.Controls.Add(commentaryLabel);
+                    } else
+                    {
+                        tabPageCategories.Controls.Add(commentaryLayoutPanel);
+                    }
+
                 }
             }
             if (!context.features.vsLabelsOnSplitsPage)
@@ -482,12 +540,49 @@ namespace ffrelaytoolv1
         private void reloadCategoryTab()
         {
             if (context.features.showRunners) { 
-                categoryLabels[0].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 4];
-                categoryLabels[1].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 3];
-                categoryLabels[2].Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2];
+                gameLabel.Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 4];
+                categoryLabel.Text = teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 3];
+                if (!context.layout.useBasicNameLayout)
+                {
+                    runnerRichNameLabel.setupNameControl(labelUtil, UserDetailsUtils.parseUserFromDetailsString(teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2]), context, false);
+                } else
+                {
+                    runnerLabel.Text = "Runner: "+teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2];
+                }
                 if (context.features.commentatorsOnRunnerPage)
                 {
-                    commentaryLabel.Text = context.commentators[teamInfo.teamIcon - 1];
+                    commentaryLabel.Text = String.Join(", ", context.commentators[teamInfo.teamIcon - 1].Select(ud => ud.Name));
+                    commentaryLayoutPanel.Controls.Clear();
+                    commentaryLayoutPanel.Controls.AddRange(context.commentators[teamInfo.teamIcon - 1].Select(ud =>
+                    {
+                        var control = new RichNameControl();
+                        control.setupNameControl(labelUtil, ud, context, true);
+                        if (context.features.enableDiscordIntegration)
+                        {
+                            control.setSpeaking(false);
+                        }
+                        return control;
+                    }).ToArray());
+                }
+            }
+        }
+
+        public void updateCommentatorSpeaking(IEnumerable<string> speaking, bool reset)
+        {
+            foreach(var control in commentaryLayoutPanel.Controls)
+            {
+                if(control is RichNameControl richName)
+                {
+                    if (reset)
+                    {
+                        richName.setSpeaking(true);
+                    } else if(speaking.Contains(richName.getUserName()))
+                    {
+                        richName.setSpeaking(true);
+                    } else
+                    {
+                        richName.setSpeaking(false);
+                    }
                 }
             }
         }

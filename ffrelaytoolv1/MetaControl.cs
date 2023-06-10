@@ -282,7 +282,22 @@ namespace ffrelaytoolv1
             commentaryHeader = labelUtil.createBaseLabel(3, features.height - height - features.margin, 160, height, "Commentary:", ContentAlignment.MiddleLeft, labelUtil.defaultColour, context.layout.defaultTimerFontSize);
             tabPageCategories.Controls.Add(commentaryHeader);
             commentaryLabel = labelUtil.createBaseLabel(3 + commentaryHeader.Width + 3, features.height - height - features.margin, features.width - commentaryHeader.Width - 3 - features.margin, height, "", ContentAlignment.MiddleLeft);
-            tabPageCategories.Controls.Add(commentaryLabel);
+            commentaryLayoutPanel = new FlowLayoutPanel
+            {
+                Location = new Point(3 + commentaryHeader.Width + 3, features.height - height - features.margin),
+                Size = new Size(features.width - commentaryHeader.Width - 3 - features.margin, height),
+                FlowDirection = FlowDirection.LeftToRight,
+                Padding = new Padding(0, 0, 0, 0),
+                Margin = new Padding(0, 0, 0, 0),
+            };
+            if (context.layout.useBasicNameLayout)
+            {
+                tabPageCategories.Controls.Add(commentaryLabel);
+            }
+            else
+            {
+                tabPageCategories.Controls.Add(commentaryLayoutPanel);
+            }
             return tabPageCategories;
         }
 
@@ -345,8 +360,40 @@ namespace ffrelaytoolv1
         {
             if (context.features.metaControl.commentators)
             {
-                //TODO: region and discord tokenisation for commentary lookup.
-                commentaryLabel.Text = context.commentators[parent.getMaxIcon() - 1];
+                commentaryLabel.Text = String.Join(", ", context.commentators[parent.getMaxIcon() - 1].Select(ud => ud.Name));
+                commentaryLayoutPanel.Controls.Clear();
+                commentaryLayoutPanel.Controls.AddRange(context.commentators[parent.getMaxIcon() - 1].Select(ud =>
+                {
+                    var control = new RichNameControl();
+                    control.setupNameControl(labelUtil, ud, context, true);
+                    if (context.features.enableDiscordIntegration)
+                    {
+                        control.setSpeaking(false);
+                    }
+                    return control;
+                }).ToArray());
+            }
+        }
+
+        public void updateCommentatorSpeaking(IEnumerable<string> speaking, bool reset)
+        {
+            foreach (var control in commentaryLayoutPanel.Controls)
+            {
+                if (control is RichNameControl richName)
+                {
+                    if (reset)
+                    {
+                        richName.setSpeaking(true);
+                    }
+                    else if (speaking.Contains(richName.getUserName()))
+                    {
+                        richName.setSpeaking(true);
+                    }
+                    else
+                    {
+                        richName.setSpeaking(false);
+                    }
+                }
             }
         }
 

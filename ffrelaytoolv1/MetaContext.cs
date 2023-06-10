@@ -20,7 +20,7 @@ namespace ffrelaytoolv1
 
         public readonly string[] teamNames;
 
-        public string[] commentators;
+        public UserDetails[][] commentators;
 
         //Abbreviations for time display
         public readonly string[] games;

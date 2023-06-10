@@ -51,12 +51,14 @@ namespace ffrelaytoolv1
             public float teamTimerFontSize = 40;
             public float splitTimerFontSize = 20;
             public float defaultTimerFontSize = 16;
+            public float defaultTimerSubFontSize = 14;
             public string textColour = "#000000";
             public string timerTextColor = "#FFFFFF";
             public string timerForeColor = "#000000";
             public string timerBackColor = "#FFFFFF";
             public string timerFadeColor = "#464646";
             public string timerFontFamily = "Microsoft Sans Serif";
+            public bool useBasicNameLayout = false;
         }
 
         public class Features

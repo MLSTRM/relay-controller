@@ -12,9 +12,11 @@ namespace ffrelaytoolv1
     {
         public readonly FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
         public readonly FontFamily sans = new FontFamily("Microsoft Sans Serif");
+        public readonly FontFamily segoe = new FontFamily("BabelStone Flags");
 
         private FontFamily active;
         private FontFamily activeTimer;
+        private FontFamily activeEmoji;
         private float defaultSize;
         public Color defaultColour { get; private set; }
 
@@ -39,6 +41,8 @@ namespace ffrelaytoolv1
         }
         public Font activeFontSized(float size) => new Font(active ?? lucida, size);
 
+        public Font emojiFontSized(float size) => new Font(activeEmoji ?? segoe, size);
+
         public Font activeTimerFontSized(float size) => new Font(activeTimer ?? sans, size);
 
         public Label createBaseLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign)
@@ -62,6 +66,21 @@ namespace ffrelaytoolv1
                 TextAlign = textAlign,
                 BackColor = Color.Transparent,
                 Font = activeFontSized(fontSize),
+                Text = text
+            };
+        }
+
+        public Label createBaseEmojiLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, float fontSize)
+        {
+            System.Console.WriteLine("creating emoji label at " + x + ", " + y);
+            return new Label
+            {
+                Location = new Point(x, y),
+                Size = new Size(w, h),
+                ForeColor = color,
+                TextAlign = textAlign,
+                BackColor = Color.Transparent,
+                Font = emojiFontSized(fontSize),
                 Text = text
             };
         }

@@ -170,7 +170,23 @@ namespace ffrelaytoolv1
 
         private void UpdateSpeaking(object sender, EventArgs e)
         {
-            Console.WriteLine("MAIN FORM: Currently Speaking: "+string.Join(",",discordIntegration.GetSpeaking()));
+            try
+            {
+                var speaking = discordIntegration.GetSpeaking();
+                Console.WriteLine("MAIN FORM: Currently Speaking: " + string.Join(",", speaking));
+                metaControl.updateCommentatorSpeaking(speaking, false);
+                foreach(var team in teams)
+                {
+                    team.updateCommentatorSpeaking(speaking, false);
+                }
+            } catch (Exception ex)
+            {
+                metaControl.updateCommentatorSpeaking(new string[0], true);
+                foreach (var team in teams)
+                {
+                    team.updateCommentatorSpeaking(new string[0], true);
+                }
+            }
         }
 
         public void handleOutboundMessages(List<OutboundMessage> messages)
@@ -424,7 +440,7 @@ namespace ffrelaytoolv1
         {
             if (File.Exists("commentators.txt"))
             {
-                meta.commentators = File.ReadAllLines("commentators.txt");
+                meta.commentators = File.ReadAllLines("commentators.txt").Select(line => line.Split(',').Select(s => UserDetailsUtils.parseUserFromDetailsString(s.Trim())).ToArray()).ToArray();
             }
             foreach (TeamControl team in teams)
             {
