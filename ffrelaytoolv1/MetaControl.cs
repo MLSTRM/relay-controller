@@ -22,6 +22,7 @@ namespace ffrelaytoolv1
         Label[] splitNames;
 
         Label commentaryLabel;
+        FlowLayoutPanel commentaryLayoutPanel;
         Label commentaryHeader;
 
         Chart graph;
@@ -344,6 +345,7 @@ namespace ffrelaytoolv1
         {
             if (context.features.metaControl.commentators)
             {
+                //TODO: region and discord tokenisation for commentary lookup.
                 commentaryLabel.Text = context.commentators[parent.getMaxIcon() - 1];
             }
         }

@@ -52,6 +52,9 @@ namespace ffrelaytoolv1
 
         private Timer sqsTimer;
 
+        private Timer discordSpeakingTimer;
+        private DiscordVoiceIntegration discordIntegration;
+
         public MainForm()
         {
             InitializeComponent();
@@ -152,7 +155,22 @@ namespace ffrelaytoolv1
                 //broadcastState();
                 FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
             }
-     
+            if (meta.features.enableDiscordIntegration)
+            {
+                discordIntegration = new DiscordVoiceIntegration();
+                var discordWorker = discordIntegration.GenerateThread();
+                discordWorker.RunWorkerAsync();
+                discordSpeakingTimer = new Timer();
+                discordSpeakingTimer.Enabled = true;
+                discordSpeakingTimer.Interval = 100; //0.5s refresh
+                discordSpeakingTimer.Tick += UpdateSpeaking;
+                discordSpeakingTimer.Start();
+            }
+        }
+
+        private void UpdateSpeaking(object sender, EventArgs e)
+        {
+            Console.WriteLine("MAIN FORM: Currently Speaking: "+string.Join(",",discordIntegration.GetSpeaking()));
         }
 
         public void handleOutboundMessages(List<OutboundMessage> messages)
