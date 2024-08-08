@@ -1,19 +1,15 @@
 ﻿using Discord;
 using Discord.Audio;
-using Discord.Audio.Streams;
-using Discord.Interactions;
 using Discord.WebSocket;
 using ffrelaytoolv1.Properties;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static ffrelaytoolv1.MetaFile;
 
 namespace ffrelaytoolv1
 {
@@ -22,13 +18,34 @@ namespace ffrelaytoolv1
     /// </summary>
     internal class DiscordVoiceIntegration
     {
-        private ulong channelId = 251434041012781057;
-        private ulong guildId = 152531471477899265;
+        private ulong channelId;
+        private ulong guildId;
+        private string token;
+        private SocketVoiceChannel connected;
 
         private Dictionary<string, (string, bool)> speakingMap = new Dictionary<string, (string, bool)>();
 
+        public bool shouldCancel { set; get; }
+        public bool isActive { private set; get; }
+
+        public DiscordVoiceIntegration(DiscordFeatures config)
+        {
+            if(config.channelId == 0 || config.guildId == 0 || config.token == "")
+            {
+                Console.WriteLine("Invalid config!");
+                throw new InvalidDataException("Configuration for discord integration is wrong");
+            }
+            this.channelId = config.channelId;
+            this.guildId = config.guildId;
+            this.token = config.token;
+        }
+
         public IEnumerable<string> GetSpeaking()
         {
+            if(speakingMap == null || !isActive)
+            {
+                return null;
+            }
             return speakingMap.Where(kvp => kvp.Value.Item2).Select(kvp => kvp.Value.Item1 ?? kvp.Key);
         }
 
@@ -36,18 +53,29 @@ namespace ffrelaytoolv1
         {
             var thread = new BackgroundWorker();
             thread.DoWork += MainBotAsync;
+            shouldCancel = false;
             return thread;
         }
 
         private DiscordSocketClient _client;
         private SocketGuild _guild;
 
-        private async void MainBotAsync(object sender, EventArgs e)
+        public class CancellationEventArgs : EventArgs
         {
+            public CancellationToken cancelToken;
+
+            public CancellationEventArgs(CancellationToken token)
+            {
+                cancelToken = token;
+            }
+        }
+
+        private async void MainBotAsync(object sender, DoWorkEventArgs e)
+        {
+            isActive = true;
             _client = new DiscordSocketClient();
 
             _client.Log += Log;
-            var token = Resources.discordToken;
 
             await _client.LoginAsync(Discord.TokenType.Bot, token);
             await _client.StartAsync();
@@ -55,8 +83,19 @@ namespace ffrelaytoolv1
             _client.UserVoiceStateUpdated += OnUserVoiceStateUpdated;
             _client.VoiceServerUpdated += OnVoiceServerUpdated;
 
-            
-            await Task.Delay(-1);
+            while (!shouldCancel)
+            {
+                await Task.Delay(10_000); //every 10 seconds check for cancellation
+            }
+            if(connected != null)
+            {
+                await connected.DisconnectAsync();
+            }
+            await Task.Delay(5_000); //5s grace period on disconnection
+            await _client.StopAsync();
+            await _client.LogoutAsync();
+            shouldCancel = false;
+            isActive = false;
         }
 
         private async Task OnReady()
@@ -76,15 +115,22 @@ namespace ffrelaytoolv1
             }
             else
             {
-                var audioClient = await (resolvedChannel as SocketVoiceChannel).ConnectAsync();
+                connected = resolvedChannel as SocketVoiceChannel;
+                var audioClient = await connected.ConnectAsync();
                 audioClient.Connected += OnVoiceChannelConnection;
                 audioClient.ClientDisconnected += OnVoiceClientDisconnected;
                 audioClient.SpeakingUpdated += OnVoiceSpeakingUpdated;
                 audioClient.LatencyUpdated += async(i1, i2) => await audioClient_LatencyUpdated(i1, i2, audioClient);
-                _ = Task.Run(async () => { await PeriodicAsync(async () => await clearupTimer_Tick(audioClient), new TimeSpan(0, 0, 0, 0, 100)); });
+                _ = Task.Run(async () => {
+                    await PeriodicAsync(
+                        async () => await clearupTimer_Tick(audioClient),
+                        new TimeSpan(0, 0, 0, 0, 100),
+                        async () => { await audioClient.StopAsync();}
+                    );
+                });
                 _ = Task.Run(async () =>
                 {
-                    await Task.Delay(new TimeSpan(0, 0, 10));
+                    await Task.Delay(new TimeSpan(0, 0, 5));
                     Console.WriteLine("sending voice data as test");
                     speakingMap.Clear();
                     Console.WriteLine("setting speaking");
@@ -109,10 +155,6 @@ namespace ffrelaytoolv1
                     await audioClient.SetSpeakingAsync(false);
                     Console.WriteLine("Exit");
                 });
-
-                //Need to wrap my own speaking code here.
-                //Have to consume all streams and then put a timeout on the loop to remove the user from speaking if they haven't transmitted data in a sufficient period of time.
-
             }
         }
 
@@ -127,66 +169,76 @@ namespace ffrelaytoolv1
             return Task.CompletedTask;
         }
 
-        public static async Task PeriodicAsync(Func<Task> action, TimeSpan interval, CancellationToken cancellationToken = default)
+        public async Task PeriodicAsync(Func<Task> action, TimeSpan interval, Func<Task> cleanup, CancellationToken cancellationToken = default)
         {
-            while (true)
+            while (isActive)
             {
                 var delayTask = Task.Delay(interval, cancellationToken);
                 await action();
                 await delayTask;
             }
+            await cleanup();
         }
 
         private Task clearupTimer_Tick(IAudioClient audioClient)
         {
-            var streams = audioClient.GetStreams();
-            var knownMissing = speakingMap.Keys.ToHashSet();
-            foreach(var stream in streams)
+            try
             {
-                var user = _client.GetUser(stream.Key);
-                var guildUser = _guild.GetUser(user.Id);
-                if (user == null)
+                var streams = audioClient.GetStreams();
+                var knownMissing = speakingMap.Keys.ToHashSet();
+                foreach (var stream in streams)
                 {
-                    Console.WriteLine("Null user resolved for stream");
-                    continue;
-                } else
-                {
-                    knownMissing.Remove(user.Username);
-                    Console.WriteLine($"Stream is for user {guildUser.DisplayName} ({user.Username})");
-                }
-                RTPFrame frame;
-                var availableFrames = stream.Value.AvailableFrames;
-                //Console.WriteLine($"Available stream frames: {availableFrames}");
-                if(availableFrames == 0 && speakingMap.ContainsKey(user.Username))
-                {
-                    speakingMap.Remove(user.Username);
-                    continue;
-                }
-                var frameToCheck = availableFrames - 1;
-                for (var i = 0; i < availableFrames; i++)
-                {
-                    //Need to read ALL of the frames first and get to the end and then decide if we hit silence when the stream finally stops.
-                    stream.Value.TryReadFrame(new CancellationToken(), out frame);
-                    if(i != frameToCheck)
+                    var user = _client.GetUser(stream.Key);
+                    var guildUser = _guild.GetUser(user.Id);
+                    if (user == null)
                     {
+                        Console.WriteLine("Null user resolved for stream");
                         continue;
                     }
-                    // Only use the contents from the last frame
-                    var hasKey = speakingMap.ContainsKey(user.Username);
-                    var allZero = ByteArrayIsAllZero(frame.Payload);
-                    if (hasKey && allZero)
+                    else
+                    {
+                        knownMissing.Remove(user.Username);
+                        // Console.WriteLine($"Stream is for user {guildUser.DisplayName} ({user.Username})");
+                    }
+                    RTPFrame frame;
+                    var availableFrames = stream.Value.AvailableFrames;
+                    //Console.WriteLine($"Available stream frames: {availableFrames}");
+                    if (availableFrames == 0 && speakingMap.ContainsKey(user.Username))
                     {
                         speakingMap.Remove(user.Username);
+                        continue;
                     }
-                    else if (!hasKey && !allZero)
+                    var frameToCheck = availableFrames - 1;
+                    for (var i = 0; i < availableFrames; i++)
                     {
-                        speakingMap.Add(user.Username, (guildUser.DisplayName, true));
+                        //Need to read ALL of the frames first and get to the end and then decide if we hit silence when the stream finally stops.
+                        stream.Value.TryReadFrame(new CancellationToken(), out frame);
+                        if (i != frameToCheck)
+                        {
+                            continue;
+                        }
+                        // Only use the contents from the last frame
+                        var hasKey = speakingMap.ContainsKey(user.Username);
+                        var allZero = ByteArrayIsAllZero(frame.Payload);
+                        if (hasKey && allZero)
+                        {
+                            speakingMap.Remove(user.Username);
+                        }
+                        else if (!hasKey && !allZero)
+                        {
+                            speakingMap.Add(user.Username, (guildUser.Username, true));
+                        }
                     }
                 }
-            }
-            foreach(var missing in knownMissing)
+                foreach (var missing in knownMissing)
+                {
+                    speakingMap.Remove(missing);
+                }
+            } catch (Exception e)
             {
-                speakingMap.Remove(missing);
+                Console.WriteLine("Error in speaking loop, terminating");
+                Console.WriteLine(e.ToString());
+                speakingMap = null;
             }
             return Task.CompletedTask;
         }
@@ -199,7 +251,7 @@ namespace ffrelaytoolv1
 
         private Task audioClient_LatencyUpdated(int arg1, int arg2, IAudioClient client)
         {
-            Console.WriteLine($"Latency udpated from {arg1} to {arg2}");
+            Console.WriteLine($"Discord client latency udpated from {arg1} to {arg2}");
             return Task.CompletedTask;
         }
 
@@ -219,21 +271,6 @@ namespace ffrelaytoolv1
         {
             Console.WriteLine("Bot Connected to voice!");
             return Task.CompletedTask;
-        }
-
-        private Task OnVoiceChannelConnectionMade(IAudioClient client)
-        {
-            return Task.Run(async () => {
-                Console.WriteLine("Connected to voice!");
-                speakingMap.Clear();
-                //Send an initial bit of audio to bootstrap listening to voice data.
-                using (var stream = Resources.join)
-                using (var outStream = client.CreatePCMStream(AudioApplication.Mixed))
-                {
-                    try { await stream.CopyToAsync(outStream); }
-                    finally { await outStream.FlushAsync(); }
-                }
-            });
         }
 
         private Task OnVoiceServerUpdated(SocketVoiceServer server)

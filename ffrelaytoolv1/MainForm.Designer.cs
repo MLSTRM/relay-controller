@@ -61,6 +61,9 @@
             this.autoCycleToggle = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.LastPollLabel = new System.Windows.Forms.Label();
+            this.discordToggleButton = new System.Windows.Forms.Button();
+            this.speakersLabel = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // MainTimer
@@ -451,12 +454,43 @@
             this.LastPollLabel.TabIndex = 24;
             this.LastPollLabel.Text = "Last Successful Poll:";
             // 
+            // discordToggleButton
+            // 
+            this.discordToggleButton.Enabled = false;
+            this.discordToggleButton.Location = new System.Drawing.Point(967, 22);
+            this.discordToggleButton.Name = "discordToggleButton";
+            this.discordToggleButton.Size = new System.Drawing.Size(60, 90);
+            this.discordToggleButton.TabIndex = 25;
+            this.discordToggleButton.Text = "Discord Inactive";
+            this.discordToggleButton.UseVisualStyleBackColor = true;
+            this.discordToggleButton.Click += new System.EventHandler(this.discordToggleButton_Click);
+            // 
+            // speakersLabel
+            // 
+            this.speakersLabel.Location = new System.Drawing.Point(1033, 26);
+            this.speakersLabel.Name = "speakersLabel";
+            this.speakersLabel.Size = new System.Drawing.Size(169, 100);
+            this.speakersLabel.TabIndex = 26;
+            this.speakersLabel.Text = "Speakers:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1033, 13);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(105, 13);
+            this.label4.TabIndex = 27;
+            this.label4.Text = "Last Successful Poll:";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1082, 131);
+            this.ClientSize = new System.Drawing.Size(1214, 131);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.speakersLabel);
+            this.Controls.Add(this.discordToggleButton);
             this.Controls.Add(this.LastPollLabel);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.autoCycleToggle);
@@ -509,6 +543,9 @@
         private System.Windows.Forms.Button autoCycleToggle;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label LastPollLabel;
+        private System.Windows.Forms.Button discordToggleButton;
+        private System.Windows.Forms.Label speakersLabel;
+        private System.Windows.Forms.Label label4;
     }
 }
 

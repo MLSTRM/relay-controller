@@ -1,5 +1,5 @@
 {
-	"games": [ "CGP", "XII", "X", "IV", "CC", "II", "XV", "SOP", "I", "VIII", "WOFF", "III", "VI", "V", "XIII", "DOC", "IX", "VII" ],
+	"games": [ "CC7", "II", "TA", "LR", "IX", "X", "MQ", "IV", "XIII", "VIII", "III", "XII", "V", "XV", "XIII-2", "VII", "X-2", "I", "VI" ],
 	"splitsToShow": 4,
 	"splitFocusOffset": 3,
 	"teamsPerRow": 2,
@@ -7,19 +7,16 @@
 		{
 			"name": "Mog",
 			"color": "#3030CC",
-			"image": "white.png",
 			"splitKey": 112
 		},
 		{
 			"name": "Tonberry",
 			"color": "#3BA730",
-			"image": "white.png",
 			"splitKey": 114
 		},
 		{
 			"name": "Choco",
 			"color": "#d92e9f",
-			"image": "white.png",
 			"splitKey": 113
 		}
 	],
@@ -34,7 +31,9 @@
 		"timerTickInterval": 200,
 		"infoCycleTicks": 150,
 		"splitButtonCooldown": 5000,
-		"remoteSplitCooldown": 300000
+		"remoteSplitCooldown": 300000,
+		"teamControlUsesTeamColours": false,
+		"teamControlColor": "#888888"
 	},
 	"features": {
 		"showSplits": true,
@@ -47,7 +46,13 @@
 		"vsLabelsOnSplitsPage": false,
 		"teamGameIcons": false,
 		"mainLayoutBackground": true,
-		"enableRemoteSplitting": false,
+		"enableRemoteSplitting": true,
+		"enableDiscordIntegration": false,
+		"discord": {
+			"channelId": 0,
+			"guildId": 0,
+			"token": ""
+		},
 		"showMetaControl": true,
 		"showGraph": true,
 		"graphThreshold": 3,
@@ -55,7 +60,7 @@
 			"height": 420,
 			"width": 813,
 			"margin": 6,
-			"color": "#ffffff",
+			"color": "#888888",
 			"splits": true,
 			"commentators": true,
 			"graph": {

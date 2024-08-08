@@ -1,71 +1,75 @@
-Final Fantasy VIII
-PSX - Any%
-Runner: Muttski
-
-Final Fantasy Mystic Quest
-SNES - Any%
-Runner: R-0109
-
-Final Fantasy X
-PC - Any%
-Runner: Wolverine023
-
-Final Fantasy XIII
-PC - Any%
-Runner: Ossy3126
-
-Crystal Chronicles: Remastered
-Switch - Any% No DLC
-Runner: VerySydney
-
-World of Final Fantasy
-PC - Any%
-Runner: BrainBugged
-
-Final Fantasy XV: Royal Edition
-PC - Any% No Ring
-Runner: Ranmaru
-
-Final Fantasy VI
-SNES - Glitchless
-Runner: DyneNuitari
-
-Final Fantasy XIII-2
-PC - Any%
-Runner: zer0skar_i
-
-Final Fantasy XII: The Zodiac Age
-PC - Any%
-Runner: BlueHarvey
+Crisis Core: FF7 - Reunion
+PC/PS5 - Any%
+Runner: AdrianMamba(es|they/them|adrianmamba)
 
 Final Fantasy II
-PSP - Any%
-Runner: Seri17723
+Pixel Remaster - Any%
+Runner: seri17723(jp|he/him|seri17723)
 
-Final Fantasy IV
-SNES - No Credits Warp
-Runner: yelsraek
-
-Final Fantasy VII: Remake
-PS5 - NMG Normal
-Runner: Goranaldo
-
-Final Fantasy V
-SNES - Glitchless
-Runner: るぱん (rupan2525)
-
-Final Fantasy I
-PSP - Any%
-Runner: Suikoboj
+Final Fantasy Tactics Advance
+GBA - Any%
+Runner: Chyrad(de||scylla2801)
 
 Lightning Returns: FF XIII
 PC - Any%
-Runner: Daspharaoh
-
-Final Fantasy III
-PC - Any%
-Runner: Soll_Ashelia
+Runner: D_Winds(ca|he/him|d_winds)
 
 Final Fantasy IX
-PSX - Any%
-Runner: MythikdawnSC
+PC - Any%
+Runner: KeeperBK(us|he/him|keeper1125)
+
+Final Fantasy X
+PC - CSR RngFix
+Runner: Vermillion(us||Vermillion)
+
+Final Fantasy Mystic Quest
+SNES - Any%
+Runner: Quina(us|he/she|trancequina)
+
+Final Fantasy IV
+PC (3D) - Any%
+Runner: BenDesch(no||bendesch)
+
+Final Fantasy XIII
+PC - Any%
+Runner: Z3R01337(us|he/him|z3r01337)
+
+Final Fantasy VIII
+PC - Any%
+Runner: xeidin(de|he/him|xeidin)
+
+Final Fantasy III
+Pixel Remaster - Any%
+Runner: IonicKarma(us|he/him|ionickarma)
+
+Final Fantasy XII: The Zodiac Age
+PC - Any% No Seitengrat
+Runner: Roosta(us|he/him|roostalol)
+
+Final Fantasy V
+Pixel Remaster - Any%
+Runner: Bdewd(ca|he/him|bdewd)
+
+Final Fantasy XV: Royal Edition
+PS5 - Any% No Ring No AMG
+Runner: Kyoslilmonster(us|he/they|kyoslilmonster)
+
+Final Fantasy XIII-2
+PC - Any%
+Runner: FoxySaucado(us|he/him|foxysaucado)
+
+Final Fantasy VII
+PSX - No Slots
+Runner: thebroodles(gb|he/him|thebroodles)
+
+Final Fantasy X-2
+PC - Any% No Creature Creator
+Runner: Dsharper(us||dsharper)
+
+Final Fantasy I
+NES - No RNG Manipulation
+Runner: KainDeschain(us|he/him|kaindeschain)
+
+Final Fantasy VI
+Pixel Remaster - Any%
+Runner: Dyne Nuitari(ca||dynenuitari)

@@ -12,11 +12,9 @@ namespace ffrelaytoolv1
     {
         public readonly FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
         public readonly FontFamily sans = new FontFamily("Microsoft Sans Serif");
-        public readonly FontFamily segoe = new FontFamily("BabelStone Flags");
 
         private FontFamily active;
         private FontFamily activeTimer;
-        private FontFamily activeEmoji;
         private float defaultSize;
         public Color defaultColour { get; private set; }
 
@@ -40,8 +38,6 @@ namespace ffrelaytoolv1
             this.defaultColour = defaultColour;
         }
         public Font activeFontSized(float size) => new Font(active ?? lucida, size);
-
-        public Font emojiFontSized(float size) => new Font(activeEmoji ?? segoe, size);
 
         public Font activeTimerFontSized(float size) => new Font(activeTimer ?? sans, size);
 
@@ -70,21 +66,6 @@ namespace ffrelaytoolv1
             };
         }
 
-        public Label createBaseEmojiLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, float fontSize)
-        {
-            System.Console.WriteLine("creating emoji label at " + x + ", " + y);
-            return new Label
-            {
-                Location = new Point(x, y),
-                Size = new Size(w, h),
-                ForeColor = color,
-                TextAlign = textAlign,
-                BackColor = Color.Transparent,
-                Font = emojiFontSized(fontSize),
-                Text = text
-            };
-        }
-
         public Size calcLabelSize(float fontSize, string text)
         {
             return TextRenderer.MeasureText(text, activeFontSized(fontSize));
@@ -102,7 +83,6 @@ namespace ffrelaytoolv1
         public static string emptyTime = "00:00:00";
 
         public readonly static FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
-        public readonly static FontFamily bookman = new FontFamily("Bookman Old Style");
 
         public static Font lucidaFontSized(int size) => new Font(lucida, size);
 

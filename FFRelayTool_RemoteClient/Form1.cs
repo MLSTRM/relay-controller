@@ -54,6 +54,7 @@ namespace FFRelayTool_RemoteClient
             }
             else
             {
+                // TODO: wrapping of this for display purposes, should match stream layout
                 teams = new TeamControl[state.teams.Length];
                 for (int i = 0; i < state.teams.Length; i++)
                 {
