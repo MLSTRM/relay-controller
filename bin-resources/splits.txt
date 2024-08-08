@@ -1,9 +1,72 @@
+G Eraser
+Proto Guard Scorpion
+!Crisis Core FF7 Reunion
+Sergeant
+Red Soul
+Lamia Queen
+Emperor 1
+!Final Fantasy II
+Lizardmen
+Herb Picking
+Twisted Flow
+Hot Awakening
+Jagd Hunt
+Scouring Time
+Quiet Sands
+!Final Fantasy Tactics Advance
+Noel Kreiss
+Slaughterhouse
+Caius Ballad
+!Lightning Returns: FF13
+Plant Brain
+Black Waltz 3 1
+Gizamaluke
+Black Waltz 3 2
+Beatrix 2
+Ralvuimago
+Hilgigars
+Amarant
+Card Tournament
+Ark
+Meltigemini
+Earth Guardian
+Nova Dragon
+!Final Fantasy IX
+Sinspawn Echuilles
+Garuda
+Extractor
+Wendigo
+Seymour Flux
+Yunalesca
+!Final Fantasy X
+Ice Golem
+Gidrah
+Pazuzu
+!Final Fantasy Mystic Quest
+Antlion
+Scarmiglione 2
+Dark Elf
+Golbez
+Rubicante
+Demon Wall
+4 Fiends
+!Final Fantasy IV
+Manasvin Warmech 2
+Odin
+Aster Protoflorian
+Havoc Skytank
+Barthandelus 1
+Hecatoncheir
+Dahaka
+Proudclad 2
+!Final Fantasy XIII
 Anacondaur
-Diablos
+Granaldo
 Gerogero
 Laguna Dream 2
 Edea
 GIM52A
+BGH251F2
 NORG
 Fujin + Raijin
 Edea + Seifer
@@ -12,135 +75,69 @@ Esthar Invasion
 Propagators
 Seifer
 !Final Fantasy VIII
-Ice Golem
-Gidrah
-Pazuzu
-!Final Fantasy Mystic Quest
-Tros
-Kimahri
-Kilika Woods
-Blitzball Tournament
-Chocobo Eater
-Sinspawn Gui
-Extractor
-Spherimorph
-Wendigo
-Evrae
-Seymour Natus
-Seymour Flux
-Yunalesca
-Overdrive Sin
-!Final Fantasy X
-Manasvin Warmech 2
-Odin
-Aster Protoflorian
-Havoc Skytank
-Barthandelus
+Medusa
+Hein
+Garuda
 Hecatoncheir
-Dahaka
-Proudclad 2
-!Final Fantasy XIII
-Goblin King
-Giant Crab
-Golem
-Meteor Parasite
-!Crystal Chronicles Remastered
-Giant Goblin
-Mega Red Dragon
-Gilgamesh
-Brandelis
-King of Bahamut
-!World of Final Fantasy
+Xande
+!Final Fantasy III
+Mimic Queen
+Belias
+Tiamat
+Ahriman
+Shemazai
+!FF12: The Zodiac Age
+Karlabos
+Liquid Flame
+Adamantoise
+Tyrannosaur
+Atomos
+Exdeath
+Melusine
+!Final Fantasy V
 Loqi
 Titan
 Aranea
 Leviathan
 Deathclaw
 Ravus
-!Final Fantasy XV: Royal Edition
-Vargas
-Phantom Train
-Kefka at Narshe
-Ultros at Opera House
-Cranes
-Sealed Gate
-Flame Eater
-Atma Weapon
-Dullahan
-Enter Kefka's Tower
-Goddess
-!Final Fantasy VI
-Atlas
+!Final Fantasy XV
+Paradox Alpha
 Royal Ripeness
 Caius
 Zenobia
 Gogmagog
 !Final Fantasy XIII-2
-Mimic Queen
-Belias
-Tiamat
-Ahriman
-Shemhazai
-!Final Fantasy XII: The Zodiac Age
-Sergeant
-Red Soul
-Lamia Queen
-Round Worm
-Emperor
-!Final Fantasy II
-Antlion
-Paladin
-Valvalis
-!Final Fantasy IV
-Huntsman
-Roche
-Crab Warden
-Air Buster
-Rude
-Hell House
-Ghoul
-Reno + Rude
-Failed Experiment
 Aps
-Valkyrie
-Specimen H0512
-Jenova
-!Final Fantasy VII: Remake
-Magisa
-Byblos
-Soul Cannon
-Gilgamesh at Big Bridge
-Gilgamesh at Big Boat
-Exdeath
-Merugene
-!Final Fantasy V
-Lich
-Kraken
-!Final Fantasy I
-Noel Kreiss
-Slaughterhouse
-Caius
-!Lightning Returns: FF XIII
-Giant Rat
-Salamander
-Garuda
-Temple of Time
-Hecatoncheir
-Xande
-Cerberus
-!Final Fantasy III
-Plant Brain
-Black Waltz 3
-Gizamaluke
-Ralvurahva
-Beatrix at Cleyra
-Ralvuimago
-Hilgigars
-Amarant
-Card Tournament
-Ark
-Red Dragons
-Earth Guardian
-Kuja
+Sample: H0512
+Bottomswell
+JENOVA-Birth
+Materia Keeper
+Demon's Gate
+JENOVA-Life
+JENOVA-Death
+Ultimate Weapon
+Carry Armor
+Hojo
+!Final Fantasy VII
+Guardian Beast
+Uniforms
+Bahamut
+Moonflow
+Anima
+!Final Fantasy X-2
+Crown
+Ruby
+Tail
+Kary
 Tiamat
-!Final Fantasy IX
+!Final Fantasy I
+Vargas
+Phantom Train
+Dadaluma
+Cranes
+Flame Eater
+Atma Weapon
+Dullahan
+Start Kefka's Tower
+!Final Fantasy VI

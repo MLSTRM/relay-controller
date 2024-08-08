@@ -83,7 +83,6 @@ namespace ffrelaytoolv1
         public static string emptyTime = "00:00:00";
 
         public readonly static FontFamily lucida = new FontFamily("Lucida Sans Typewriter");
-        public readonly static FontFamily bookman = new FontFamily("Bookman Old Style");
 
         public static Font lucidaFontSized(int size) => new Font(lucida, size);
 

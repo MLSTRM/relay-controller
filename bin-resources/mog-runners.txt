@@ -1,71 +1,75 @@
-Final Fantasy VIII
-PSX - Any%
-Runner: Bramhalthefifth
-
-Final Fantasy Mystic Quest
-SNES - Any%
-Runner: elMaGus
-
-Final Fantasy X
-PC - Any%
-Runner: ChrisTenarium
-
-Final Fantasy XIII
-PC - Any%
-Runner: Kayarune
-
-Crystal Chronicles: Remastered
-PS4 - Any% No DLC
-Runner: Littletonbi
-
-World of Final Fantasy
-PC - Any%
-Runner: HabKeineName
-
-Final Fantasy XV: Royal Edition
-PC - Any% No Ring
-Runner: Kyoslilmonster
-
-Final Fantasy VI
-SNES - Glitchless
-Runner: 6chi8 (Muchiha)
-
-Final Fantasy XIII-2
-PC - Any%
-Runner: Hawk_snow
-
-Final Fantasy XII: The Zodiac Age
-PC - Any%
-Runner: Nickynoel
+Crisis Core: FF7 - Reunion
+PC/PS5 - Any%
+Runner: Hello1nternet(ca|he/him|hello1nternet)
 
 Final Fantasy II
-PSP - Any%
-Runner: Boxmeister
+Pixel Remaster - Any%
+Runner: Poorscythe(us|he/him|poorscythe)
 
-Final Fantasy IV
-SNES - No Credits Warp
-Runner: Couch_23
-
-Final Fantasy VII: Remake
-PS5 - NMG Normal
-Runner: Hello1nternet
-
-Final Fantasy V
-SNES - Glitchless
-Runner: DarkLightBoco
-
-Final Fantasy I
-PSP - Any%
-Runner: ThisGuyAreSick
+Final Fantasy Tactics Advance
+GBA - Any%
+Runner: moonblazewolf(us|they/them|moonblazewolf)
 
 Lightning Returns: FF XIII
 PC - Any%
-Runner: enk
-
-Final Fantasy III
-PC - Any%
-Runner: Rhyderrr
+Runner: KingSPi(ca|he/him|kingspi)
 
 Final Fantasy IX
-PSX - Any%
-Runner: Ayymart
+PC - Any%
+Runner: Easley18(gb|he/him|easley18)
+
+Final Fantasy X
+PC - CSR RngFix
+Runner: Hiroshige(jp|he/him|hiroshige36)
+
+Final Fantasy Mystic Quest
+SNES - Any%
+Runner: eLmaGus(de|he/him|elmagus)
+
+Final Fantasy IV
+PC (3D) - Any%
+Runner: BlueHarvey(ch||blueharvey)
+
+Final Fantasy XIII
+PC - Any%
+Runner: MMM(pt|he/him|mmm8606)
+
+Final Fantasy VIII
+PC - Any%
+Runner: sonicglenjamin(us|he/him|sonicglenjamin)
+
+Final Fantasy III
+Pixel Remaster - Any%
+Runner: KaugyaNicky(de|she/her|kaguyanicky)
+
+Final Fantasy XII: The Zodiac Age
+PC - Any% No Seitengrat
+Runner: desa(de||desa)
+
+Final Fantasy V
+Pixel Remaster - Any%
+Runner: Zic3(us|he/him|zic3)
+
+Final Fantasy XV: Royal Edition
+PS5 - Any% No Ring No AMG
+Runner: Matty(us|he/him|matty_iceman)
+
+Final Fantasy XIII-2
+PC - Any%
+Runner: Daspharaoh(pt||daspharaoh)
+
+Final Fantasy VII
+PSX - No Slots
+Runner: colin(us||colinbolts)
+
+Final Fantasy X-2
+PC - Any% No Creature Creator
+Runner: ChocoBungle(gb||chocobungle)
+
+Final Fantasy I
+NES - No RNG Manipulation
+Runner: MrZwanzig(nl|he/him|mrzwanzig)
+
+Final Fantasy VI
+Pixel Remaster - Any%
+Runner: 6chi8(jp|he/him|6chi8)

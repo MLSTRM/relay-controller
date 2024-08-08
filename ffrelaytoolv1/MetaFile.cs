@@ -51,12 +51,16 @@ namespace ffrelaytoolv1
             public float teamTimerFontSize = 40;
             public float splitTimerFontSize = 20;
             public float defaultTimerFontSize = 16;
+            public float defaultTimerSubFontSize = 14;
             public string textColour = "#000000";
             public string timerTextColor = "#FFFFFF";
             public string timerForeColor = "#000000";
             public string timerBackColor = "#FFFFFF";
             public string timerFadeColor = "#464646";
             public string timerFontFamily = "Microsoft Sans Serif";
+            public bool useBasicNameLayout = false;
+            public bool teamControlUsesTeamColours = true;
+            public string teamControlColor = "#FFFFFF";
         }
 
         public class Features
@@ -76,8 +80,17 @@ namespace ffrelaytoolv1
             public bool enableDiscordIntegration = false;
             public bool showMetaControl = false;
             public bool showGraph = false;
+            public bool permanentRunnerNames = false;
             public int graphThreshold = 0;
             public MetaControlFeatures metaControl = new MetaControlFeatures();
+            public DiscordFeatures discord = new DiscordFeatures();
+        }
+
+        public class DiscordFeatures
+        {
+            public ulong guildId = 0;
+            public ulong channelId = 0;
+            public string token = "";
         }
 
         public class MetaControlFeatures
@@ -96,6 +109,7 @@ namespace ffrelaytoolv1
         {
             public int splitsToShow = 6;
             public int splitFocusOffset = 5;
+            public bool predictPartialGraphLines = false;
         }
     }
 }

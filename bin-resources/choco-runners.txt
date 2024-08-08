@@ -1,71 +1,75 @@
-Final Fantasy VIII
-PSX - Any%
-Runner: Shug_ssb
-
-Final Fantasy Mystic Quest
-SNES - Any%
-Runner: FumoFumoMeiling
-
-Final Fantasy X
-PC - Any%
-Runner: CrimsonInferno9
-
-Final Fantasy XIII
-PC - Any%
-Runner: Olson
-
-Crystal Chronicles: Remastered
-Switch - Any% No DLC
-Runner: Manaclaw
-
-World of Final Fantasy
-PC - Any%
-Runner: Rotamota
-
-Final Fantasy XV: Royal Edition
-PC - Any% No Ring
-Runner: Yidamoda
-
-Final Fantasy VI
-SNES - Glitchless
-Runner: LionMusashi
-
-Final Fantasy XIII-2
-PS3 - Any%
-Runner: xShonnen
-
-Final Fantasy XII: The Zodiac Age
-PC - Any%
-Runner: Roosta
+Crisis Core: FF7 - Reunion
+PC/PS5 - Any%
+Runner: Goran(hr|he/him|goranaldo)
 
 Final Fantasy II
-PSP - Any%
-Runner: Patorikku13
+Pixel Remaster - Any%
+Runner: ???
 
-Final Fantasy IV
-SNES - No Credits Warp
-Runner: Vanni_van
-
-Final Fantasy VII: Remake
-PS5 - NMG Normal
-Runner: Fhelwanger
-
-Final Fantasy V
-SNES - Glitchless
-Runner: Aexoden
-
-Final Fantasy I
-PSP - Any%
-Runner: Riles_G
+Final Fantasy Tactics Advance
+GBA - Any%
+Runner: BrainBugged(de|he/him|brainbugged)
 
 Lightning Returns: FF XIII
 PC - Any%
-Runner: KingSPi
-
-Final Fantasy III
-PC - Any%
-Runner: Poorscythe
+Runner: Akiyoshi(jp||a_ki_yoshi)
 
 Final Fantasy IX
-PSX - Any%
-Runner: bombom
+PC - Any%
+Runner: PeteSwanson(us|he/him|peteswanson)
+
+Final Fantasy X
+PC - CSR RngFix
+Runner: FoxyJira(us|he/him|foxyjira)
+
+Final Fantasy Mystic Quest
+SNES - Any%
+Runner: Tybalt(us|he/him|tybalt2010)
+
+Final Fantasy IV
+PC (3D) - Any%
+Runner: Shadoweh(us|he/him|shadoweh)
+
+Final Fantasy XIII
+PC - Any%
+Runner: Kayarune(de|he/him|kayarune)
+
+Final Fantasy VIII
+PC - Any%
+Runner: syo(au||syo5940)
+
+Final Fantasy III
+Pixel Remaster - Any%
+Runner: Rupan2525(jp|he/him|rupan_2525)
+
+Final Fantasy XII: The Zodiac Age
+PC - Any% No Seitengrat
+Runner: HabKeineName(de|he/him|habkeinename)
+
+Final Fantasy V
+Pixel Remaster - Any%
+Runner: CrimsonInferno9(gb||crimsoninferno)
+
+Final Fantasy XV: Royal Edition
+PS5 - Any% No Ring No AMG
+Runner: Barbatos(us|he/they|barbatos008)
+
+Final Fantasy XIII-2
+PC - Any%
+Runner: zer0skar_I(fi||zer0skar_i)
+
+Final Fantasy VII
+PSX - No Slots
+Runner: phek1200(my|he/him|phek1200)
+
+Final Fantasy X-2
+PC - Any% No Creature Creator
+Runner: Bakvorm(nl|he/him|Bakvorm)
+
+Final Fantasy I
+NES - No RNG Manipulation
+Runner: ShaneZell(us|he/him|shanezell)
+
+Final Fantasy VI
+Pixel Remaster - Any%
+Runner: lionmusashi(us|he/him|lion.musashi)

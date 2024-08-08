@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 using Newtonsoft.Json;
 using ffrelaytoolv1.Cloud;
 using FFRelayTool_Model;
-using static ffrelaytoolv1.MetaFile;
-using System.Runtime.Remoting.Contexts;
 
 namespace ffrelaytoolv1
 {
@@ -52,9 +47,24 @@ namespace ffrelaytoolv1
 
         private Timer sqsTimer;
 
+        private Timer discordSpeakingTimer;
+        private DiscordVoiceIntegration discordIntegration;
+
         public MainForm()
         {
             InitializeComponent();
+
+            try
+            {
+                Setup();
+            } catch (Exception e)
+            {
+                MessageBox.Show(e.Message + "\r\n" + e.StackTrace);
+                throw e;
+            }
+        }
+
+        private void Setup() { 
             tick = new Timer();
             if (File.Exists("splits.txt"))
             {
@@ -92,7 +102,7 @@ namespace ffrelaytoolv1
             double height = Math.Ceiling((double)metaFile.teams.Length / (double)metaFile.teamsPerRow);
             var teamWidth = Math.Max((meta.layout.boxWidth + 30), (meta.layout.timerWidth + 80));
             var teamHeight = (meta.layout.boxWidth + 30) > (2 * meta.layout.timerWidth + 80) ? meta.layout.boxHeight + meta.layout.timerHeight + 56 : meta.layout.boxHeight + meta.layout.timerHeight * 2 + 60;
-            Size teamSize = new Size(teamWidth, teamHeight);
+            Size teamSize = new Size(teamWidth, teamHeight + 50);
             for (int i = 0; i < metaFile.teams.Length; i++)
             {
                 teams[i] = new TeamControl();
@@ -121,7 +131,7 @@ namespace ffrelaytoolv1
                 if (metaFile.teams.Length < metaFile.teamsPerRow)
                 {
                     windowWidth += meta.features.metaControl.width + meta.features.metaControl.margin + 10;
-                    if(meta.features.metaControl.height > teamSize.Height)
+                    if (meta.features.metaControl.height > teamSize.Height)
                     {
                         offset = meta.features.metaControl.height - teamSize.Height;
                         windowHeight += offset;
@@ -152,18 +162,96 @@ namespace ffrelaytoolv1
                 //broadcastState();
                 FormClosing += new FormClosingEventHandler((o, e) => { teardownState(); });
             }
-     
+            if (meta.features.enableDiscordIntegration)
+            {
+                discordToggleButton.Enabled = true;
+                discordIntegration = new DiscordVoiceIntegration(meta.features.discord);
+                discordToggleButton.Text = "Discord ready (click to start)";
+                // var discordWorker = discordIntegration.GenerateThread();
+                // discordWorker.RunWorkerAsync();
+                discordSpeakingTimer = new Timer();
+                discordSpeakingTimer.Enabled = true;
+                discordSpeakingTimer.Interval = 500; //0.5s refresh
+                discordSpeakingTimer.Tick += UpdateSpeaking;
+                discordSpeakingTimer.Start();
+            }
+            else
+            {
+                discordToggleButton.Text = "Discord disabled";
+                discordToggleButton.Enabled = false;
+            }
+        }
+
+        private void toggleDiscordConnection()
+        {
+            if (discordIntegration.isActive)
+            {
+                discordIntegration.shouldCancel = !discordIntegration.shouldCancel;
+                discordToggleButton.Text = "Discord connection closing";
+            }
+            else
+            {
+                discordToggleButton.Text = "Discord connection starting";
+                var discordWorker = discordIntegration.GenerateThread();
+                discordWorker.RunWorkerAsync();
+            }
+        }
+
+        private void UpdateSpeaking(object sender, EventArgs e)
+        {
+            try
+            {
+                if (discordIntegration.shouldCancel)
+                {
+                    discordToggleButton.Text = "Discord cancelling...";
+                }
+                else if (discordIntegration.isActive)
+                {
+                    discordToggleButton.Text = "Discord active (click to end)";
+                }
+                else if (!discordIntegration.isActive)
+                {
+                    discordToggleButton.Text = "Discord inactive (click to start)";
+                    return;
+                }
+                var speaking = discordIntegration.GetSpeaking();
+                if (speaking == null)
+                {
+                    metaControl.updateCommentatorSpeaking(new string[0], true);
+                    foreach (var team in teams)
+                    {
+                        team.updateCommentatorSpeaking(new string[0], true);
+                    }
+                    speakersLabel.Text = "No speakers resolved";
+                    return;
+                }
+                speakersLabel.Text = "speaking: " + String.Join(", ", speaking);
+                // Console.WriteLine("MAIN FORM: Currently Speaking: " + string.Join(",", speaking));
+                metaControl.updateCommentatorSpeaking(speaking, false);
+                foreach (var team in teams)
+                {
+                    team.updateCommentatorSpeaking(speaking, false);
+                }
+            }
+            catch
+            {
+                metaControl.updateCommentatorSpeaking(new string[0], true);
+                foreach (var team in teams)
+                {
+                    team.updateCommentatorSpeaking(new string[0], true);
+                }
+            }
         }
 
         public void handleOutboundMessages(List<OutboundMessage> messages)
         {
             //TODO add some kind of debug pane to the main form to see this in action
-            if(messages.Count == 0)
+            if (messages.Count == 0)
             {
                 return;
             }
             string consumptionLog = $"{getCurrentTimeString()}: Consuming {messages.Count} messages";
-            foreach(OutboundMessage m in messages)
+            foreach (OutboundMessage m in messages)
             {
                 TimeSpan d = new TimeSpan(m.time);
                 string messageTimeString = string.Format("{0:D2}:{1:mm}:{1:ss}", (int)d.TotalHours, d);
@@ -175,19 +263,21 @@ namespace ffrelaytoolv1
                     if (team.teamInfo.teamSplitNum > 0)
                     {
                         lastSplit = Util.parseTimeSpan(team.teamInfo.teamSplits[team.teamInfo.teamSplitNum - 1]);
-                    } else
+                    }
+                    else
                     {
                         lastSplit = new TimeSpan(0);
                     }
-                    double diffMillis = (m.time - lastSplit.Ticks)/10_000;
+                    double diffMillis = (m.time - lastSplit.Ticks) / 10_000;
                     if (diffMillis > meta.layout.remoteSplitCooldown)
                     {
                         //Only split if it's 5 minutes after the most recent one (to prevent duplication)
                         team.splitClick();
-                        
+
                         team.setSplit(messageTimeString, team.teamInfo.teamSplitNum - 1);
                         messageInfo += $"Split Accepted";
-                    } else
+                    }
+                    else
                     {
                         messageInfo += $"Ignored due to cooldown {diffMillis} / {meta.layout.remoteSplitCooldown}";
                     }
@@ -249,7 +339,7 @@ namespace ffrelaytoolv1
         }
 
         private void hook_KeyPressed(object sender, KeyPressedEventArgs e) =>
-            teams.ToList().FindAll(t=>t.teamInfo.teamSplitKey == (int)e.Key)
+            teams.ToList().FindAll(t => t.teamInfo.teamSplitKey == (int)e.Key)
                 .ForEach(t => t.TeamSplitButton_Click(this, EventArgs.Empty));
 
         private void button1_Click(object sender, EventArgs e)
@@ -334,7 +424,7 @@ namespace ffrelaytoolv1
                             infoCyclingIndex = 0;
                         }
                         targetTab = meta.features.infoCyclingPattern[infoCyclingIndex];
-                        if(targetTab == 2 && getTeamSplitMinOffset() < meta.features.graphThreshold)
+                        if (targetTab == 2 && getTeamSplitMinOffset() < meta.features.graphThreshold)
                         {
                             targetTab = 0; // Show splits if the graph is not yet full of enough data to show meaningful info
                         }
@@ -406,7 +496,7 @@ namespace ffrelaytoolv1
         {
             if (File.Exists("commentators.txt"))
             {
-                meta.commentators = File.ReadAllLines("commentators.txt");
+                meta.commentators = File.ReadAllLines("commentators.txt").Select(line => line.Split(',').Select(s => UserDetailsUtils.parseUserFromDetailsString(s.Trim())).ToArray()).ToArray();
             }
             foreach (TeamControl team in teams)
             {
@@ -459,7 +549,8 @@ namespace ffrelaytoolv1
 
         public void cycleMainBG()
         {
-            if (meta.features.mainLayoutBackground) {
+            if (meta.features.mainLayoutBackground)
+            {
                 int bgnum = getMaxIcon();
                 if (File.Exists("background_" + bgnum + ".png"))
                 {
@@ -482,7 +573,7 @@ namespace ffrelaytoolv1
             if (File.Exists("splits_output.txt"))
             {
                 string[] lines = File.ReadAllLines("splits_output.txt");
-                if(TimerStart == null || TimerStart.Ticks == 0)
+                if (TimerStart == null || TimerStart.Ticks == 0)
                 {
                     TimerStart = DateTime.Parse(lines[0]).ToUniversalTime();
                 }
@@ -510,7 +601,7 @@ namespace ffrelaytoolv1
         {
             //return teams.Except(new TeamControl[] { self }).Select(tc => new VersusWrapper(tc.teamInfo.teamSplitNum, tc.teamInfo.teamSplits, tc.teamInfo.teamFinished));
             var len = teams.Length;
-            if(self != null)
+            if (self != null)
             {
                 len--;
             }
@@ -534,7 +625,7 @@ namespace ffrelaytoolv1
         {
             //need to post process timer indicies for teams here to do it properly?
             ReadSplitFiles();
-            Array.ForEach(teams,team => team.reconstructSplitMetadata());
+            Array.ForEach(teams, team => team.reconstructSplitMetadata());
             StartTimer();
         }
 
@@ -543,6 +634,12 @@ namespace ffrelaytoolv1
             EnableAutoCycle = !EnableAutoCycle;
             var enableString = EnableAutoCycle ? "enabled" : "disabled";
             autoCycleToggle.Text = $"Auto cycle ({enableString})";
+        }
+
+        private void discordToggleButton_Click(object sender, EventArgs e)
+        {
+            toggleDiscordConnection();
+
         }
     }
 }
