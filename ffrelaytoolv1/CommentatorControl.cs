@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Xml;
 
 namespace ffrelaytoolv1
 {
@@ -19,10 +20,12 @@ namespace ffrelaytoolv1
             LIGHT
         }
         private Color InactiveSpeakerDark = ColorTranslator.FromHtml("#464646");
+        private Color InactiveSpeakerLight = ColorTranslator.FromHtml("#FFFFFF");
 
         private PictureBox flagLabel;
         private Label nameLabel;
         private Label pronounsLabel;
+        private bool hasDropShadow;
 
         private string userName;
         private string discordName;
@@ -46,6 +49,18 @@ namespace ffrelaytoolv1
             return Color.Gray;
         }
 
+        private Color getShadowColor(ColorMode colorMode)
+        {
+            switch (colorMode)
+            {
+                case ColorMode.DARK:
+                    return Color.White;
+                case ColorMode.LIGHT:
+                    return Color.Black;
+            }
+            return Color.Gray;
+        }
+
         private Color getDisabledColor(ColorMode colorMode)
         {
             switch (colorMode)
@@ -53,15 +68,16 @@ namespace ffrelaytoolv1
                 case ColorMode.DARK:
                     return InactiveSpeakerDark;
                 case ColorMode.LIGHT:
-                    return ColorTranslator.FromHtml("#FFFFFF");
+                    return InactiveSpeakerLight;
             }
             return Color.Gray;
         }
 
-        public void preSetup(LabelUtil labelUtil, MetaContext context, bool smallPadding, ColorMode colorMode)
+        public void preSetup(LabelUtil labelUtil, MetaContext context, bool smallPadding, ColorMode colorMode, bool hasDropShadow = false)
         {
-            var nameLabelSize = TextRenderer.MeasureText(" ", labelUtil.activeFontSized(context.layout.defaultTimerFontSize));
-            var pronounLabelSize = TextRenderer.MeasureText(" ", labelUtil.activeFontSized(context.layout.defaultTimerSubFontSize));
+            this.hasDropShadow = hasDropShadow;
+            var nameLabelSize = TextRenderer.MeasureText(" ", labelUtil.activeFontSized(context.features.metaControl.commentatorNameSize));
+            var pronounLabelSize = TextRenderer.MeasureText(" ", labelUtil.activeFontSized(context.features.metaControl.commentatorPronounSize));
             flagLabel = new PictureBox
             {
                 BackColor = Color.Transparent,
@@ -70,8 +86,8 @@ namespace ffrelaytoolv1
                 SizeMode = PictureBoxSizeMode.AutoSize
             };
             Size defaultFlagSize = flagLabel.Size;
-            nameLabel = labelUtil.createBaseLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height, "", ContentAlignment.MiddleLeft, context.layout.defaultTimerFontSize);
-            pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height, "", ContentAlignment.MiddleLeft, context.layout.defaultTimerSubFontSize);
+            nameLabel = labelUtil.createBaseLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height, "", ContentAlignment.MiddleLeft, context.features.metaControl.commentatorNameSize);
+            pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height, "", ContentAlignment.MiddleLeft, context.features.metaControl.commentatorPronounSize);
             Size = new Size(nameLabelSize.Width + defaultFlagSize.Width + pronounLabelSize.Width, Math.Max(nameLabelSize.Height, defaultFlagSize.Height));
             if (smallPadding)
             {
@@ -83,6 +99,7 @@ namespace ffrelaytoolv1
         public void setupNameControl(LabelUtil labelUtil, UserDetails user, MetaContext context, bool smallPadding, ColorMode colorMode, bool basic = false)
         {
             Controls.Clear();
+            flagLabel = null;
             this.colorMode = colorMode;
             //setup sizing
             //assign flag
@@ -92,8 +109,8 @@ namespace ffrelaytoolv1
             discordName = user.DiscordName;
             var userText = user.Name;
             var pronounText = (!basic && user.Pronouns != null && user.Pronouns.Length > 0) ? $"({user.Pronouns})" : "";
-            var nameLabelSize = TextRenderer.MeasureText(userText, labelUtil.activeFontSized(context.layout.defaultTimerFontSize));
-            var pronounLabelSize = TextRenderer.MeasureText(pronounText, labelUtil.activeFontSized(context.layout.defaultTimerSubFontSize));
+            var nameLabelSize = TextRenderer.MeasureText(userText, labelUtil.activeFontSized(context.features.metaControl.commentatorNameSize));
+            var pronounLabelSize = TextRenderer.MeasureText(pronounText, labelUtil.activeFontSized(context.features.metaControl.commentatorPronounSize));
             Size defaultFlagSize = new Size(0, 0);
             if (!basic && user.Flag != null && user.Flag.Length > 0)
             {
@@ -107,10 +124,27 @@ namespace ffrelaytoolv1
                 defaultFlagSize = flagLabel.Size;
                 Controls.Add(flagLabel);
             }
-            nameLabel = labelUtil.createBaseLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height, userText, ContentAlignment.MiddleLeft, context.layout.defaultTimerFontSize);
-            pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height, pronounText, ContentAlignment.MiddleLeft, context.layout.defaultTimerSubFontSize);
+            if (hasDropShadow)
+            {
+                nameLabel = labelUtil.createBaseDropShadowLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height,
+                    userText, ContentAlignment.MiddleLeft,
+                    getActiveColor(colorMode), getShadowColor(colorMode),
+                    context.features.metaControl.commentatorNameSize);
+                pronounsLabel = labelUtil.createBaseDropShadowLabel(
+                    defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height,
+                    pronounText, ContentAlignment.MiddleLeft,
+                    getActiveColor(colorMode), getShadowColor(colorMode),
+                    context.features.metaControl.commentatorPronounSize);
+            }
+            else
+            {
+                nameLabel = labelUtil.createBaseLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height, userText, ContentAlignment.MiddleLeft, context.features.metaControl.commentatorNameSize);
+                pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height, pronounText, ContentAlignment.MiddleLeft, context.features.metaControl.commentatorPronounSize);
+            }
             Controls.Add(nameLabel);
             Controls.Add(pronounsLabel);
+            nameLabel.BringToFront();
+            pronounsLabel.BringToFront();
             Size = new Size(nameLabelSize.Width + defaultFlagSize.Width + pronounLabelSize.Width, Math.Max(nameLabelSize.Height, defaultFlagSize.Height));
             if (smallPadding)
             {

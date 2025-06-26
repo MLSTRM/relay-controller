@@ -38,7 +38,7 @@ namespace ffrelaytoolv1
         RichNameControl permanentRunnerNameLabel;
         Panel permanentRunnerNameContainer;
         Panel permanentRunnerNameBg;
-        TriangleControl permanentRunnerNameTriangle;
+        Control permanentRunnerNameDecoration;
 
         LabelUtil labelUtil;
 
@@ -62,6 +62,15 @@ namespace ffrelaytoolv1
             TimerLabel.BackColor = info.color;
             TimerLabel.ForeColor = ColorTranslator.FromHtml(context.layout.timerTextColor);
             TimerLabel.Font = labelUtil.activeTimerFontSized(context.layout.teamTimerFontSize);
+            if (context.layout.teamTimerDropShadow)
+            {
+                TimerLabel.ShadowColor = Color.Black;
+                TimerLabel.xOffset = 3;
+                TimerLabel.yOffset = 3;
+            } else
+            {
+                TimerLabel.Alpha = 0;
+            }
 
             TeamSplitButton.BackColor = teamInfo.color;
             if (teamInfo.color.GetBrightness() < 0.5f)
@@ -122,21 +131,33 @@ namespace ffrelaytoolv1
 
             if (context.features.permanentRunnerNames)
             {
+                var panelColour = Color.FromArgb(context.layout.teamLabelColorAlpha, teamInfo.color);
                 permanentRunnerNameLabel = new RichNameControl();
-                permanentRunnerNameLabel.BackColor = teamInfo.color;
+                permanentRunnerNameLabel.BackColor = Color.Transparent;
                 permanentRunnerNameLabel.ForeColor = Color.White;
                 permanentRunnerNameLabel.Location = new Point(5,5);
-                permanentRunnerNameLabel.preSetup(labelUtil, context, false, ColorMode.LIGHT);
+                permanentRunnerNameLabel.preSetup(labelUtil, context, false, ColorMode.LIGHT, context.layout.teamLabelDropShadow);
 
                 permanentRunnerNameBg = new Panel();
-                permanentRunnerNameBg.BackColor = teamInfo.color;
+                permanentRunnerNameBg.BackColor = panelColour;
                 permanentRunnerNameBg.Controls.Add(permanentRunnerNameLabel);
                 permanentRunnerNameBg.Size = new Size(permanentRunnerNameLabel.Size.Width, permanentRunnerNameLabel.Size.Height + 10);
 
-                permanentRunnerNameTriangle = new TriangleControl();
-                permanentRunnerNameTriangle.Size = new Size(permanentRunnerNameLabel.Size.Height+10, permanentRunnerNameLabel.Size.Height+10);
-                permanentRunnerNameTriangle.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
-                permanentRunnerNameTriangle.ForeColor = teamInfo.color;
+                if (context.layout.teamNameDecoration == 0) {
+                    permanentRunnerNameDecoration = new TriangleControl();
+                    permanentRunnerNameDecoration.Size = new Size(permanentRunnerNameLabel.Size.Height + 10, permanentRunnerNameLabel.Size.Height + 10);
+                    permanentRunnerNameDecoration.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
+                    permanentRunnerNameDecoration.ForeColor = panelColour;
+                } else if (context.layout.teamNameDecoration == 1)
+                {
+                    permanentRunnerNameDecoration = new FadeControl();
+                    permanentRunnerNameDecoration.Size = new Size(permanentRunnerNameLabel.Size.Height + 10, permanentRunnerNameLabel.Size.Height + 10);
+                    permanentRunnerNameDecoration.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
+                    permanentRunnerNameDecoration.ForeColor = panelColour;
+                } else
+                {
+                    throw new Exception("Unsupported decoration type!");
+                }
 
                 permanentRunnerNameContainer = new Panel();
                 permanentRunnerNameContainer.BackColor = ColorTranslator.FromHtml(context.layout.teamControlColor);
@@ -144,7 +165,7 @@ namespace ffrelaytoolv1
                 permanentRunnerNameContainer.Location = new Point(teamTabGroup.Location.X, teamTabGroup.Location.Y + teamTabGroup.Size.Height + 20);
                 permanentRunnerNameContainer.Size = new Size(context.layout.boxWidth - 10, permanentRunnerNameLabel.Size.Height + 10);
                 permanentRunnerNameContainer.Controls.Add(permanentRunnerNameBg);
-                permanentRunnerNameContainer.Controls.Add(permanentRunnerNameTriangle);
+                permanentRunnerNameContainer.Controls.Add(permanentRunnerNameDecoration);
 
 
                 Controls.Add(permanentRunnerNameContainer);
@@ -527,25 +548,29 @@ namespace ffrelaytoolv1
 
         public void undoSplitClick()
         {
+            // TODO: need to unset maintimerrunning if true in main control
             if(teamInfo.teamSplitNum == 0)
             {
                 //Can't go into negative splits
                 return;
             }
+                teamInfo.teamSplits[teamInfo.teamSplitNum] = Util.emptyTime;
             if (teamInfo.teamFinished)
             {
                 teamInfo.teamFinish = Util.emptyTime;
                 teamInfo.teamGameEnd[teamInfo.teamGame] = Util.emptyTime;
                 teamSplitTimes[context.splitsToShow - 1].Text = Util.emptyTime;
                 teamInfo.teamFinished = false;
-            }
-            teamInfo.teamSplits[teamInfo.teamSplitNum] = Util.emptyTime;
-            teamInfo.teamSplitNum--;
-            if (context.splits[teamInfo.teamSplitNum].Contains(Util.gameSep))
+                parent.RestartMainTimer();
+            } else
             {
-                teamInfo.teamGame--;
-                teamInfo.teamGameEnd[teamInfo.teamGame] = Util.emptyTime;
-                cycleIcon(-1);
+                teamInfo.teamSplitNum--;
+                if (context.splits[teamInfo.teamSplitNum].Contains(Util.gameSep))
+                {
+                    teamInfo.teamGame--;
+                    teamInfo.teamGameEnd[teamInfo.teamGame] = Util.emptyTime;
+                    cycleIcon(-1);
+                }
             }
             if (teamInfo.teamWaiting)
             {
@@ -605,8 +630,8 @@ namespace ffrelaytoolv1
             if (context.features.permanentRunnerNames)
             {
                 permanentRunnerNameLabel.setupNameControl(labelUtil, UserDetailsUtils.parseUserFromDetailsString(teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2]), context, false, ColorMode.LIGHT, true);
-                permanentRunnerNameTriangle.Size = new Size(permanentRunnerNameLabel.Size.Height + 10, permanentRunnerNameLabel.Size.Height + 10);
-                permanentRunnerNameTriangle.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
+                permanentRunnerNameDecoration.Size = new Size(permanentRunnerNameLabel.Size.Height + 10, permanentRunnerNameLabel.Size.Height + 10);
+                permanentRunnerNameDecoration.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
                 permanentRunnerNameBg.Size = new Size(permanentRunnerNameLabel.Size.Width, permanentRunnerNameLabel.Size.Height + 10);
             }
         }

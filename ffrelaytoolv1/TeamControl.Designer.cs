@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.TeamSplitButton = new System.Windows.Forms.Button();
-            this.TimerLabel = new System.Windows.Forms.Label();
+            this.TimerLabel = new ShadowLabel();
             this.teamTabGroup = new System.Windows.Forms.TabControl();
             this.cycleIconButton = new System.Windows.Forms.Button();
             this.undoButton = new System.Windows.Forms.Button();
@@ -104,7 +104,7 @@
         #endregion
 
         private System.Windows.Forms.Button TeamSplitButton;
-        private System.Windows.Forms.Label TimerLabel;
+        private ShadowLabel TimerLabel;
         private System.Windows.Forms.TabControl teamTabGroup;
         private System.Windows.Forms.Button cycleIconButton;
         private System.Windows.Forms.Button undoButton;

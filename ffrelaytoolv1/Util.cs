@@ -66,6 +66,21 @@ namespace ffrelaytoolv1
             };
         }
 
+        public ShadowLabel createBaseDropShadowLabel(int x, int y, int w, int h, string text, ContentAlignment textAlign, Color color, Color shadowColor, float fontSize)
+        {
+            return new ShadowLabel
+            {
+                Location = new Point(x, y),
+                Size = new Size(w, h),
+                ForeColor = color,
+                TextAlign = textAlign,
+                BackColor = Color.Transparent,
+                Font = activeFontSized(fontSize),
+                Text = text,
+                ShadowColor = shadowColor
+            };
+        }
+
         public Size calcLabelSize(float fontSize, string text)
         {
             return TextRenderer.MeasureText(text, activeFontSized(fontSize));

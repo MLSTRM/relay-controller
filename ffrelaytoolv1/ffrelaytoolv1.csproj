@@ -294,6 +294,15 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="FadeControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="FadeControl.Designer.cs">
+      <DependentUpon>FadeControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ShadowLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="TriangleControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -399,6 +408,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\bigBridge.wav" />
+    <None Include="Resources\sc.png" />
     <None Include="Resources\flags\ad.png" />
     <None Include="Resources\flags\ae.png" />
     <None Include="Resources\flags\af.png" />
@@ -655,6 +665,7 @@
     <None Include="Resources\flags\zw.png" />
     <None Include="Resources\flags\ca-qc.png" />
     <None Include="Resources\flags\ff.png" />
+    <None Include="Resources\br.png" />
     <Content Include="Resources\join.wav" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
