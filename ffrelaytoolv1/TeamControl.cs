@@ -205,7 +205,7 @@ namespace ffrelaytoolv1
                         teamSplitNames[i] = labelUtil.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, context.layout.rowHeight, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "test+" + i, ContentAlignment.MiddleCenter);
                         tabPageSplits.Controls.Add(teamSplitNames[i]);
                     }
-                    teamSplitTimes[i] = labelUtil.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, haMargin, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                    teamSplitTimes[i] = labelUtil.createBaseLabel(splitLabelWidth * i + context.layout.boxMargin, haMargin, splitLabelWidth, context.layout.rowHeight - context.layout.boxMargin, "00:00:00", ContentAlignment.MiddleCenter, context.layout.splitTimerFontSize);
                     tabPageSplits.Controls.Add(teamSplitTimes[i]);
                 } else
                 {
@@ -219,7 +219,7 @@ namespace ffrelaytoolv1
                             teamSplitNames[i] = labelUtil.createBaseLabel(context.layout.rowWidth, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
                             tabPageSplits.Controls.Add(teamSplitNames[i]);
                         }
-                        teamSplitTimes[i] = labelUtil.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                        teamSplitTimes[i] = labelUtil.createBaseLabel(haMargin, splitLabelHeight * i + context.layout.boxMargin, context.layout.rowWidth - context.layout.boxMargin, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, context.layout.splitTimerFontSize);
                         tabPageSplits.Controls.Add(teamSplitTimes[i]);
                     } else
                     {
@@ -229,7 +229,7 @@ namespace ffrelaytoolv1
                             teamSplitNames[i] = labelUtil.createBaseLabel(context.layout.boxWidth - context.layout.rowWidth - w, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "test+" + i, ContentAlignment.MiddleCenter);
                             tabPageSplits.Controls.Add(teamSplitNames[i]);
                         }
-                        teamSplitTimes[i] = labelUtil.createBaseLabel(context.layout.boxWidth - w - haMargin, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, 20);
+                        teamSplitTimes[i] = labelUtil.createBaseLabel(context.layout.boxWidth - w - haMargin, splitLabelHeight * i + context.layout.boxMargin, w, splitLabelHeight, "00:00:00", ContentAlignment.MiddleCenter, context.layout.splitTimerFontSize);
                         tabPageSplits.Controls.Add(teamSplitTimes[i]);
                     }
                 }
@@ -471,7 +471,10 @@ namespace ffrelaytoolv1
             }
             else
             {
-                updateVsSplits(parent.fetchOtherTeamInfo(this));
+                if (context.features.vsLabelsOnSplitsPage || context.features.showRunners)
+                {
+                    updateVsSplits(parent.fetchOtherTeamInfo(this));
+                }
             }
             if (cycleInfo)
             {
@@ -629,7 +632,8 @@ namespace ffrelaytoolv1
             }
             if (context.features.permanentRunnerNames)
             {
-                permanentRunnerNameLabel.setupNameControl(labelUtil, UserDetailsUtils.parseUserFromDetailsString(teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2]), context, false, ColorMode.LIGHT, true);
+                permanentRunnerNameLabel.setupNameControl(labelUtil, UserDetailsUtils.parseUserFromDetailsString(teamInfo.teamRunners[(teamInfo.teamIcon * 4) - 2]), context, false, ColorMode.LIGHT, 
+                    !context.layout.decorateRunnerNames);
                 permanentRunnerNameDecoration.Size = new Size(permanentRunnerNameLabel.Size.Height + 10, permanentRunnerNameLabel.Size.Height + 10);
                 permanentRunnerNameDecoration.Location = new Point(permanentRunnerNameLabel.Size.Width, 0);
                 permanentRunnerNameBg.Size = new Size(permanentRunnerNameLabel.Size.Width, permanentRunnerNameLabel.Size.Height + 10);
@@ -638,21 +642,23 @@ namespace ffrelaytoolv1
 
         public void updateCommentatorSpeaking(IEnumerable<string> speaking, bool reset)
         {
-            foreach(var control in commentaryLayoutPanel.Controls)
-            {
-                if(control is RichNameControl richName)
+            if (commentaryLayoutPanel != null) {
+                foreach (var control in commentaryLayoutPanel.Controls)
                 {
-                    if (reset)
+                    if (control is RichNameControl richName)
                     {
-                        richName.setSpeaking(true);
-                    }
-                    else if (speaking.Contains(richName.getUserName()) || speaking.Contains(richName.getDiscordName()))
-                    {
-                        richName.setSpeaking(true);
-                    }
-                    else
-                    {
-                        richName.setSpeaking(false);
+                        if (reset)
+                        {
+                            richName.setSpeaking(true);
+                        }
+                        else if (speaking.Contains(richName.getUserName()) || speaking.Contains(richName.getDiscordName()))
+                        {
+                            richName.setSpeaking(true);
+                        }
+                        else
+                        {
+                            richName.setSpeaking(false);
+                        }
                     }
                 }
             }
@@ -756,7 +762,9 @@ namespace ffrelaytoolv1
                 offset++;
             }
             if (!context.features.showAllVs)
-            { Util.updatePositiveDifferenceDisplay(vsLabelSingle, maxSeg); }
+            { 
+                Util.updatePositiveDifferenceDisplay(vsLabelSingle, maxSeg);
+            }
         }
 
         private void updateSplits(VersusWrapper[] otherTeams)
@@ -784,7 +792,10 @@ namespace ffrelaytoolv1
                 }
             }
 
-            updateVsSplits(otherTeams);
+            if (context.features.vsLabelsOnSplitsPage || context.features.showRunners)
+            {
+                updateVsSplits(otherTeams);
+            }
 
             //Per Game Splits
             //Since we're always at least on FF1, just include the time for it in here, removes the special case later

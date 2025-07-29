@@ -79,7 +79,7 @@ namespace FFRelayTool_RemoteClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to relayState.
         /// </summary>
         internal static string SSMParam {
             get {
@@ -88,7 +88,7 @@ namespace FFRelayTool_RemoteClient.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to arn:aws:sns:eu-west-2:431321358555:RelayMessageTopic.
         /// </summary>
         internal static string topicARN {
             get {

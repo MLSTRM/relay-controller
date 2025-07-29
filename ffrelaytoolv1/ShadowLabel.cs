@@ -51,6 +51,10 @@ namespace ffrelaytoolv1
         {
             Graphics g = e.Graphics;
 
+            var textSize = g.MeasureString(this.Text, this.Font);
+            var heightOffset = (this.Size.Height - textSize.Height) / 2;
+
+
             int xStart = Math.Min(this.Location.X, this.Location.X + xOffset),
                 xEnd = Math.Max(this.Location.X, this.Location.X + xOffset),
                 yStart = Math.Min(this.Location.Y, this.Location.Y + yOffset),
@@ -79,11 +83,11 @@ namespace ffrelaytoolv1
                             new PointF()
                             {
                                 X = (xIncrement * i), // this.Location.X + (xIncrement * i), 
-                                Y = (yIncrement * i)  // this.Location.Y + (yIncrement * i) 
+                                Y = (yIncrement * i) + heightOffset  // this.Location.Y + (yIncrement * i) 
                             }
                         );
 
-                g.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), new PointF(0f, 0f));
+                g.DrawString(this.Text, this.Font, new SolidBrush(this.ForeColor), new PointF(0f, heightOffset));
             }
             else base.OnPaint(e);
         }

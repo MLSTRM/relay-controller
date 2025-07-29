@@ -90,11 +90,31 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap be {
+            get {
+                object obj = ResourceManager.GetObject("be", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.IO.UnmanagedMemoryStream similar to System.IO.MemoryStream.
         /// </summary>
         internal static System.IO.UnmanagedMemoryStream bigBridge {
             get {
                 return ResourceManager.GetStream("bigBridge", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap br {
+            get {
+                object obj = ResourceManager.GetObject("br", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
             }
         }
         
@@ -219,7 +239,7 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to https://sqs.eu-west-2.amazonaws.com/431321358555/RelayMessageQueue.
         /// </summary>
         internal static string inboundQueue {
             get {
@@ -307,6 +327,16 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap sc {
+            get {
+                object obj = ResourceManager.GetObject("sc", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string secretKey {
@@ -316,7 +346,7 @@ namespace ffrelaytoolv1.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to relayState.
         /// </summary>
         internal static string ssmParameter {
             get {

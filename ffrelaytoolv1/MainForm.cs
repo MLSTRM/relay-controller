@@ -90,6 +90,8 @@ namespace ffrelaytoolv1
             timerTickInterval = metaFile.layout.timerTickInterval;
             infoCycleTicks = metaFile.layout.infoCycleTicks;
 
+            EnableAutoCycle = metaFile.features.defaultAutoCycling;
+
             var enableString = EnableAutoCycle ? "enabled" : "disabled";
             autoCycleToggle.Text = $"Auto cycle ({enableString})";
 

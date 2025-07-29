@@ -39,6 +39,8 @@ namespace ffrelaytoolv1
             public bool showCategory = true;
             public bool showGameTimes = true;
             public bool splitLabelsOnSplitsPage = true;
+            public bool splitLabesOppositeAlign = false;
+            public int? splitLabelSize = null;
             public int boxMargin = 6;
             public int timerTickInterval = 250;
             public int infoCycleTicks = 40;
@@ -62,6 +64,7 @@ namespace ffrelaytoolv1
             public bool teamControlUsesTeamColours = true;
             public string teamControlColor = "#FFFFFF";
             public int teamNameDecoration = 0;
+            public bool decorateRunnerNames = false;
             public int teamLabelColorAlpha = 255;
             public int teamTimerColorAlpha = 255;
             public bool teamLabelDropShadow = false;
@@ -70,6 +73,7 @@ namespace ffrelaytoolv1
 
         public class Features
         {
+            public bool defaultAutoCycling = true;
             public bool showSplits = true;
             public bool showRunners = true;
             public bool showGameTimes = true;
@@ -112,6 +116,7 @@ namespace ffrelaytoolv1
             // Basically the same as alwaysShowCommentary but it goes in a different parent rather than each tab group being replicated across.
             // Then want a combined graph/split page maybe, but its basically just static view and can be comped in the layout overall (with meta control size adjustment and split page statically showing)
             public bool alwaysShowCommentary = false;
+            public int commentaryFlowDirection = 1;
             public bool commentaryInlineHeader = true;
             public float commentatorNameSize = 14f;
             public float commentatorPronounSize = 12f;
@@ -128,6 +133,7 @@ namespace ffrelaytoolv1
             public bool negativeOnly = false;
             public float xAxisFontSize = 12f;
             public float yAxisFontSize = 12f;
+            public bool showStart = true;
         }
     }
 }

@@ -131,13 +131,13 @@
     <value />
   </data>
   <data name="inboundQueue" xml:space="preserve">
-    <value />
+    <value>https://sqs.eu-west-2.amazonaws.com/431321358555/RelayMessageQueue</value>
   </data>
   <data name="secretKey" xml:space="preserve">
     <value />
   </data>
   <data name="ssmParameter" xml:space="preserve">
-    <value />
+    <value>relayState</value>
   </data>
   <data name="join" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\join.wav;System.IO.MemoryStream, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
@@ -207,5 +207,14 @@
   </data>
   <data name="ua" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\flags\ua.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="br" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\br.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sc" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\sc.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="be" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\be.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

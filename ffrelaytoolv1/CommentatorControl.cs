@@ -131,7 +131,7 @@ namespace ffrelaytoolv1
                     getActiveColor(colorMode), getShadowColor(colorMode),
                     context.features.metaControl.commentatorNameSize);
                 pronounsLabel = labelUtil.createBaseDropShadowLabel(
-                    defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height,
+                    defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, nameLabelSize.Height,
                     pronounText, ContentAlignment.MiddleLeft,
                     getActiveColor(colorMode), getShadowColor(colorMode),
                     context.features.metaControl.commentatorPronounSize);
@@ -139,7 +139,7 @@ namespace ffrelaytoolv1
             else
             {
                 nameLabel = labelUtil.createBaseLabel(defaultFlagSize.Width, 0, nameLabelSize.Width, nameLabelSize.Height, userText, ContentAlignment.MiddleLeft, context.features.metaControl.commentatorNameSize);
-                pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, pronounLabelSize.Height, pronounText, ContentAlignment.MiddleLeft, context.features.metaControl.commentatorPronounSize);
+                pronounsLabel = labelUtil.createBaseLabel(defaultFlagSize.Width + nameLabelSize.Width, 0, pronounLabelSize.Width, nameLabelSize.Height, pronounText, ContentAlignment.MiddleLeft, context.features.metaControl.commentatorPronounSize);
             }
             Controls.Add(nameLabel);
             Controls.Add(pronounsLabel);
