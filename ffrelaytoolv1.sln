@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30011.22
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35707.178 d17.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ffrelaytoolv1", "ffrelaytoolv1\ffrelaytoolv1.csproj", "{ED088F92-2C6A-40BB-8F50-6E334F2EB596}"
 EndProject
@@ -10,6 +10,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFRelayTool_RemoteClient", "FFRelayTool_RemoteClient\FFRelayTool_RemoteClient.csproj", "{5FE7559D-F181-4224-A238-F89DD6E1546A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFRelayTool_Model", "FFRelayTool_Model\FFRelayTool_Model.csproj", "{44C1811A-BA2B-4F1D-B522-69926F9D96CD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ffrelaytoolv1Core", "ffrelaytoolv1Core\ffrelaytoolv1Core.csproj", "{D83E5AD6-9859-41C4-A743-05C8741BA0C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FFRelayTool_RemoteClientCore", "FFRelayTool_RemoteClientCore\FFRelayTool_RemoteClientCore.csproj", "{35F37D48-2268-4B56-8DE6-63F7D5EA235C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{44C1811A-BA2B-4F1D-B522-69926F9D96CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44C1811A-BA2B-4F1D-B522-69926F9D96CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{44C1811A-BA2B-4F1D-B522-69926F9D96CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D83E5AD6-9859-41C4-A743-05C8741BA0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D83E5AD6-9859-41C4-A743-05C8741BA0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D83E5AD6-9859-41C4-A743-05C8741BA0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D83E5AD6-9859-41C4-A743-05C8741BA0C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35F37D48-2268-4B56-8DE6-63F7D5EA235C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35F37D48-2268-4B56-8DE6-63F7D5EA235C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35F37D48-2268-4B56-8DE6-63F7D5EA235C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35F37D48-2268-4B56-8DE6-63F7D5EA235C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
