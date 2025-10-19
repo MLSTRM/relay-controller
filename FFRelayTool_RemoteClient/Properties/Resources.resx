@@ -124,9 +124,9 @@
     <value />
   </data>
   <data name="SSMParam" xml:space="preserve">
-    <value />
+    <value>relayState</value>
   </data>
   <data name="topicARN" xml:space="preserve">
-    <value />
+    <value>arn:aws:sns:eu-west-2:431321358555:RelayMessageTopic</value>
   </data>
 </root>

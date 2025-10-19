@@ -39,6 +39,8 @@ namespace ffrelaytoolv1
             public bool showCategory = true;
             public bool showGameTimes = true;
             public bool splitLabelsOnSplitsPage = true;
+            public bool splitLabesOppositeAlign = false;
+            public int? splitLabelSize = null;
             public int boxMargin = 6;
             public int timerTickInterval = 250;
             public int infoCycleTicks = 40;
@@ -61,10 +63,17 @@ namespace ffrelaytoolv1
             public bool useBasicNameLayout = false;
             public bool teamControlUsesTeamColours = true;
             public string teamControlColor = "#FFFFFF";
+            public int teamNameDecoration = 0;
+            public bool decorateRunnerNames = false;
+            public int teamLabelColorAlpha = 255;
+            public int teamTimerColorAlpha = 255;
+            public bool teamLabelDropShadow = false;
+            public bool teamTimerDropShadow = false;
         }
 
         public class Features
         {
+            public bool defaultAutoCycling = true;
             public bool showSplits = true;
             public bool showRunners = true;
             public bool showGameTimes = true;
@@ -101,8 +110,18 @@ namespace ffrelaytoolv1
             public string color = "#FFFFFF";
             public bool splits = false;
             public bool commentators = false;
-            public int commentaryHeight = -1;
+            public int commentaryHeight = 100;
             public MetaControlGraph graph = new MetaControlGraph();
+            // TODO: new option for split commentary/game display for new 2 team display concept.
+            // Basically the same as alwaysShowCommentary but it goes in a different parent rather than each tab group being replicated across.
+            // Then want a combined graph/split page maybe, but its basically just static view and can be comped in the layout overall (with meta control size adjustment and split page statically showing)
+            public bool alwaysShowCommentary = false;
+            public int commentaryFlowDirection = 1;
+            public bool commentaryInlineHeader = true;
+            public float commentatorNameSize = 14f;
+            public float commentatorPronounSize = 12f;
+            public float? staticSubheaderFontSize = 16f;
+            public int staticSubheaderSplitPoint = 300;
         }
 
         public class MetaControlGraph
@@ -110,6 +129,11 @@ namespace ffrelaytoolv1
             public int splitsToShow = 6;
             public int splitFocusOffset = 5;
             public bool predictPartialGraphLines = false;
+            public bool positiveOnly = false;
+            public bool negativeOnly = false;
+            public float xAxisFontSize = 12f;
+            public float yAxisFontSize = 12f;
+            public bool showStart = true;
         }
     }
 }

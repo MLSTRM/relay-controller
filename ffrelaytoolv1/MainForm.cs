@@ -90,6 +90,8 @@ namespace ffrelaytoolv1
             timerTickInterval = metaFile.layout.timerTickInterval;
             infoCycleTicks = metaFile.layout.infoCycleTicks;
 
+            EnableAutoCycle = metaFile.features.defaultAutoCycling;
+
             var enableString = EnableAutoCycle ? "enabled" : "disabled";
             autoCycleToggle.Text = $"Auto cycle ({enableString})";
 
@@ -348,6 +350,11 @@ namespace ffrelaytoolv1
             StartTimer();
         }
 
+        public void RestartMainTimer()
+        {
+            MainTimerRunning = true;
+        }
+
         private void StartTimer()
         {
             if (!MainTimerRunning)
@@ -395,6 +402,10 @@ namespace ffrelaytoolv1
 
         void TimerEventProcessor(Object myObject, EventArgs myEventArgs)
         {
+            if (!MainTimerRunning)
+            {
+                return;
+            }
             string current = getCurrentTimeString();
             //string current = d.ToString(@"hh\:mm\:ss");
             MainTimer.Text = current;
@@ -462,8 +473,11 @@ namespace ffrelaytoolv1
             var allFinished = teams.Select(team => team.teamInfo.teamFinished).All(b => b);
             if (allFinished)
             {
+                // Need one last refresh of data in here for graph
+                TimerEventProcessor(null, null);
                 MainTimerRunning = false;
-                tick.Stop();
+                // Potentially let tick keep going in the bg but pause main timer display to allow for undo?
+                // tick.Stop();
             }
         }
 
